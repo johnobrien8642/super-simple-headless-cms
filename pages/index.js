@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from './components/Header'
 import PostShow from './components/Post_Show'
-import connectDb from '../../lib/mongodb'
-import Post from '../../models/Post'
+import connectDb from '../lib/mongodb'
+import Post from '../models/Post'
 
 export default function Home({ data }) {
   let [active, setActive] = useState(false)
@@ -61,6 +61,7 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps() {
+    await connectDb()
     const posts = await Post
       .find({})
     const rand = Math.floor(Math.random() * posts.length)
