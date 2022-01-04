@@ -1,6 +1,6 @@
 import PostShow from '../../components/Post_Show'
 import Header from '../../components/Header'
-import connectDb from '../../lib/mongodb'
+import connectDb from '../../../lib/mongodb'
 import Post from '../../../models/Post'
 
 const Roll = ({ data }) => {

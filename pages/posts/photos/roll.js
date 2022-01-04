@@ -1,6 +1,8 @@
 import React from 'react'
 import PostShow from '../../components/Post_Show'
 import Header from '../../components/Header'
+import connectDb from '../../../lib/mongodb'
+import Post from '../../../models/Post'
 
 const Roll = ({ data }) => {
 
@@ -40,7 +42,7 @@ export async function getStaticProps() {
   await connectDb()
   const posts = await Post
     .find({
-      type: 'Book'
+      type: 'Photo'
     })
 
   return { props: { data: posts } }
