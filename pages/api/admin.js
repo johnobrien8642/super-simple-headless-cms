@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import dbConnect from '../../lib/mongodb.js'
 import Admin from '../../models/Admin'
-import cloudinary from 'cloudinary'
 
 export default async (req, res) => {
   const { body, method } = req
