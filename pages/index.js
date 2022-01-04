@@ -67,6 +67,6 @@ export async function getServerSideProps() {
     const rand = Math.floor(Math.random() * posts.length)
     const randPost = posts[rand]
     return {
-      props: { data: randPost },
+      props: { data: JSON.stringify(randPost) },
     }
 }
