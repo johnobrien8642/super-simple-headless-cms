@@ -27,9 +27,8 @@ function Post({ data }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${keys.url}/api/photos_get`)
+  const res = await fetch(`${process.env.URL}/api/photos_get`)
   console.log(res)
-  console.log(process.env)
   const data = await res.json()
   const paths = data.posts.map((post) => ({
     params: { id: post._id },
@@ -38,7 +37,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(`${keys.url}/api/photo_get?id=${params.id}`)
+  const res = await fetch(`${process.env.URL}/api/photo_get?id=${params.id}`)
   console.log(res)
   const data = await res.json()
   return { props: { data } }
