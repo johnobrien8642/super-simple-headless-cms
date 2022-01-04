@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Form from '../components/Form'
-import connectDb from '../lib/mongodb'
+import connectDb from '../../lib/mongodb'
 import Admin from '../../models/Admin'
 import jwt from 'jsonwebtoken'
 
