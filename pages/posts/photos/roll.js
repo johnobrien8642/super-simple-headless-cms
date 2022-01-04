@@ -15,26 +15,28 @@ const Roll = ({ data }) => {
   }
 
   return (
-    <div
-      className='roll container'
-    >
+    <React.Fragment>
       <Header />
-      <h1>Photos</h1>
       <div
-        className='inner row'
+        className='roll container'
       >
-        {data.posts?.map((p, i) => {
-            return (
-              <React.Fragment
-                key={p._id}
-              >
-                <PostShow post={p} />
-                {handleRowDivider(p, i)}
-              </React.Fragment>
-            )
-        })}
+        <h1>Photos</h1>
+        <div
+          className='inner row'
+        >
+          {data.posts?.map((p, i) => {
+              return (
+                <React.Fragment
+                  key={p._id}
+                >
+                  <PostShow post={p} />
+                  {handleRowDivider(p, i)}
+                </React.Fragment>
+              )
+          })}
+        </div>
       </div>
-    </div>
+    </React.Fragment>
   )
 }
 

@@ -2,6 +2,7 @@ import PostShow from '../../components/Post_Show'
 import Header from '../../components/Header'
 import connectDb from '../../../lib/mongodb'
 import Post from '../../../models/Post'
+import React from 'react'
 
 const Roll = ({ data }) => {
 
@@ -14,22 +15,24 @@ const Roll = ({ data }) => {
   }
 
   return (
-    <div
-      className='roll container'
-    >
+    <React.Fragment>
       <Header />
-      <h1>Books</h1>
-      {data.posts?.map(p => {
-        return (
-          <React.Fragment
-            key={p._id}
-          >
-            <PostShow post={p} />
-            {handleRowDivider(p, i)}
-          </React.Fragment>
-        )
-      })}
-    </div>
+      <div
+        className='roll container'
+      >
+        <h1>Books</h1>
+        {data.posts?.map(p => {
+          return (
+            <React.Fragment
+              key={p._id}
+            >
+              <PostShow post={p} />
+              {handleRowDivider(p, i)}
+            </React.Fragment>
+          )
+        })}
+      </div>
+    </React.Fragment>
   )
 }
 
