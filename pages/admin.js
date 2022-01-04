@@ -3,15 +3,13 @@ import Link from 'next/link'
 import Login from './components/Login'
 import Logout from './components/Logout'
 import NewAdmin from './components/New_Admin'
-import AuthUtil from './util/auth_util.js'
 import connectDb from '../lib/mongodb'
 import Admin from '../models/Admin'
 import jwt from 'jsonwebtoken'
-const { asyncAuthenticate } = AuthUtil
 
-const AdminPage = ({ authenticated }) => {
+const AdminPage = ({ data }) => {
   function handleComponents() {
-    if (authenticated) {
+    if (data) {
       return (
         <React.Fragment>
           <Logout />
@@ -51,7 +49,7 @@ export async function getServerSideProps(context) {
   const decoded = jwt.verify(context.req.cookies.token, process.env.SECRET_KEY)
   const authenticated = await Admin
     .findById(decoded.id)
-      
+
   return {
     props: {
       data: !!authenticated,

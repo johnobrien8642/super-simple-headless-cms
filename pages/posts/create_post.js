@@ -2,14 +2,15 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Form from '../components/Form'
-import AuthUtil from '../util/auth_util'
-const { asyncAuthenticate } = AuthUtil
+import connectDb from '../lib/mongodb'
+import Admin from '../../models/Admin'
+import jwt from 'jsonwebtoken'
 
 const CreatePost = ({ data }) => {
   const router = useRouter()
   
   useEffect(() => {
-    if (!data.authenticated) {
+    if (!data) {
       router.push('/admin')
     }
   }, [])
@@ -34,10 +35,14 @@ const CreatePost = ({ data }) => {
 }
 
 export async function getServerSideProps(context) {
-  const data = await asyncAuthenticate(context.req?.cookies)
+  await connectDb()
+  const decoded = jwt.verify(context.req.cookies.token, process.env.SECRET_KEY)
+  const authenticated = await Admin
+    .findById(decoded.id)
+
   return {
     props: {
-      data,
+      data: !!authenticated,
     },
   }
 }
