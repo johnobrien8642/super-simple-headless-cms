@@ -1,0 +1,24 @@
+.single-post-show {
+
+  .go-back-btn {
+    margin: 2% 0;
+  }
+
+  .post-show {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    border: none;
+    border-top: 3px solid gray;
+    border-bottom: 3px solid gray;
+  }
+
+  @media (min-width: 990px) {
+    .post-show {
+      width: 90%;
+      border: 3px solid gray;
+      max-width: 900px;
+      margin: 2% auto;
+    }  
+  }
+}

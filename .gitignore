@@ -4,6 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
+launch.json
+.gitignore
+generate.js
+
 
 # testing
 /coverage

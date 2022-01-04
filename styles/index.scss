@@ -1,0 +1,61 @@
+@media (max-width: 990px) {
+  .navbar-collapse.active {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    border-bottom: 3px solid gray;
+
+    .nav-link {
+      padding-left: 15px;
+    }
+  }
+}
+
+.main-page {
+  position: relative;
+  height: 100%;
+
+  .post-show {
+    position: relative;
+    top: 100%;
+    margin: 8% auto;
+    transition: top 500ms;
+  }
+}
+
+.main-page.active {
+  .post-show {
+    top: 0;
+  }
+}
+
+.navbar-brand {
+  background-color: transparent;
+  border: none;
+  margin-left: 2%;
+
+  h3, p {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  
+  h3 {
+    text-decoration: underline;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: transparent;
+  }
+}
+
+.navbar-toggler {
+  margin: 0 15px;
+}
+
+.navbar-nav {
+  .nav-item.active a {
+    color: black !important;
+  }
+}

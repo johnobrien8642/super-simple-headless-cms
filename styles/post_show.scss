@@ -1,0 +1,40 @@
+.post-show {
+  border: 5px solid gray;
+  border-radius: 3px;
+  width: 80%;
+  margin: 2% auto;
+  padding: 0;
+
+  .number {
+    display: inline-block;
+    margin: 2%;
+    font-size: 2rem;
+  }
+
+  h1 {
+    margin: 4% 2%;
+    margin-top: 0;
+  }
+
+  p {
+    margin: 4%;
+    margin-left: 3%;
+  }
+
+  .price {
+    text-decoration: underline;
+    font-size: .9rem;
+  }
+
+  .view-btn {
+    margin: 3%;
+  }
+}
+
+@media (min-width: 980px) {
+  .post-show {
+    margin: 2%;
+    width: 55%;
+    max-width: 525px;
+  }
+}
