@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from './components/Header'
 import PostShow from './components/Post_Show'
+import connectDb from '../../lib/mongodb'
+import Post from '../../models/Post'
 
 export default function Home({ data }) {
   let [active, setActive] = useState(false)
@@ -49,7 +51,7 @@ export default function Home({ data }) {
           </p>
         </div>
 
-        <PostShow post={data.post} />
+        <PostShow post={data?.randPost} />
 
         <footer>
         </footer>
@@ -59,10 +61,11 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps() {
-    const res = await fetch(`${process.env.URL}/api/random_photo_get`)
-    const data = await res.json()
-
+    const posts = await Post
+      .find({})
+    const rand = Math.floor(Math.random() * posts.length)
+    const randPost = posts[rand]
     return {
-      props: { data },
+      props: { data: randPost },
     }
 }

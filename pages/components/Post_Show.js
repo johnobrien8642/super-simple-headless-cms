@@ -19,22 +19,32 @@ const PostShow = ({ post, single }) => {
     }
   }
 
-  return (
-    <div
-      className='post-show col-md'
-    >
-      <img className='w-100' src={post?.link} />
-      <span className='number'>{post?.number}</span>
-      <h1>{post?.title}</h1>
-      <p>{post?.description}</p>
-      <p
-        className='price'
+  if (post) {
+    return (
+      <div
+        className='post-show col-md'
       >
-        Asking Price: ${post?.price}
-      </p>
-      {handleViewButton()}
-    </div>
-  )
+        <img className='w-100' src={post?.link} />
+        <span className='number'>{post?.number}</span>
+        <h1>{post?.title}</h1>
+        <p>{post?.description}</p>
+        <p
+          className='price'
+        >
+          Asking Price: ${post?.price}
+        </p>
+        {handleViewButton()}
+      </div>
+    )
+  } else {
+    return (
+      <div
+        className='post-show col-md'
+      >
+        <p>Sorry, no photos to show yet</p>
+      </div>
+    )
+  }
 }
 
 export default PostShow
