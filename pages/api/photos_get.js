@@ -9,7 +9,7 @@ export default async (req, res) => {
         .find({
           type: 'Photo'
         })
-      
+      console.log('posts from api/photos_get', posts)
       res.status(200).json({ success: true, posts: posts })
     } catch (err) {
       res.status(500).json({ success: false, errorMessage: err.message })

@@ -69,11 +69,11 @@ function Header() {
         className={`${active ? 'active ' : 'collapse '}navbar-collapse bg-light`}
         tabIndex={-1}
         ref={dropdownRef}
-        onBlur={e => {
-          if (!e.relatedTarget) {
-            setActive(false)
-          }
-        }}
+        // onBlur={e => {
+        //   if (!e.relatedTarget) {
+        //     setActive(false)
+        //   }
+        // }}
       >
         <ul
           className='navbar-nav'
