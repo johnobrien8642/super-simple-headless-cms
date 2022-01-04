@@ -19,7 +19,7 @@ const Roll = ({ data }) => {
     >
       <Header />
       <h1>Books</h1>
-      {data.posts.map(p => {
+      {data.posts?.map(p => {
         return (
           <React.Fragment
             key={p._id}

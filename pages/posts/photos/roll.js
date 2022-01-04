@@ -23,7 +23,7 @@ const Roll = ({ data }) => {
       <div
         className='inner row'
       >
-        {data.posts.map((p, i) => {
+        {data.posts?.map((p, i) => {
             return (
               <React.Fragment
                 key={p._id}
