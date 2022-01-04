@@ -145,23 +145,6 @@ function Header() {
               </a>
             </Link>
           </li> */}
-          <li
-            className='nav-item'
-            onClick={() => {
-              reset()
-              setActive4(true)
-            }}
-          >
-            <Link
-              href='https://www.patreon.com/sindicated'
-            >
-              <a
-                className='nav-link'
-              >
-                Patreon
-              </a>
-            </Link>
-          </li>
         </ul>
       </div>
     </nav>
