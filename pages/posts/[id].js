@@ -5,7 +5,7 @@ import keys from '../../config/keys'
 import connectDb from '../../lib/mongodb.js'
 import Post from '../../models/Post'
 
-function Post({ post }) {
+function SinglePost({ post }) {
   const router = useRouter()
 
   return (
@@ -31,6 +31,7 @@ function Post({ post }) {
 export async function getStaticPaths() {
   // const res = await fetch(`${keys.url}/api/photos_get`)
   // const data = await res.json()
+  await connectDb()
   const posts = await Post
     .find({})
 
@@ -43,11 +44,11 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   // const res = await fetch(`${keys.url}/api/photo_get?id=${params.id}`)
   // const data = await res.json()
-
+  await connectDb()
   const post = await Post
     .findById(params.id)
 
   return { props: { post } }
 }
 
-export default Post
+export default SinglePost
