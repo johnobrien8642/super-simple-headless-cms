@@ -2,8 +2,10 @@ import { useRouter } from 'next/router'
 import PostShow from '../components/Post_Show'
 import Header from '../components/Header'
 import keys from '../../config/keys'
+import connectDb from '../../lib/mongodb.js'
+import Post from '../../models/Post'
 
-function Post({ data }) {
+function Post({ post }) {
   const router = useRouter()
 
   return (
@@ -15,33 +17,37 @@ function Post({ data }) {
         className='go-back-btn'
         onClick={e => {
           e.preventDefault()
-          const path = data.post.type === 'Photo' ? 'photos' : 'books'
+          const path = post.type === 'Photo' ? 'photos' : 'books'
           router.push(`/posts/${path}/roll`)
         }}
       >
         Go back
       </button>
-      <PostShow post={data.post} single={true} />
+      <PostShow post={post} single={true} />
     </div>
   )
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${keys.url}/api/photos_get`)
-  console.log(keys)
-  console.log(res)
-  const data = await res.json()
-  const paths = data.posts.map((post) => ({
+  // const res = await fetch(`${keys.url}/api/photos_get`)
+  // const data = await res.json()
+  const posts = await Post
+    .find({})
+
+  const paths = posts.map((post) => ({
     params: { id: post._id },
   }))
   return { paths, fallback: false }
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(`${keys.url}/api/photo_get?id=${params.id}`)
-  console.log(res)
-  const data = await res.json()
-  return { props: { data } }
+  // const res = await fetch(`${keys.url}/api/photo_get?id=${params.id}`)
+  // const data = await res.json()
+
+  const post = await Post
+    .findById(params.id)
+
+  return { props: { post } }
 }
 
 export default Post
