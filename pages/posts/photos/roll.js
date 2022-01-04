@@ -37,10 +37,13 @@ const Roll = ({ data }) => {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${process.env.URL}/api/photos_get`)
-  const data = await res.json()
-  
-  return { props: { data } }
+  await connectDb()
+  const posts = await Post
+    .find({
+      type: 'Book'
+    })
+
+  return { props: { data: posts } }
 }
 
 export default Roll

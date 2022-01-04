@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 
 const PostShow = ({ post, single }) => {
-  const { _id, link, title, description, price, number, type } = post
   const router = useRouter()
 
   function handleViewButton() {
@@ -11,7 +10,7 @@ const PostShow = ({ post, single }) => {
           className='view-btn'
           onClick={e => {
             e.preventDefault()
-            router.push(`/posts/${_id}`)
+            router.push(`/posts/${post?._id}`)
           }}
         >
           View
@@ -24,14 +23,14 @@ const PostShow = ({ post, single }) => {
     <div
       className='post-show col-md'
     >
-      <img className='w-100' src={link} />
-      <span className='number'>{number}</span>
-      <h1>{title}</h1>
-      <p>{description}</p>
+      <img className='w-100' src={post?.link} />
+      <span className='number'>{post?.number}</span>
+      <h1>{post?.title}</h1>
+      <p>{post?.description}</p>
       <p
         className='price'
       >
-        Asking Price: ${price}
+        Asking Price: ${post?.price}
       </p>
       {handleViewButton()}
     </div>

@@ -1,5 +1,7 @@
 import PostShow from '../../components/Post_Show'
 import Header from '../../components/Header'
+import connectDb from '../../lib/mongodb'
+import Post from '../../../models/Post'
 
 const Roll = ({ data }) => {
 
@@ -32,10 +34,13 @@ const Roll = ({ data }) => {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${process.env.URL}/api/books_get`)
-  const data = await res.json()
+  await connectDb()
+  const posts = await Post
+    .find({
+      type: 'Book'
+    })
 
-  return { props: { data } }
+  return { props: { data: posts } }
 }
 
 export default Roll
