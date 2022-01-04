@@ -20,8 +20,8 @@ export default function Home({ data }) {
           <title>John O'Brien Personal Site</title>
           {/* <link rel="icon" href="/favicon.ico" /> */}
         </Head>
-    
-    
+
+
         <div
           className='index-container'
         >
@@ -48,9 +48,9 @@ export default function Home({ data }) {
             thinking for yourself.
           </p>
         </div>
-    
+
         <PostShow post={data.post} />
-    
+
         <footer>
         </footer>
       </div>
@@ -58,7 +58,7 @@ export default function Home({ data }) {
   )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     const res = await fetch(`${process.env.URL}/api/random_photo_get`)
     const data = await res.json()
 

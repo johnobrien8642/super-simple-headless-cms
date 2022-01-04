@@ -26,7 +26,7 @@ function Post({ data }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${process.env.URL}/api/photos_get.js`)
+  const res = await fetch(`${process.env.URL}/api/photos_get`)
   console.log(res)
   const data = await res.json()
   const paths = data.posts.map((post) => ({
