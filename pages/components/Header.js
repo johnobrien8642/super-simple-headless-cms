@@ -48,12 +48,7 @@ function Header() {
         }}
       >
         <h3>John Edward O'Brien</h3>
-        <p>Creating Dabyist Art</p>
-        <Link
-          href='/digital_abstentionism'
-        >
-          What is Dabyism?
-        </Link>
+        <p>Still Life Photography, Printed Once</p>
       </button>
 
       <button 
@@ -76,11 +71,11 @@ function Header() {
         className={`${active ? 'active ' : 'collapse '}navbar-collapse bg-light`}
         tabIndex={-1}
         ref={dropdownRef}
-        // onBlur={e => {
-        //   if (!e.relatedTarget) {
-        //     setActive(false)
-        //   }
-        // }}
+        onBlur={e => {
+          if (!e.relatedTarget) {
+            setActive(false)
+          }
+        }}
       >
         <ul
           className='navbar-nav'
@@ -151,7 +146,7 @@ function Header() {
               <a
                 className='nav-link'
               >
-                Digital Abstentionism (Dab)
+                Digital Abstentionism
               </a>
             </Link>
           </li>

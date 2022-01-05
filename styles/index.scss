@@ -16,6 +16,20 @@
   position: relative;
   height: 100%;
 
+  .index-container {
+    p {
+      button {
+        background-color: transparent;
+        border: none;
+        text-decoration: underline;
+        
+        &:hover {
+          cursor: default;
+        }
+      }
+    }
+  }
+
   .post-show {
     position: relative;
     top: 100%;
@@ -43,6 +57,10 @@
   
   h3 {
     text-decoration: underline;
+  }
+
+  p, .daybism-link {
+    font-size: 1rem;
   }
 
   &:hover {

@@ -29,9 +29,8 @@ const DigitalAbstentionism = () => {
           core foundational aspects of art is the ability for the experiencer of the art and 
           the art piece itself to form a relationship. Dabyism doesn't concern 
           itself with the nature of this relationship, it is simply whether or not it's possible 
-          for that relationship to form. A Dabyist believes that digital art is not real because a Dabyist
-          believes that human beings can never form a true relationship with a piece of art created for
-          and distributed through the internet.
+          for that relationship to form. A Dabyist believes that digital art is not real because they believe human beings 
+          can never form a true relationship with a piece of art created for and distributed through the internet.
         </p>
         <p>
           The reason that a Dabyist believes that broadcast digital communication is not real is similar to

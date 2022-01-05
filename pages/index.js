@@ -34,7 +34,7 @@ export default function Home({ data }) {
             that's meant to only be experienced in its physical form. I even created
             an entire moral philosophy about this that I attempt to live and create by. 
             The philosophy is called Digital Abstentionism, and if you're interested
-            you can read about it <button onClick={e => {e.preventDefault(), router.push('/digital_abstentionism')}}>here</button>
+            you can read about it<button onClick={e => {e.preventDefault(), router.push('/digital_abstentionism')}}>here.</button>
           </p>
           <p>
             All of my photographic prints tell a story. They're still-lifes done in photographic
