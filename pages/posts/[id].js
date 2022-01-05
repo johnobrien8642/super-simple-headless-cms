@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import PostShow from '../components/Post_Show'
 import Header from '../components/Header'
@@ -7,11 +8,15 @@ import Post from '../../models/Post'
 
 function SinglePost({ data }) {
   const router = useRouter()
+  const path = keys.url = router.asPath
 
   return (
     <div
       className='single-post-show container'
     >
+      <Head>
+        <link rel='canonical' href={path} />
+      </Head>
       <Header />
       <button
         className='go-back-btn'

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from './components/Header'
 import PostShow from './components/Post_Show'
+import keys from '../config/keys'
 import connectDb from '../lib/mongodb'
 import Post from '../models/Post'
 import { useRouter } from 'next/router'
@@ -9,14 +10,14 @@ import { useRouter } from 'next/router'
 export default function Home({ data }) {
   let [active, setActive] = useState(false)
   const router = useRouter()
-  const href = process.env.URL + router.asPath
+  const href = keys.url + router.asPath
 
   useEffect(() => {
     setTimeout(() => {
       setActive(true)
     }, 500)
   })
-  console.log(process.env.URL)
+  
   return (
     <React.Fragment>
       <Header />

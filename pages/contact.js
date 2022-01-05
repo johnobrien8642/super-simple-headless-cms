@@ -1,10 +1,17 @@
 import React from 'react'
 import Header from './components/Header'
+import { useRouter } from 'next/router'
+import keys from '../config/keys'
 
 const Contact = () => {
+  const router = useRouter()
+  const path = keys.url + router.asPath
 
   return (
     <React.Fragment>
+      <Head>
+        <link rel='canonical' href={path} />
+      </Head>
       <Header />
       <div
         className='contact container'
