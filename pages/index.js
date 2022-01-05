@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 export default function Home({ data }) {
   let [active, setActive] = useState(false)
   const router = useRouter()
+  const href = process.env.URL + router.asPath
 
   useEffect(() => {
     setTimeout(() => {
@@ -24,6 +25,7 @@ export default function Home({ data }) {
           <title>John Edward O&#39;Brien</title>
           {/* <link rel="icon" href="/favicon.ico" /> */}
           <meta name='description' content="I'm an artist creating unique still life photographic pieces printed and framed once, files destroyed afterwards." />
+          <link rel='canonical'  href={href}/>
         </Head>
 
         <div
