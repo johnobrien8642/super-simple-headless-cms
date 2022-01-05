@@ -132,24 +132,6 @@ function Header() {
               </a>
             </Link>
           </li>
-          <li
-            className={`nav-item${active4 ? ' active' : ''}`}
-            onClick={() => {
-              reset()
-              setActive4(true)
-            }}
-          >
-            <Link
-              href='/digital_abstentionism'
-              className='nav-link'
-            >
-              <a
-                className='nav-link'
-              >
-                Digital Abstentionism
-              </a>
-            </Link>
-          </li>
           {/* Some day soon I'll uncomment this, right after
           I finish my first book */}
           {/* <li
