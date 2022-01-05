@@ -21,8 +21,9 @@ export default function Home({ data }) {
       <Header />
       <div className={`${active ? 'active ' : ''}main-page container`}>
         <Head>
-          <title>John O'Brien Personal Site</title>
+          <title>John Edward O&#39;Brien</title>
           {/* <link rel="icon" href="/favicon.ico" /> */}
+          <meta name='description' content="I'm an artist creating unique still life photographic pieces printed and framed once, files destroyed afterwards." />
         </Head>
 
         <div
