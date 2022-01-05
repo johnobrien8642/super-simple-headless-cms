@@ -35,20 +35,18 @@ const DigitalAbstentionism = () => {
         <p>
           The reason that a Dabyist believes that broadcast digital communication is not real is similar to
           why they believe that digital art is not real; the feeling of forming a relationship with a person
-          conducting any kind of broadcast digital communication can easily feel like a real relationship, but
-          this relationship is also a complete illusion, and carries much deeper implications because of its
-          connection to the surveillance that you are under while trying to enjoy that experience of illusory
-          comraderie. More on that later.
+          conducting any kind of broadcast digital communication can easily feel like a relationship--but
+          this relationship carries much deeper implications because of its connection to the surveillance that 
+          you are under while trying to enjoy that experience.
         </p>
         <p>
           A shared aspect of both digital art and broadband digital communication is the understanding
           that both things--when being consumed through any internet based system--are attached to vast and
-          complex systems of surveillance that are quite literally watching you, the individual, and observing
-          you directly while you observe or interact with these things. This is an aspect of digital art and
-          broadband digital communication that are not shared with their physical counterparts. A painting doesn't
-          watch you watching it. A book doesn't read you while you read it. A CD or tape doesn't listen to you
-          while you listen to it. But this privacy is not present in nearly 100% of any form of digital media 
-          delivered to you through the internet.
+          complex systems of surveillance that are quite literally watching you while you observe or interact 
+          with these things. This is an aspect of digital art and broadband digital communication that are not 
+          shared with their physical counterparts. A painting doesn't watch you watching it. A book doesn't read 
+          you while you read it. A CD or tape doesn't listen to you while you listen to it. But this privacy 
+          is not present in nearly 100% of any form of digital media delivered to you through the internet.
         </p>
         <p>
           Imagine going to a museum to look at pieces of art and when you arrived there someone you didn't know--
