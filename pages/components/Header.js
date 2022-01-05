@@ -22,6 +22,8 @@ function Header() {
       setActive2(true)
     } else if (pathname.includes('photos')) {
       setActive3(true)
+    } else if (pathname.includes('digital_abstentionism')) {
+      setActive4(true)
     } else {
       setActive1(true)
     }
@@ -46,7 +48,12 @@ function Header() {
         }}
       >
         <h3>John Edward O'Brien</h3>
-        <p>Prints, Writing, Podcasting</p>
+        <p>Creating Dabyist Art</p>
+        <Link
+          href='/digital_abstentionism'
+        >
+          What is Dabyism?
+        </Link>
       </button>
 
       <button 
@@ -127,6 +134,24 @@ function Header() {
                 className='nav-link'
               >
                 Prints
+              </a>
+            </Link>
+          </li>
+          <li
+            className={`nav-item${active4 ? ' active' : ''}`}
+            onClick={() => {
+              reset()
+              setActive4(true)
+            }}
+          >
+            <Link
+              href='/digital_abstentionism'
+              className='nav-link'
+            >
+              <a
+                className='nav-link'
+              >
+                Digital Abstentionism (Dab)
               </a>
             </Link>
           </li>
