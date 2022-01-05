@@ -5,7 +5,7 @@ import keys from '../../config/keys'
 import connectDb from '../../lib/mongodb.js'
 import Post from '../../models/Post'
 
-function SinglePost({ post }) {
+function SinglePost({ data }) {
   const router = useRouter()
 
   return (
@@ -17,13 +17,13 @@ function SinglePost({ post }) {
         className='go-back-btn'
         onClick={e => {
           e.preventDefault()
-          const path = post.type === 'Photo' ? 'photos' : 'books'
+          const path = data.post.type === 'Photo' ? 'photos' : 'books'
           router.push(`/posts/${path}/roll`)
         }}
       >
         Go back
       </button>
-      <PostShow post={post} single={true} />
+      <PostShow post={data.post} single={true} />
     </div>
   )
 }
@@ -48,7 +48,7 @@ export async function getStaticProps({ params }) {
   const post = await Post
     .findById(params.id)
 
-  return { props: { post } }
+  return { props: { data: JSON.stringify(post) } }
 }
 
 export default SinglePost

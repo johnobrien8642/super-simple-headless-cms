@@ -43,7 +43,7 @@ export async function getStaticProps() {
       type: 'Book'
     })
 
-  return { props: { data: posts } }
+  return { props: { data: JSON.stringify(posts) } }
 }
 
 export default Roll

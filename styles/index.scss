@@ -59,8 +59,14 @@
     text-decoration: underline;
   }
 
-  p, .daybism-link {
-    font-size: 1rem;
+  p {
+    font-size: 3.5vw;
+  }
+
+  @media (min-width: 481px) {
+    p {
+      font-size: 1rem;
+    }
   }
 
   &:hover {

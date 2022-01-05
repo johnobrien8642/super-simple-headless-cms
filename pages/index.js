@@ -16,7 +16,7 @@ export default function Home({ data }) {
       setActive(true)
     }, 500)
   })
-
+  console.log(process.env.URL)
   return (
     <React.Fragment>
       <Header />

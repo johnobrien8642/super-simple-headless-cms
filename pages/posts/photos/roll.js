@@ -54,7 +54,7 @@ export async function getStaticProps() {
       type: 'Photo'
     })
 
-  return { props: { data: posts } }
+  return { props: { data: JSON.stringify(posts) } }
 }
 
 export default Roll
