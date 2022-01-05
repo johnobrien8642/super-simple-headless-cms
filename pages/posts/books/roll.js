@@ -1,5 +1,6 @@
 import React from 'react'
 import PostShow from '../../components/Post_Show'
+import Head from 'next/head'
 import Header from '../../components/Header'
 import connectDb from '../../../lib/mongodb'
 import Post from '../../../models/Post'
