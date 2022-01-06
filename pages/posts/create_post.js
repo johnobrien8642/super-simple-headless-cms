@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 import Link from 'next/link'
 import Form from '../components/Form'
 import connectDb from '../../lib/mongodb'
@@ -16,21 +17,26 @@ const CreatePost = ({ data }) => {
   }, [])
   
   return (
-    <div
-    className='create-post-container container'
-    >
-      <Link
-        href={'/admin'}
+    <React.Fragment>
+      <Head>
+        <meta name="robots" content="noindex,nofollow" />
+      </Head>
+      <div
+        className='create-post-container container'
       >
-        Admin Page
-      </Link>
-      <Link
-        href={'/'}
-      >
-        Main Page
-      </Link>
-      <Form />
-    </div>
+        <Link
+          href={'/admin'}
+        >
+          Admin Page
+        </Link>
+        <Link
+          href={'/'}
+        >
+          Main Page
+        </Link>
+        <Form />
+      </div>
+    </React.Fragment>
   )
 }
 

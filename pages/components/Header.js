@@ -89,7 +89,8 @@ function Header() {
           >
             <Link
               href='/'
-              >
+              passHref
+            >
               <a
                 className='nav-link'
               >
@@ -106,6 +107,7 @@ function Header() {
           >
             <Link
               href='/contact'
+              passHref
             >
               <a
                 className='nav-link'
@@ -124,6 +126,7 @@ function Header() {
             <Link
               href='/posts/photos/roll'
               className='nav-link'
+              passHref
             >
               <a
                 className='nav-link'

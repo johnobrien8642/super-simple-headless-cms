@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import Link from 'next/link'
 import Login from './components/Login'
 import Logout from './components/Logout'
@@ -12,6 +13,9 @@ const AdminPage = ({ data }) => {
     if (data) {
       return (
         <React.Fragment>
+          <Head>
+            <meta name="robots" content="noindex,nofollow" />
+          </Head>
           <Logout />
           <NewAdmin />
           <Link

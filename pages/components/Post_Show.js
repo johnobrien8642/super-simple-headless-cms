@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 const PostShow = ({ post, single }) => {
@@ -24,7 +25,7 @@ const PostShow = ({ post, single }) => {
       <div
         className='post-show col-md'
       >
-        <img className='w-100' src={post?.link} />
+        <Image className='w-100' src={post?.link} alt='post image' />
         <span className='number'>{post?.number}</span>
         <h1>{post?.title}</h1>
         <p>{post?.description}</p>
