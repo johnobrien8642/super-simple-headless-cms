@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 
 export default async (req, res) => {
   await dbConnect()
-  console.log(req.body)
+  
   const admin = await Admin
   .findOne({
     adminName: req.body.adminName
