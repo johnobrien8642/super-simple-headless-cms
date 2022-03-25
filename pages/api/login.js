@@ -7,11 +7,11 @@ export default async (req, res) => {
   await dbConnect()
   
   const admin = await Admin
-  .findOne({
-    adminName: req.body.adminName
-  })
-
-  const authenticated = await bcrypt.compare(req.body.password, admin.password)
+    .findOne({
+      adminName: req.body.adminName
+    })
+  console.log(admin)
+  const authenticated = await bcrypt.compare(req?.body?.password, admin.password)
   
   if (authenticated) {
     const token = jwt.sign({ id: admin._id }, process.env.SECRET_KEY)
