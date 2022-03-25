@@ -50,9 +50,12 @@ const AdminPage = ({ data }) => {
 
 export async function getServerSideProps(context) {
   await connectDb()
-  const decoded = jwt.verify(context.req.cookies.token, process.env.SECRET_KEY)
+  let decoded
+  if (context.req.cookies.token) {
+    decoded = jwt.verify(context.req.cookies.token, process.env.SECRET_KEY)
+  }
   const authenticated = await Admin
-    .findById(decoded.id)
+    .findById(decoded?.id)
 
   return {
     props: {
