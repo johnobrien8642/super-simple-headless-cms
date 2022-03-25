@@ -5,8 +5,7 @@ import jwt from 'jsonwebtoken'
 
 export default async (req, res) => {
   await dbConnect()
-  const hashed = await bcrypt.hash(req.body.password, 10)
-  
+  console.log(req.body)
   const admin = await Admin
   .findOne({
     adminName: req.body.adminName
@@ -20,5 +19,4 @@ export default async (req, res) => {
   } else {
     res.json(new Error('Email or password incorrect'))
   }
-
 }
