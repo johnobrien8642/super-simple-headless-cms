@@ -10,10 +10,10 @@ export default async (req, res) => {
     .findOne({
       adminName: req.body.adminName
     })
-  console.log(admin)
-  const authenticated = await bcrypt.compare(req?.body?.password, admin.password)
   
-  if (authenticated) {
+  const authenticated = await bcrypt.compare(req?.body?.password, admin?.password)
+  
+  if (admin && authenticated) {
     const token = jwt.sign({ id: admin._id }, process.env.SECRET_KEY)
     res.status(200).json({ token: token })
   } else {
