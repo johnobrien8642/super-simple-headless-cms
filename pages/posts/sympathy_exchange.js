@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
-import Form from '../components/Form'
+import SympForm from '../components/Symp_Form'
 import connectDb from '../../lib/mongodb'
 import Admin from '../../models/Admin'
 import jwt from 'jsonwebtoken'
 
-const CreatePost = ({ data }) => {
+const SympathyExchange = ({ data }) => {
   const router = useRouter()
   
   useEffect(() => {
@@ -22,7 +22,7 @@ const CreatePost = ({ data }) => {
         <meta name="robots" content="noindex,nofollow" />
       </Head>
       <div
-        className='create-post-container container'
+        className='sympathy-item-create-container container'
       >
         <Link
           href={'/admin'}
@@ -35,11 +35,11 @@ const CreatePost = ({ data }) => {
           Main Page
         </Link>
         <Link
-          href={'/sympathy_exchange'}
+          href={'/create_post'}
         >
-          Sympathy Exchange
+          Create Post
         </Link>
-        <Form />
+        <SympForm />
       </div>
     </React.Fragment>
   )
@@ -58,4 +58,4 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default CreatePost
+export default SympathyExchange

@@ -1,0 +1,53 @@
+.sympathy-item-create-container {
+  margin-top: 10%;
+
+  a {
+    display: inline-block;
+    margin-left: 2%;
+    margin-bottom: 2%;
+  }
+
+  .string, .sympathy-amount {
+    margin: 2% 0;
+
+    span {
+      display: inline-block;
+      margin-right: 1%;
+    }
+  }
+
+  .sympathy-category {
+    margin: 2% 0;
+
+    > span {
+      text-decoration: underline;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .create-btn {
+    margin: 2% 0;
+  }
+
+  .success {
+    opacity: 0;
+    transition: opacity 500ms;
+  }
+
+  .success.active {
+    opacity: 1;
+  }
+
+  .error {
+    opacity: 0;
+    transition: opacity 500ms;
+  }
+
+  .error.active {
+    opacity: 1;
+  }
+}

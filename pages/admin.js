@@ -24,6 +24,11 @@ const AdminPage = ({ data }) => {
             Create Post
           </Link>
           <Link
+            href={'/posts/sympathy_exchange'}
+          >
+            Create Sympathy Item
+          </Link>
+          <Link
             href={'/'}
           >
             Main Page
