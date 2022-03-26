@@ -3,7 +3,6 @@ import EmotionSympItem from '../../models/Emotion_Symp_Item.js'
 import FinancialOrMaterialSympItem from '../../models/Financial_Or_Material_Symp_Item.js'
 import IdentitySympItem from '../../models/Identity_Symp_Item.js'
 import PhysicalSympItem from '../../models/Physical_Symp_Item.js'
-import Post from '../../models/Post'
 
 export default async (req, res) => {
   await connectDb()
@@ -28,7 +27,7 @@ export default async (req, res) => {
       item: string,
       sympathyAmount: sympathyAmount
     })
-    console.log(post)
+    
     try {
       await post.save()
       res.status(200).json({ success: true })
