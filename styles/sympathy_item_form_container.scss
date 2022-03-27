@@ -26,6 +26,10 @@
     div {
       display: flex;
       flex-direction: column;
+
+      input {
+        margin-left: 1%;
+      }
     }
   }
 
@@ -37,8 +41,12 @@
     margin: 2% 0;
   }
 
-  .update-btn, .delete-btn {
-    margin-left: 2%;
+  button {
+    margin-right: 1%;
+  }
+
+  .update-btn {
+    margin-left: 1%;
   }
 
   .success {

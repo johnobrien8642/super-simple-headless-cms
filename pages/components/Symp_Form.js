@@ -12,6 +12,7 @@ const SympForm = () => {
   let [identity, setIdentity] = useState(false)
   let [physical, setPhysical] = useState(false)
   let [loss, setLoss] = useState(false)
+  let [all, setAll] = useState(false)
   let [update, setUpdate] = useState(false)
   let [success, setSuccess] = useState(false)
   let [error, setError] = useState('')
@@ -40,10 +41,11 @@ const SympForm = () => {
         })
       })
       const data = await res.json()
+
       setData(data.sympItems)
     }
     fetchData()
-  }, [emotions, financialOrMaterial, identity, physical, success])
+  }, [all, emotions, financialOrMaterial, identity, physical, success])
   
   function reset() {
     setPostId(null)
@@ -66,16 +68,20 @@ const SympForm = () => {
   function handleCategory() {
     // If adding new symp type, also update
     // handleUpdateCategory func
-    if (emotions) {
-      return 'emotions'
-    } else if (financialOrMaterial) {
-      return 'financial-or-material'
-    } else if (identity) {
-      return 'identity'
-    } else if (physical) {
-      return 'physical'
-    } else if (loss) {
-      return 'loss'
+    if (all) {
+      return 'all'
+    } else {
+      if (emotions) {
+        return 'emotions'
+      } else if (financialOrMaterial) {
+        return 'financial-or-material'
+      } else if (identity) {
+        return 'identity'
+      } else if (physical) {
+        return 'physical'
+      } else if (loss) {
+        return 'loss'
+      }
     }
   }
 
@@ -86,30 +92,35 @@ const SympForm = () => {
       setIdentity(false)
       setPhysical(false)
       setLoss(false)
+      setAll(false)
     } else if (kind === 'FinancialOrMaterial') {
-      setEmotions(false)
       setFinancialOrMaterial(true)
+      setEmotions(false)
       setIdentity(false)
       setPhysical(false)
       setLoss(false)
+      setAll(false)
     } else if (kind === 'Identity') {
-      setEmotions(false)
-      setFinancialOrMaterial(false)
       setIdentity(true)
+      setEmotions(false)
+      setFinancialOrMaterial(false)
       setPhysical(false)
       setLoss(false)
+      setAll(false)
     } else if (kind === 'Physical') {
+      setPhysical(true)
       setEmotions(false)
       setFinancialOrMaterial(false)
       setIdentity(false)
-      setPhysical(true)
       setLoss(false)
+      setAll(false)
     } else if (kind === 'Loss') {
+      setLoss(true)
       setEmotions(false)
       setFinancialOrMaterial(false)
       setIdentity(false)
       setPhysical(false)
-      setLoss(true)
+      setAll(false)
     }
   }
 
@@ -209,6 +220,7 @@ const SympForm = () => {
                   setIdentity(false)
                   setFinancialOrMaterial(false)
                   setLoss(false)
+                  setAll(false)
                 }}
                 checked={emotions}
               ></input>
@@ -228,6 +240,7 @@ const SympForm = () => {
                   setIdentity(false)
                   setEmotions(false)
                   setLoss(false)
+                  setAll(false)
                 }}
                 checked={financialOrMaterial}
               ></input>
@@ -247,6 +260,7 @@ const SympForm = () => {
                   setFinancialOrMaterial(false)
                   setEmotions(false)
                   setLoss(false)
+                  setAll(false)
                 }}
                 checked={identity}
               ></input>
@@ -266,6 +280,7 @@ const SympForm = () => {
                   setFinancialOrMaterial(false)
                   setEmotions(false)
                   setLoss(false)
+                  setAll(false)
                 }}
                 checked={physical}
               ></input>
@@ -285,6 +300,7 @@ const SympForm = () => {
                   setIdentity(false)
                   setFinancialOrMaterial(false)
                   setEmotions(false)
+                  setAll(false)
                 }}
                 checked={loss}
               ></input>
@@ -351,6 +367,14 @@ const SympForm = () => {
               }}
             >
               Sympathy Amount
+            </button>
+            <button
+              onClick={e => {
+                e.preventDefault()
+                setAll(true)
+              }}
+            >
+              List All
             </button>
           </div>
         </div>
