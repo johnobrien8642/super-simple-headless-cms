@@ -1,4 +1,4 @@
-.sympathy-item-create-container {
+.sympathy-item-form-container {
   margin-top: 10%;
 
   a {
@@ -29,8 +29,16 @@
     }
   }
 
+  .list-item {
+    margin: 1% 0;
+  }
+
   .create-btn {
     margin: 2% 0;
+  }
+
+  .update-btn, .delete-btn {
+    margin-left: 2%;
   }
 
   .success {

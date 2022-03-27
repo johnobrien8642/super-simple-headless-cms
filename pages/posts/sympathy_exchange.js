@@ -22,7 +22,7 @@ const SympathyExchange = ({ data }) => {
         <meta name="robots" content="noindex,nofollow" />
       </Head>
       <div
-        className='sympathy-item-create-container container'
+        className='sympathy-item-form-container container'
       >
         <Link
           href={'/admin'}

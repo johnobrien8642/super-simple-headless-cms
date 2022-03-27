@@ -6,10 +6,12 @@ const SympForm = () => {
   let [byAlpha, setByAlpha] = useState(false)
   let [byAmount, setByAmount] = useState(true)
   let [data, setData] = useState([])
+  let [postId, setPostId] = useState(null)
   let [emotions, setEmotions] = useState(true)
   let [financialOrMaterial, setFinancialOrMaterial] = useState(false)
   let [identity, setIdentity] = useState(false)
   let [physical, setPhysical] = useState(false)
+  let [update, setUpdate] = useState(false)
   let [success, setSuccess] = useState(false)
   let [error, setError] = useState('')
   let inputRef = useRef(null)
@@ -43,6 +45,7 @@ const SympForm = () => {
   }, [emotions, financialOrMaterial, identity, physical, success])
   
   function reset() {
+    setPostId(null)
     setString('')
     setSympathyAmount('')
     setError('')
@@ -70,6 +73,52 @@ const SympForm = () => {
       return 'physical'
     }
   }
+
+  function handleUpdateCategory(kind) {
+    if (kind === 'Emotion') {
+      setEmotions(true)
+      setFinancialOrMaterial(false)
+      setIdentity(false)
+      setPhysical(false)
+    } else if (kind === 'FinancialOrMaterial') {
+      setEmotions(false)
+      setFinancialOrMaterial(true)
+      setIdentity(false)
+      setPhysical(false)
+    } else if (kind === 'Identity') {
+      setEmotions(false)
+      setFinancialOrMaterial(false)
+      setIdentity(true)
+      setPhysical(false)
+    } else if (kind === 'Physical') {
+      setEmotions(false)
+      setFinancialOrMaterial(false)
+      setIdentity(false)
+      setPhysical(true)
+    }
+  }
+
+  function handlePath() {
+    return update ? '/api/sympathy_item_update' : '/api/sympathy_item_create'
+  }
+
+  async function handleDelete(post) {
+      console.log('handling delete', post)
+      const res = await fetch(`/api/sympathy_item_delete`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: post._id,
+          type: post.type
+        })
+      })
+      const parsed = await res.json()
+      const filtered = data.filter(obj => obj._id !== parsed.id)
+      setData(filtered)
+  }
   
   return (
     <div
@@ -78,13 +127,14 @@ const SympForm = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault()
-          const res = await fetch(`/api/sympathy_item_create`, {
+          const res = await fetch(handlePath(), {
             method: 'POST',
             headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
+              id: postId,
               string: string,
               sympathyAmount: sympathyAmount,
               category: handleCategory()
@@ -108,6 +158,7 @@ const SympForm = () => {
           <input
             ref={inputRef}
             value={string}
+            disabled={update}
             onInput={e => {
               setString(e.target.value)
             }}
@@ -205,7 +256,23 @@ const SympForm = () => {
         <button
           className='create-btn'
         >
-          Create
+          {update ? 'Update' : 'Create'}
+        </button>
+        <button
+          style={{ visibility: update ? 'visible' : 'hidden'}}
+          className='cancel-btn'
+          onClick={e => {
+            e.preventDefault()
+            setString('')
+            setSympathyAmount(0)
+            setEmotions(true)
+            setFinancialOrMaterial(false)
+            setIdentity(false)
+            setPhysical(false)
+            setUpdate(false)
+          }}
+        >
+          Cancel
         </button>
         <span
           className={`success${success ? ' active' : ''}`}
@@ -252,15 +319,39 @@ const SympForm = () => {
         <ul
           className='symp-item-list'
         >
-          {data?.sort(compareFn).map(post => {
+          {data?.sort(compareFn).map((post, i) => {
             return (
               <li
                 className='list-item'
                 key={post._id}
               >
+                <span>{i + 1}</span>
+                <span> | </span>
                 <span>{post.item}</span>
                 <span> | </span>
                 <span>{post.sympathyAmount}</span>
+                <button
+                  className='update-btn'
+                  onClick={e => {
+                    e.preventDefault()
+                    setPostId(post._id)
+                    setString(post.item)
+                    setSympathyAmount(post.sympathyAmount)
+                    handleUpdateCategory(post.kind)
+                    setUpdate(true)
+                  }}
+                >
+                  u
+                </button>
+                <button
+                  className='delete-btn'
+                  onClick={async (e) => {
+                    e.preventDefault()
+                    await handleDelete(post)
+                  }}
+                >
+                  d
+                </button>
               </li>
             )
           })}
