@@ -1,9 +1,9 @@
 import connectDb from '../../lib/mongodb.js'
-import Post from '../../models/Post'
 import EmotionSympItem from '../../models/Emotion_Symp_Item'
 import FinancialOrMaterialSympItem from '../../models/Financial_Or_Material_Symp_Item'
 import IdentitySympItem from '../../models/Identity_Symp_Item'
 import PhysicalSympItem from '../../models/Physical_Symp_Item'
+import LossSympItem from '../../models/Loss_Symp_Item'
 
 export default async (req, res) => {
   await connectDb()
@@ -17,6 +17,8 @@ export default async (req, res) => {
       return IdentitySympItem
     } else if (category === 'physical') {
       return PhysicalSympItem
+    } else if (category === 'loss') {
+      return LossSympItem
     }
   }
   

@@ -11,6 +11,7 @@ const SympForm = () => {
   let [financialOrMaterial, setFinancialOrMaterial] = useState(false)
   let [identity, setIdentity] = useState(false)
   let [physical, setPhysical] = useState(false)
+  let [loss, setLoss] = useState(false)
   let [update, setUpdate] = useState(false)
   let [success, setSuccess] = useState(false)
   let [error, setError] = useState('')
@@ -63,6 +64,8 @@ const SympForm = () => {
   }
 
   function handleCategory() {
+    // If adding new symp type, also update
+    // handleUpdateCategory func
     if (emotions) {
       return 'emotions'
     } else if (financialOrMaterial) {
@@ -71,6 +74,8 @@ const SympForm = () => {
       return 'identity'
     } else if (physical) {
       return 'physical'
+    } else if (loss) {
+      return 'loss'
     }
   }
 
@@ -80,21 +85,31 @@ const SympForm = () => {
       setFinancialOrMaterial(false)
       setIdentity(false)
       setPhysical(false)
+      setLoss(false)
     } else if (kind === 'FinancialOrMaterial') {
       setEmotions(false)
       setFinancialOrMaterial(true)
       setIdentity(false)
       setPhysical(false)
+      setLoss(false)
     } else if (kind === 'Identity') {
       setEmotions(false)
       setFinancialOrMaterial(false)
       setIdentity(true)
       setPhysical(false)
+      setLoss(false)
     } else if (kind === 'Physical') {
       setEmotions(false)
       setFinancialOrMaterial(false)
       setIdentity(false)
       setPhysical(true)
+      setLoss(false)
+    } else if (kind === 'Loss') {
+      setEmotions(false)
+      setFinancialOrMaterial(false)
+      setIdentity(false)
+      setPhysical(false)
+      setLoss(true)
     }
   }
 
@@ -193,6 +208,7 @@ const SympForm = () => {
                   setPhysical(false)
                   setIdentity(false)
                   setFinancialOrMaterial(false)
+                  setLoss(false)
                 }}
                 checked={emotions}
               ></input>
@@ -211,6 +227,7 @@ const SympForm = () => {
                   setPhysical(false)
                   setIdentity(false)
                   setEmotions(false)
+                  setLoss(false)
                 }}
                 checked={financialOrMaterial}
               ></input>
@@ -229,6 +246,7 @@ const SympForm = () => {
                   setPhysical(false)
                   setFinancialOrMaterial(false)
                   setEmotions(false)
+                  setLoss(false)
                 }}
                 checked={identity}
               ></input>
@@ -247,8 +265,28 @@ const SympForm = () => {
                   setIdentity(false)
                   setFinancialOrMaterial(false)
                   setEmotions(false)
+                  setLoss(false)
                 }}
                 checked={physical}
+              ></input>
+            </label>
+            <label
+              htmlFor='loss'
+            >
+              Loss
+              <input
+                type='radio' 
+                name='loss'
+                onClick={() => {
+                  setLoss(true)
+                }}
+                onChange={() => {
+                  setPhysical(false)
+                  setIdentity(false)
+                  setFinancialOrMaterial(false)
+                  setEmotions(false)
+                }}
+                checked={loss}
               ></input>
             </label>
           </div>

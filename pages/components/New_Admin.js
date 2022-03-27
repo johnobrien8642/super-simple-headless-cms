@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import absoluteUrl from 'next-absolute-url'
 
 const NewAdmin = () => {
   let [adminName, setAdminName] = useState('')
