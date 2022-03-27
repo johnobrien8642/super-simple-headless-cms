@@ -9,7 +9,7 @@ export default async (req, res) => {
     const model = handleModel(category)
     
     const post = new model({
-      item: string,
+      item: string.toLowerCase(),
       sympathyAmount: sympathyAmount
     })
     
