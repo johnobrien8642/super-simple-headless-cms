@@ -11,7 +11,7 @@ const NewAdmin = () => {
   
   return (
     <div
-      className='login container'
+      className='new-admin container'
     >
       <h1>New Admin</h1>
       <form
