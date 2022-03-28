@@ -7,24 +7,34 @@
     margin-bottom: 2%;
   }
 
-  .string, .sympathy-amount {
-    margin: 2% 0;
+  .input-container {
+    position: relative;
 
-    span {
-      display: inline-block;
-      margin-right: 1%;
-    }
+    .loading {
+      position: absolute;
+      top: 45%;
+      left: 25%;
+    }    
 
-    textarea {
-      width: 40%;
-    }
-
-    .separate {
-      margin-left: 1%;
-      font-size: .75rem;
+    .string, .sympathy-amount {
+      margin: 2% 0;
+  
+      span {
+        display: inline-block;
+        margin-right: 1%;
+      }
+  
+      textarea {
+        width: 40%;
+      }
+  
+      .separate {
+        margin-left: 1%;
+        font-size: .75rem;
+      }
     }
   }
-
+  
   .sympathy-category {
     margin: 2% 0;
 

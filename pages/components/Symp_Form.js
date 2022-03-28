@@ -15,6 +15,7 @@ const SympForm = () => {
   let [all, setAll] = useState(false)
   let [searchString, setSearchString] = useState(null)
   let [update, setUpdate] = useState(false)
+  let [waiting, setWaiting] = useState(false)
   let [success, setSuccess] = useState(false)
   let [error, setError] = useState('')
   let inputRef = useRef(null)
@@ -161,6 +162,7 @@ const SympForm = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault()
+          setWaiting(true)
           const res = await fetch(handlePath(), {
             method: 'POST',
             headers: {
@@ -183,6 +185,7 @@ const SympForm = () => {
             }
             reset()
             setSuccess(true)
+            setWaiting(false)
           } else {
             console.log('Error in Form:', returnedData.errorMessage)
             setError(returnedData.errorMessage)
@@ -190,30 +193,36 @@ const SympForm = () => {
         }}
       >
         <div
-          className='string'
+          className='input-container'
+          style={{ visibility: waiting ? 'hidden' : 'visible'}}
         >
-          <span>Sympathy String</span>
-          <textarea
-            ref={inputRef}
-            value={string}
-            disabled={update}
-            onInput={e => {
-              setString(e.target.value)
-            }}
-          />
-          <span className='separate'>Separate strings with a comma</span>
-        </div>
-        <div
-          className='sympathy-amount'
-        >
-          <span>Sympathy Amount</span>
-          <input
-            type='number'
-            value={sympathyAmount}
-            onInput={e => {
-              setSympathyAmount(e.target.value)
-            }}
-          />
+          <div
+            className='string'
+          >
+            <span>Sympathy String</span>
+            <textarea
+              ref={inputRef}
+              value={string}
+              disabled={update}
+              onInput={e => {
+                setString(e.target.value)
+              }}
+            />
+            <span className='separate'>Separate strings with a comma</span>
+          </div>
+          <div
+            className='sympathy-amount'
+          >
+            <span>Sympathy Amount</span>
+            <input
+              type='number'
+              value={sympathyAmount}
+              onInput={e => {
+                setSympathyAmount(e.target.value)
+              }}
+            />
+          </div>
+          <div className='spinner-border loading' style={{ visibility: waiting ? 'visible' : 'hidden' }}></div>
         </div>
         <div
           className='sympathy-category'
