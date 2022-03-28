@@ -46,7 +46,7 @@ const SympForm = () => {
       setData(data.sympItems)
     }
     fetchData()
-  }, [all, emotions, financialOrMaterial, identity, physical, success])
+  }, [all, emotions, financialOrMaterial, identity, physical])
   
   function reset() {
     setPostId(null)
@@ -174,14 +174,18 @@ const SympForm = () => {
               category: handleCategory()
             })
           })
-
+          const returnedData = await res.json()
           if (res.ok) {
+            if (update) {
+              const { post } = returnedData
+              data.splice(data.findIndex(obj => obj._id === post._id), 1, post)
+              setData(data)
+            }
             reset()
             setSuccess(true)
           } else {
-            const data = await res.json()
-            console.log('Error in Form:', data.errorMessage)
-            setError(data.errorMessage)
+            console.log('Error in Form:', returnedData.errorMessage)
+            setError(returnedData.errorMessage)
           }
         }}
       >

@@ -13,7 +13,7 @@ export default async (req, res) => {
 
     try {
       await post.save()
-      res.status(200).json({ success: true })
+      res.status(200).json({ success: true, post: post })
     } catch (err) {
       res.status(500).json({ success: false, errorMessage: err.message })
     }
