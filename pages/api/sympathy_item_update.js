@@ -5,10 +5,11 @@ export default async (req, res) => {
   await connectDb()
 
   if (req.method === 'POST') {
-    const { id, sympathyAmount, category } = req.body
+    const { id, strings, sympathyAmount, category } = req.body
     const model = handleModel(category)
     const post = await model.findById(id)
 
+    post.item = strings[0]
     post.sympathyAmount = sympathyAmount
 
     try {

@@ -203,7 +203,6 @@ const SympForm = () => {
             <textarea
               ref={inputRef}
               value={string}
-              disabled={update}
               onInput={e => {
                 setString(e.target.value)
               }}
