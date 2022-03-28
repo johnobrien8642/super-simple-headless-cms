@@ -137,7 +137,6 @@ const SympForm = () => {
   }
 
   async function handleDelete(post) {
-      console.log('handling delete', post)
       const res = await fetch(`/api/sympathy_item_delete`, {
         method: 'DELETE',
         headers: {
@@ -398,7 +397,6 @@ const SympForm = () => {
         >
           {data?.sort(compareFn).map((post, i) => {
             if (handleSearch(post)) {
-              console.log(handleSearch(post))
               return (
                 <li
                   className='list-item'
