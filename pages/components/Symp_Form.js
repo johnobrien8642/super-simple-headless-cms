@@ -13,6 +13,7 @@ const SympForm = () => {
   let [physical, setPhysical] = useState(false)
   let [loss, setLoss] = useState(false)
   let [all, setAll] = useState(false)
+  let [searchString, setSearchString] = useState(null)
   let [update, setUpdate] = useState(false)
   let [success, setSuccess] = useState(false)
   let [error, setError] = useState('')
@@ -126,6 +127,13 @@ const SympForm = () => {
 
   function handlePath() {
     return update ? '/api/sympathy_item_update' : '/api/sympathy_item_create'
+  }
+
+  function handleSearch(post) {
+    if (searchString) {
+      return post.item.match(searchString) !== null || post.sympathyAmount.toString().match(searchString) !== null
+    }
+    return true
   }
 
   async function handleDelete(post) {
@@ -376,46 +384,56 @@ const SympForm = () => {
             >
               List All
             </button>
+            <input
+              type='text'
+              placeholder='Search Items'
+              onChange={e => {
+                setSearchString(e.target.value)
+              }}
+            ></input>
           </div>
         </div>
         <ul
           className='symp-item-list'
         >
           {data?.sort(compareFn).map((post, i) => {
-            return (
-              <li
-                className='list-item'
-                key={post._id}
-              >
-                <span>{i + 1}</span>
-                <span> | </span>
-                <span>{post.item}</span>
-                <span> | </span>
-                <span>{post.sympathyAmount}</span>
-                <button
-                  className='update-btn'
-                  onClick={e => {
-                    e.preventDefault()
-                    setPostId(post._id)
-                    setString(post.item)
-                    setSympathyAmount(post.sympathyAmount)
-                    handleUpdateCategory(post.kind)
-                    setUpdate(true)
-                  }}
+            if (handleSearch(post)) {
+              console.log(handleSearch(post))
+              return (
+                <li
+                  className='list-item'
+                  key={post._id}
                 >
-                  u
-                </button>
-                <button
-                  className='delete-btn'
-                  onClick={async (e) => {
-                    e.preventDefault()
-                    await handleDelete(post)
-                  }}
-                >
-                  d
-                </button>
-              </li>
-            )
+                  <span>{i + 1}</span>
+                  <span> | </span>
+                  <span>{post.item}</span>
+                  <span> | </span>
+                  <span>{post.sympathyAmount}</span>
+                  <button
+                    className='update-btn'
+                    onClick={e => {
+                      e.preventDefault()
+                      setPostId(post._id)
+                      setString(post.item)
+                      setSympathyAmount(post.sympathyAmount)
+                      handleUpdateCategory(post.kind)
+                      setUpdate(true)
+                    }}
+                  >
+                    u
+                  </button>
+                  <button
+                    className='delete-btn'
+                    onClick={async (e) => {
+                      e.preventDefault()
+                      await handleDelete(post)
+                    }}
+                  >
+                    d
+                  </button>
+                </li>
+              )
+            }
           })}
         </ul>
       </div>
