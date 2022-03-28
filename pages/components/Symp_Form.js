@@ -168,7 +168,7 @@ const SympForm = () => {
             },
             body: JSON.stringify({
               id: postId,
-              string: string,
+              strings: string.split(','),
               sympathyAmount: sympathyAmount,
               category: handleCategory()
             })
@@ -188,7 +188,7 @@ const SympForm = () => {
           className='string'
         >
           <span>Sympathy String</span>
-          <input
+          <textarea
             ref={inputRef}
             value={string}
             disabled={update}
@@ -196,6 +196,7 @@ const SympForm = () => {
               setString(e.target.value)
             }}
           />
+          <span className='separate'>Separate strings with a comma</span>
         </div>
         <div
           className='sympathy-amount'
