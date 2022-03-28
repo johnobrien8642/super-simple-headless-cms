@@ -371,6 +371,7 @@ const SympForm = () => {
             className='btn-container'
           >
             <button
+              className={byAlpha ? 'active' : ''}
               onClick={e => {
                 e.preventDefault()                
                 setByAlpha(true)
@@ -380,6 +381,7 @@ const SympForm = () => {
               Alphabetically
             </button>
             <button
+              className={byAmount ? 'active' : ''}
               onClick={e => {
                 e.preventDefault()
                 setByAlpha(false)
@@ -389,9 +391,10 @@ const SympForm = () => {
               Sympathy Amount
             </button>
             <button
+              className={all ? 'active' : ''}
               onClick={e => {
                 e.preventDefault()
-                setAll(true)
+                setAll(!all)
               }}
             >
               List All
