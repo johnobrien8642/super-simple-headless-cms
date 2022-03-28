@@ -26,7 +26,6 @@ const SympForm = () => {
       setTimeout(() => {
         setSuccess(false)
       }, 2000)
-      reset()
     }
   })
   
