@@ -1,5 +1,5 @@
 import connectDb from '../../lib/mongodb.js'
-import handleModel from '../../util/handle_model.js'
+import handleModel from '../../util/handle_model_for_delete.js'
 
 export default async (req, res) => {
   await connectDb()
