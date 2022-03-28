@@ -52,6 +52,7 @@ const SympForm = () => {
     setPostId(null)
     setString('')
     setSympathyAmount('')
+    setUpdate(false)
     setError('')
   }
 
