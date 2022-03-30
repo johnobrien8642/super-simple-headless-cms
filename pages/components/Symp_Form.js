@@ -266,26 +266,6 @@ const SympForm = () => {
               ></input>
             </label>
             <label
-              htmlFor='identity'
-            >
-              Identity
-              <input 
-                type='radio' 
-                name='identity'
-                onClick={() => {
-                  setIdentity(true)
-                }}
-                onChange={() => {
-                  setPhysical(false)
-                  setFinancialOrMaterial(false)
-                  setEmotions(false)
-                  setLoss(false)
-                  setAll(false)
-                }}
-                checked={identity}
-              ></input>
-            </label>
-            <label
               htmlFor='physical'
             >
               Physical
