@@ -4,6 +4,8 @@ import handleModel from '../../util/handle_model.js'
 export default async (req, res) => {
   await connectDb()
   let post
+  let posts = []
+  let savedPost
 
   if (req.method === 'POST') {
     const { strings, sympathyAmount, category } = req.body
@@ -15,9 +17,10 @@ export default async (req, res) => {
           item: strings[i].toLowerCase().trim(),
           sympathyAmount: sympathyAmount
         })
-        await post.save()
+        savedPost = await post.save()
+        posts.push(savedPost)
       }
-      res.status(200).json({ success: true })
+      res.status(200).json({ success: true, posts: posts })
     } catch (err) {
       res.status(500).json({ success: false, errorMessage: err.message })
     }

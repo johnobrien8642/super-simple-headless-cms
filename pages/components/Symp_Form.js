@@ -181,6 +181,10 @@ const SympForm = () => {
               const { post } = returnedData
               data.splice(data.findIndex(obj => obj._id === post._id), 1, post)
               setData(data)
+            } else {
+              const { posts } = returnedData
+              let newData = [...data, ...posts]
+              setData(newData)
             }
             reset()
             setSuccess(true)
