@@ -5,6 +5,7 @@ const SympForm = () => {
   let [sympathyAmount, setSympathyAmount] = useState(0)
   let [byAlpha, setByAlpha] = useState(false)
   let [byAmount, setByAmount] = useState(true)
+  let [byCreated, setByCreated] = useState(false)
   let [data, setData] = useState([])
   let [postId, setPostId] = useState(null)
   let [emotions, setEmotions] = useState(true)
@@ -64,6 +65,9 @@ const SympForm = () => {
     } 
     if (byAmount) {
       return a.sympathyAmount - b.sympathyAmount
+    }
+    if (byCreated) {
+      return new Date(a.createdAt) - new Date(b.createdAt)
     }
   }
 
@@ -360,6 +364,7 @@ const SympForm = () => {
                 e.preventDefault()                
                 setByAlpha(true)
                 setByAmount(false)
+                setByCreated(false)
               }}
             >
               Alphabetically
@@ -368,11 +373,23 @@ const SympForm = () => {
               className={byAmount ? 'active' : ''}
               onClick={e => {
                 e.preventDefault()
-                setByAlpha(false)
                 setByAmount(true)
+                setByAlpha(false)
+                setByCreated(false)
               }}
             >
               Sympathy Amount
+            </button>
+            <button
+              className={byCreated ? 'active' : ''}
+              onClick={e => {
+                e.preventDefault()
+                setByCreated(true)
+                setByAlpha(false)
+                setByAmount(false)
+              }}
+            >
+              Created
             </button>
             <button
               className={all ? 'active' : ''}
