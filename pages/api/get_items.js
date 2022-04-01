@@ -31,17 +31,17 @@ export default async (req, res) => {
       modelArr = [ EmotionSympItem, FinancialOrMaterialSympItem, PhysicalSympItem, LossSympItem ]
       for (let i = 0; i < modelArr.length; i++) {
         item = modelArr[i]
-        if (category === 'physical') {
-          items = await item.find({ subType: subcategory })
-        } else {
-          items = await item.find({})
-        }
+        items = await item.find({})
         sympItems = [...sympItems, ...items]
       }
     } else {
       model = handleModel(category)
-      sympItems = await model
-        .find({})
+      if (category === 'physical') {
+        sympItems = await model.find({ subType: subcategory })
+      } else {
+        sympItems = await model
+          .find({})
+      }
     }
     res.status(200).json({ success: true, sympItems: sympItems })
   } catch (err) {
