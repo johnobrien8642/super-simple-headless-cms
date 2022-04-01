@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+  import { useState, useEffect, useRef } from 'react'
 
 const SympForm = () => {
   let [string, setString] = useState('')
@@ -12,6 +12,9 @@ const SympForm = () => {
   let [financialOrMaterial, setFinancialOrMaterial] = useState(false)
   let [identity, setIdentity] = useState(false)
   let [physical, setPhysical] = useState(false)
+  let [waysToBeHurt, setToBeHurt] = useState(true)
+  let [sicknesses, setSicknesses] = useState(false)
+  let [bodyParts, setBodyParts] = useState(false)
   let [loss, setLoss] = useState(false)
   let [all, setAll] = useState(false)
   let [searchString, setSearchString] = useState(null)
@@ -88,6 +91,20 @@ const SympForm = () => {
       } else if (loss) {
         return 'loss'
       }
+    }
+  }
+
+  function handleSubcategory() {
+    if (physical) {
+      if (waysToBeHurt) {
+        return 'ways-to-be-hurt'
+      } else if (sicknesses) {
+        return 'sicknesses'
+      } else if (bodyParts) {
+        return 'body-parts'
+      } 
+    } else {
+      return null
     }
   }
 
@@ -176,7 +193,8 @@ const SympForm = () => {
               id: postId,
               strings: string.split(','),
               sympathyAmount: sympathyAmount,
-              category: handleCategory()
+              category: handleCategory(),
+              subcategory: handleSubcategory()
             })
           })
           const returnedData = await res.json()
@@ -293,6 +311,68 @@ const SympForm = () => {
                 checked={physical}
               ></input>
             </label>
+            <ul
+              className='physical-subtype-list'
+              style={{ display: physical ? 'block' : 'none' }}
+            >
+              <li>
+                <label
+                  htmlFor='waysToBeHurt'
+                >
+                  Ways You Can Be Hurt
+                  <input
+                    type='radio'
+                    name='waysToBeHurt'
+                    onClick={() => {
+                      setToBeHurt(true)
+                    }}
+                    onChange={() => {
+                      setSicknesses(false)
+                      setBodyParts(false)
+                    }}
+                    checked={waysToBeHurt}
+                  ></input>
+                </label>
+              </li>
+              <li>
+                <label
+                  htmlFor='sicknesses'
+                >
+                  Sicknesses/Disabilities
+                  <input
+                    type='radio'
+                    name='sicknesses'
+                    onClick={() => {
+                      setSicknesses(true)
+                    }}
+                    onChange={() => {
+                      setToBeHurt(false)
+                      setBodyParts(false)
+                    }}
+                    checked={sicknesses}
+                  ></input>
+                </label>
+              </li>
+              <li>
+                <label
+                  htmlFor='bodyParts'
+                >
+                  Body Parts
+                  <input
+                    type='radio'
+                    name='bodyParts'
+                    onClick={() => {
+                      setBodyParts(true)
+                    }}
+                    onChange={() => {
+                      setToBeHurt(false)
+                      setSicknesses(false)
+                    }}
+                    checked={bodyParts}
+                  ></input>
+                </label>
+              </li>
+            </ul>
             <label
               htmlFor='loss'
             >

@@ -8,7 +8,7 @@ export default async (req, res) => {
   let savedPost
 
   if (req.method === 'POST') {
-    const { strings, sympathyAmount, category } = req.body
+    const { strings, sympathyAmount, category, subcategory } = req.body
     const model = handleModel(category)
   
     try {
@@ -17,6 +17,9 @@ export default async (req, res) => {
           item: strings[i].toLowerCase().trim(),
           sympathyAmount: sympathyAmount
         })
+        if (subcategory) {
+          post.subType = subcategory
+        }
         savedPost = await post.save()
         posts.push(savedPost)
       }

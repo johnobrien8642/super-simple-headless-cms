@@ -19,8 +19,6 @@ export default async (req, res) => {
       return EmotionSympItem
     } else if (category === 'financial-or-material') {
       return FinancialOrMaterialSympItem
-    } else if (category === 'identity') {
-      return IdentitySympItem
     } else if (category === 'physical') {
       return PhysicalSympItem
     } else if (category === 'loss') {
@@ -30,7 +28,7 @@ export default async (req, res) => {
   
   try {
     if (category === 'all') {
-      modelArr = [ EmotionSympItem, FinancialOrMaterialSympItem, IdentitySympItem, PhysicalSympItem, LossSympItem ]
+      modelArr = [ EmotionSympItem, FinancialOrMaterialSympItem, PhysicalSympItem, LossSympItem ]
       for (let i = 0; i < modelArr.length; i++) {
         item = modelArr[i]
         items = await item.find({})
