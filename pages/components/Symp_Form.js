@@ -42,7 +42,8 @@ const SympForm = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          category: handleCategory()
+          category: handleCategory(),
+          subcategory: handleSubcategory()
         })
       })
       const data = await res.json()

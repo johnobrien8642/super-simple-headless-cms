@@ -7,7 +7,7 @@ import LossSympItem from '../../models/Loss_Symp_Item'
 
 export default async (req, res) => {
   await connectDb()
-  const { category } = req.body
+  const { category, subcategory } = req.body
   let model
   let modelArr
   let item
@@ -31,7 +31,11 @@ export default async (req, res) => {
       modelArr = [ EmotionSympItem, FinancialOrMaterialSympItem, PhysicalSympItem, LossSympItem ]
       for (let i = 0; i < modelArr.length; i++) {
         item = modelArr[i]
-        items = await item.find({})
+        if (category === 'physical') {
+          items = await item.find({ subType: subcategory })
+        } else {
+          items = await item.find({})
+        }
         sympItems = [...sympItems, ...items]
       }
     } else {
