@@ -51,7 +51,16 @@ const SympForm = () => {
       setData(data.sympItems)
     }
     fetchData()
-  }, [all, emotions, financialOrMaterial, identity, physical])
+  }, [
+    all, 
+    emotions, 
+    financialOrMaterial, 
+    identity, 
+    physical,
+    waysToBeHurt,
+    sicknesses,
+    bodyParts
+  ])
   
   function reset() {
     setPostId(null)
