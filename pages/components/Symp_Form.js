@@ -229,12 +229,12 @@ const SympForm = () => {
       >
         <div
           className='input-container'
-          style={{ visibility: waiting ? 'hidden' : 'visible'}}
+          style={{ visibility: waiting ? 'hidden' : 'visible' }}
         >
           <div
             className='string'
           >
-            <span>Sympathy String</span>
+            <span className='label-underline'>Sympathy String</span>
             <textarea
               ref={inputRef}
               value={string}
@@ -247,7 +247,7 @@ const SympForm = () => {
           <div
             className='sympathy-amount'
           >
-            <span>Sympathy Amount</span>
+            <span className='label-underline'>Sympathy Amount</span>
             <input
               type='number'
               value={sympathyAmount}
@@ -258,10 +258,10 @@ const SympForm = () => {
           </div>
           <div className='spinner-border loading' style={{ visibility: waiting ? 'visible' : 'hidden' }}></div>
         </div>
+        <span className='label-underline'>Sympathy Category</span>
         <div
-          className='sympathy-category'
+          className={`sympathy-category ${update ? 'disabled' : ''}`}
         >
-          <span>Sympathy Category</span>
           <div>
             <label htmlFor='emotions'>
               Emotions

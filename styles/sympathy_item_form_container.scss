@@ -34,9 +34,12 @@
       }
     }
   }
+
+  .label-underline {
+    text-decoration: underline;
+  }
   
   .sympathy-category {
-    margin: 2% 0;
 
     > span {
       text-decoration: underline;
@@ -50,6 +53,11 @@
         margin-left: 1%;
       }
     }
+  }
+
+  .sympathy-category.disabled {
+    pointer-events: none;
+    opacity: .5;
   }
 
   .list-item {
