@@ -23,6 +23,7 @@ const SympForm = () => {
   let [success, setSuccess] = useState(false)
   let [error, setError] = useState('')
   let inputRef = useRef(null)
+  let searchRef = useRef(null)
   
   useEffect(() => {
     if (success) {
@@ -167,7 +168,7 @@ const SympForm = () => {
     }
     return true
   }
-
+  
   async function handleDelete(post) {
       const res = await fetch(`/api/sympathy_item_delete`, {
         method: 'DELETE',
@@ -277,6 +278,8 @@ const SympForm = () => {
                   setFinancialOrMaterial(false)
                   setLoss(false)
                   setAll(false)
+                  setSearchString(null)
+                  searchRef.current.value = ''
                 }}
                 checked={emotions}
               ></input>
@@ -297,6 +300,8 @@ const SympForm = () => {
                   setEmotions(false)
                   setLoss(false)
                   setAll(false)
+                  setSearchString(null)
+                  searchRef.current.value = ''
                 }}
                 checked={financialOrMaterial}
               ></input>
@@ -317,6 +322,8 @@ const SympForm = () => {
                   setEmotions(false)
                   setLoss(false)
                   setAll(false)
+                  setSearchString(null)
+                  searchRef.current.value = ''
                 }}
                 checked={physical}
               ></input>
@@ -339,6 +346,8 @@ const SympForm = () => {
                     onChange={() => {
                       setSicknesses(false)
                       setBodyParts(false)
+                      setSearchString(null)
+                      searchRef.current.value = ''
                     }}
                     checked={waysToBeHurt}
                   ></input>
@@ -358,6 +367,8 @@ const SympForm = () => {
                     onChange={() => {
                       setToBeHurt(false)
                       setBodyParts(false)
+                      setSearchString(null)
+                      searchRef.current.value = ''
                     }}
                     checked={sicknesses}
                   ></input>
@@ -377,6 +388,8 @@ const SympForm = () => {
                     onChange={() => {
                       setToBeHurt(false)
                       setSicknesses(false)
+                      setSearchString(null)
+                      searchRef.current.value = ''
                     }}
                     checked={bodyParts}
                   ></input>
@@ -399,6 +412,8 @@ const SympForm = () => {
                   setFinancialOrMaterial(false)
                   setEmotions(false)
                   setAll(false)
+                  setSearchString(null)
+                  searchRef.current.value = ''
                 }}
                 checked={loss}
               ></input>
@@ -493,6 +508,8 @@ const SympForm = () => {
             <input
               type='text'
               placeholder='Search Items'
+              ref={searchRef}
+              value={searchString}
               onChange={e => {
                 setSearchString(e.target.value)
               }}
