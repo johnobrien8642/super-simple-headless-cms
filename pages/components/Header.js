@@ -1,14 +1,15 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import Logout from '../components/Logout'
 import { useRouter } from 'next/router'
 
-function Header() {
+const Header = ({ loggedIn }) => {
   let [active, setActive] = useState(false)
   let [active1, setActive1] = useState(false)
   let [active2, setActive2] = useState(false)
   let [active3, setActive3] = useState(false)
   let [active4, setActive4] = useState(false)
-
+  
   const dropdownRef = useRef(null)
   const router = useRouter()
   const pathname = router.pathname
@@ -35,7 +36,13 @@ function Header() {
     setActive3(false)
     setActive4(false)
   }
-
+  
+  function handleLoggedIn() {
+    if (loggedIn) {
+      return Logout()
+    }
+  }
+  
   return (
     <nav
       className='navbar navbar-expand-lg navbar-light bg-light'
@@ -47,8 +54,8 @@ function Header() {
           router.push('/')
         }}
       >
-        <h3>John Edward O'Brien</h3>
-        <p>Still Life Photography, Printed Once</p>
+        <h3>Mikowski</h3>
+        <p>Letters. Photography.</p>
       </button>
 
       <button 
@@ -134,6 +141,9 @@ function Header() {
                 Prints
               </a>
             </Link>
+          </li>
+          <li>
+            {handleLoggedIn()}
           </li>
           {/* Some day soon I'll uncomment this, right after
           I finish my first book */}

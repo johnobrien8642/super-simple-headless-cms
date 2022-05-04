@@ -29,6 +29,11 @@ const AdminPage = ({ data }) => {
             Create Sympathy Item
           </Link>
           <Link
+            href={'/pieces/roll'}
+          >
+            Create Writing
+          </Link>
+          <Link
             href={'/'}
           >
             Main Page

@@ -1,0 +1,44 @@
+.pieces-container {
+
+  .piece-container {
+    width: fit-content;
+    
+    h3 {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .sections-container {
+      display: flex;
+      flex-direction: column;
+      margin-left: 1rem;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .sections-container.open {
+      height: 100%;
+    }
+
+    a {
+      text-decoration: none;
+      color: black;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .add-section-link {
+      display: inline-block;
+      color: blue;
+      text-decoration: underline;
+    }
+
+    .section-edit-link {
+      margin-left: .5rem;
+      text-decoration: underline;
+    }
+  }
+}
