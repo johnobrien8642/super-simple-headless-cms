@@ -36,8 +36,9 @@ const SectionPage = ({
       <div
         className='single-section-container container my-5'
       >
+        <h3>{pSection.piece.title}</h3>
         <div
-          className='links'
+          className='links my-5'
         >
           {handlePrevOrNext(pPrevSection)}
           <Link
@@ -54,7 +55,7 @@ const SectionPage = ({
           {pSection.sectionText}
         </div>
         <div
-          className='links'
+          className='links my-5'
         >
           {handlePrevOrNext(pPrevSection)}
           <Link
@@ -74,13 +75,14 @@ export async function getServerSideProps(context) {
 
   const section = await Section
     .findById(sectionId)
+    .populate('piece')
   
   const piece = await Piece
     .findById(section.piece)
     .populate('sections')
   
-  const prevSection = piece.sections[piece.sections.findIndex(obj => obj.sectionNumber === section.sectionNumber - 1)]
-  const nextSection = piece.sections[piece.sections.findIndex(obj => obj.sectionNumber === section.sectionNumber + 1)]
+  const prevSection = piece.sections[piece.sections.findIndex(obj => parseInt(obj.sectionNumber) === (parseInt(section.sectionNumber) - 1))]
+  const nextSection = piece.sections[piece.sections.findIndex(obj => parseInt(obj.sectionNumber) === (parseInt(section.sectionNumber) + 1))]
 
   return {
     props: {

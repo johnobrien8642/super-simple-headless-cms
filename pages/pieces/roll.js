@@ -11,6 +11,7 @@ import jwt from 'jsonwebtoken'
 
 const Roll = ({ data }) => {
   let [toggle, toggleSections] = useState(false)
+  let [warn, setWarn] = useState('')
   const router = useRouter()
   const path = keys.url + router.asPath
   const { loggedIn, pieces } = data
@@ -58,6 +59,79 @@ const Roll = ({ data }) => {
       }
     }
   }
+
+  function handleDeleteButton(loggedIn, loc, _id) {
+    let endpoint = loc === 'title' ? '/api/piece/add_or_update' : '/api/piece/section/add_or_update'
+    function handleCancel() {
+      if (warn === _id) {
+        return (
+          <React.Fragment>
+            <button
+              onClick={e => {
+                e.preventDefault()
+                e.stopPropagation()
+                setWarn('')
+              }}
+            >
+              Cancel Delete
+            </button>
+            <button
+              onClick={e => {
+                e.stopPropagation()
+              }}
+            >
+              Confirm Delete
+            </button>
+          </React.Fragment>
+        )
+      }
+    }
+
+    if (loggedIn) {
+      return (
+        <div
+          className='delete-button-container ms-2'
+        >
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault()
+            
+              const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  deleteBool: true,
+                  _id
+                })
+              })
+              const returnedData = await res.json()
+              if (res.ok) {
+                window.location.reload()
+              } else {
+                console.log('Error in pieces/roll', returnedData.errorMessage)
+              }
+            }}
+          >
+            <button
+              className={`main-delete-btn${warn ? ' hide' : ''}`}
+              onClick={e => {
+                e.preventDefault()
+                e.stopPropagation()
+                setWarn(_id)
+              }}
+            >
+              Delete
+            </button>
+          </form>
+          <p className='mx-1'>{warn === _id ? 'Confirm delete? Click again, or cancel' : ''}</p>
+          {handleCancel()}
+        </div>
+      )
+    }
+  }
   
   return (
     <React.Fragment>
@@ -84,6 +158,7 @@ const Roll = ({ data }) => {
                   }}
                 >
                   {p.title}
+                  {handleDeleteButton(loggedIn, 'title', p._id)}
                 </h3>
                 {handleAdminLinks('addSection', p)}
                 <div
@@ -99,6 +174,7 @@ const Roll = ({ data }) => {
                           {handleSection(s)}
                         </Link>
                         {handleAdminLinks('editSection', p, s)}
+                        {handleDeleteButton(loggedIn, 'section', s._id)}
                       </div>
                     )
                   })}

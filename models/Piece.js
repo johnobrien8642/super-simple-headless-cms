@@ -9,10 +9,12 @@ const PieceSchema = new Schema({
   summary: {
     type: String
   },
-  sections: {
-    type: Array,
-    required: true
-  },
+  sections: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: 'Section'
+    }
+  ],
   updatedAt: {
     type: Date,
     default: Date.now

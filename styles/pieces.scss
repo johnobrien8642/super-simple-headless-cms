@@ -2,8 +2,24 @@
 
   .piece-container {
     width: fit-content;
+
+    .delete-button-container {
+      display: flex;
+      font-size: .6rem;
+      align-self: center;
+
+      .main-delete-btn.hide {
+        display: none;
+      }
+
+      button {
+        margin: 0 .1rem;
+      }
+    }
     
     h3 {
+      display: flex;
+
       &:hover {
         cursor: pointer;
       }
@@ -15,6 +31,10 @@
       margin-left: 1rem;
       height: 0;
       overflow: hidden;
+
+      .section-container {
+        display: flex;
+      }
     }
 
     .sections-container.open {

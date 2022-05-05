@@ -1,6 +1,6 @@
-import connectDb from '../../../../lib/mongodb'
-import Section from '../../../../models/Section'
-import Piece from '../../../../models/Piece'
+import connectDb from '../../lib/mongodb'
+import Section from '../../models/Section'
+import Piece from '../../models/Piece'
 import mongoose from 'mongoose'
 
 export default async (req, res) => {

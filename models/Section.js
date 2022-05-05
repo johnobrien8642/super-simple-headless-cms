@@ -4,7 +4,8 @@ const Schema = mongoose.Schema
 
 const SectionSchema = new Schema({
   piece: {
-    type: ObjectId,
+    type: mongoose.Types.ObjectId,
+    ref: 'Piece',
     required: true
   },
   title: {
