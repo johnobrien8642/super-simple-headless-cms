@@ -10,12 +10,12 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     const { deleteBool, _id, update, titleHook, summaryHook } = req.body
     try {
-      if (deleteBool === 'true') {
+      if (deleteBool) {
         piece = await Piece.findById(_id).populate('sections')
         await Piece.deleteOne({ _id: piece._id })
 
         for (let i = 0; i < piece.sections.length; i++) {
-          section = sections[i]
+          section = piece.sections[i]
           await Section.deleteOne({ _id: section._id })
         }
       } else {

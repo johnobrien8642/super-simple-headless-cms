@@ -3,6 +3,16 @@
   .piece-container {
     width: fit-content;
 
+    form {
+      .warning {
+        display: none;
+      }
+      
+      .warning.show {
+        display: block;
+      }
+    }
+
     .delete-button-container {
       display: flex;
       font-size: .6rem;

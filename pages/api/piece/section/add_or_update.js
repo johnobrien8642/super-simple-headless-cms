@@ -12,15 +12,15 @@ export default async (req, res) => {
   let index
   
   if (req.method === 'POST') {
-    const { deleteBool, update, pieceId, sectionId, textHook, numberHook, titleHook } = req.body
+    const { deleteBool, update, pieceId, sectionId, textHook, numberHook, titleHook, _id } = req.body
     try {
-      if (deleteBool === 'true') {
-        await Section.deleteOne({ _id: mongoose.Types.ObjectId(sectionId) })
+      if (deleteBool) {
+        section = await Section.findById(_id)
+        await Section.deleteOne({ _id: mongoose.Types.ObjectId(_id) })
         piece = await Piece
-          .findById(pieceId)
-          .populate('sections')
-        
-        piece.sections.splice(piece.sections.findIndex(obj => obj._id === pieceId), 1)
+          .findById(section.piece)
+
+        piece.sections.splice(piece.sections.findIndex(_id => _id === section._id), 1)
 
         for (let i = 0; i < piece.sections.length; i++) {
           sectionToUpdate = piece.sections[i]
@@ -28,7 +28,8 @@ export default async (req, res) => {
           sectionUpdateObj = await Section
             .findById(sectionToUpdate._id)
           
-          sectionUpdateObj.sectionNumber = i + 1
+          sectionUpdateObj.sectionNumber = (i + 1)
+
           
           await sectionUpdateObj.save()
         }

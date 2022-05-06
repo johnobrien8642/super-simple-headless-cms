@@ -37,27 +37,21 @@ export default function Home({ data, loggedIn }) {
         >
           <h1 className='h1'>Hello</h1>
           <p>
-            Hi, my name's John. Welcome. I'm on a mission to create art
-            that's meant to only be experienced in its physical form. I even created
-            an entire moral philosophy about this that I attempt to live and create by. 
-            The philosophy is called Digital Abstentionism, and if you're interested
-            you can read about it<button onClick={e => {e.preventDefault(), router.push('/digital_abstentionism')}}>here.</button>
+            Hello. My name's Mikowksi. You can find all of my writing pieces here for
+            free. You can also find all of my photography.
           </p>
           <p>
-            All of my photographic prints tell a story. They're still-lifes done in photographic
-            style. The ones here on this website are here because I'm done enjoying them,
-            and now I'm ready to let someone else enjoy them. They're only ever printed and framed 
-            once, with the promise that I've destroyed the original file copy.
+            Mikowski is my artist's pseudonym. The only way you'll ever find anything
+            out about me is by reading my writing. I doubt you'll find anything out
+            about me by looking at my pictures, but I do enjoy taking pictures, so 
+            I do hope you enjoy those.
           </p>
           <p>
-            I do have a contact email here, where you can get in contact with
-            me. If you're interested in purchasing any of the pieces you can reference
-            the piece number in the email when you inquire about it. The piece number 
-            is above the title, and below the image.
+            I do have an email that I'm going to put here out of my own curiosity.
+            mikowski.me@protonmail.com
           </p>
           <p>
-            Wherever you are and whatever you're doing, I hope you're at least
-            thinking for yourself.
+            Message about whatever you like. No guarantees I'll get back.
           </p>
         </div>
 

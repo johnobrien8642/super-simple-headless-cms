@@ -51,9 +51,8 @@ const SectionPage = ({
         <h1>{handleSection(pSection)}</h1>
         <div
           className='section-text'
-        >
-          {pSection.sectionText}
-        </div>
+          dangerouslySetInnerHTML={{ __html: pSection.sectionText }}
+        ></div>
         <div
           className='links my-5'
         >

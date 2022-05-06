@@ -62,6 +62,7 @@ const Roll = ({ data }) => {
 
   function handleDeleteButton(loggedIn, loc, _id) {
     let endpoint = loc === 'title' ? '/api/piece/add_or_update' : '/api/piece/section/add_or_update'
+    
     function handleCancel() {
       if (warn === _id) {
         return (
@@ -95,7 +96,6 @@ const Roll = ({ data }) => {
           <form
             onSubmit={async (e) => {
               e.preventDefault()
-            
               const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
@@ -116,7 +116,7 @@ const Roll = ({ data }) => {
             }}
           >
             <button
-              className={`main-delete-btn${warn ? ' hide' : ''}`}
+              className={`main-delete-btn${warn === _id ? ' hide' : ''}`}
               onClick={e => {
                 e.preventDefault()
                 e.stopPropagation()
@@ -125,9 +125,9 @@ const Roll = ({ data }) => {
             >
               Delete
             </button>
+            <p className={`mx-1 warning${warn === _id ? ' show' : ''}`}>Confirm delete? Click again, or cancel</p>
+            {handleCancel()}
           </form>
-          <p className='mx-1'>{warn === _id ? 'Confirm delete? Click again, or cancel' : ''}</p>
-          {handleCancel()}
         </div>
       )
     }

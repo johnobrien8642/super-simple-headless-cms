@@ -101,25 +101,7 @@ const Header = ({ loggedIn }) => {
               <a
                 className='nav-link'
               >
-              About
-              </a>
-            </Link>
-          </li>
-          <li
-            className={`${active2 ? 'active ' : ''}nav-item`}
-            onClick={() => {
-              reset()
-              setActive2(true)
-            }}
-          >
-            <Link
-              href='/contact'
-              passHref
-            >
-              <a
-                className='nav-link'
-              >
-                Contact
+                Hi
               </a>
             </Link>
           </li>
@@ -138,7 +120,26 @@ const Header = ({ loggedIn }) => {
               <a
                 className='nav-link'
               >
-                Prints
+                Pictures
+              </a>
+            </Link>
+          </li>
+          <li
+            className={`nav-item${active4 ? ' active' : ''}`}
+            onClick={() => {
+              reset()
+              setActive4(true)
+            }}
+          >
+            <Link
+              href='/pieces/roll'
+              className='nav-link'
+              passHref
+            >
+              <a
+                className='nav-link'
+              >
+                Pieces
               </a>
             </Link>
           </li>
