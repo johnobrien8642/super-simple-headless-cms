@@ -5,6 +5,12 @@
   margin: 2% auto;
   padding: 0;
 
+  .image-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
   .number {
     display: inline-block;
     margin: 2%;

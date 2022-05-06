@@ -1,5 +1,6 @@
 import connectDb from '../../lib/mongodb.js'
 import Post from '../../models/Post'
+import { getPlaiceholder } from 'plaiceholder'
 
 export default async (req, res) => {
   await connectDb()
@@ -10,8 +11,12 @@ export default async (req, res) => {
 
   if (req.method === 'POST') {
     const { link, title, description, price, type } = req.body
+
+    const { base64 } = await getPlaiceholder(link)
+    
     const post = new Post({
       link: link,
+      blurString: base64,
       title: title,
       description: description,
       price: price,

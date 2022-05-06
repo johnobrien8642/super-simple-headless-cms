@@ -5,8 +5,9 @@ import PostShow from '../../components/Post_Show'
 import Header from '../../components/Header'
 import connectDb from '../../../lib/mongodb'
 import Post from '../../../models/Post'
+import { getPlaiceholder } from 'plaiceholder'
 
-const Roll = ({ data }) => {
+const Roll = ({ posts }) => {
   const router = useRouter()
   const href = process.env.URL + router.asPath
 
@@ -31,7 +32,7 @@ const Roll = ({ data }) => {
         <div
           className='inner row'
         >
-          {data.posts?.map((p, i) => {
+          {JSON.parse(posts).map((p, i) => {
               return (
                 <React.Fragment
                   key={p._id}
@@ -53,8 +54,14 @@ export async function getStaticProps() {
     .find({
       type: 'Photo'
     })
+  
+  for (let i = 0; i < posts.length; i++) {
+    console.log(posts[i].link)
+    const { blur } = await getPlaiceholder(posts[i].link)
+    posts[i].blur = blur
+  }
 
-  return { props: { data: JSON.stringify(posts) } }
+  return { props: { posts: JSON.stringify(posts) } }
 }
 
 export default Roll

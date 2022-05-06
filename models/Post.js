@@ -6,6 +6,10 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
+  blurString: {
+    type: Buffer,
+    required: true
+  },
   title: {
     type: String
   },

@@ -10,7 +10,7 @@ import Logout from './components/Logout'
 import { useRouter } from 'next/router'
 import jwt from 'jsonwebtoken'
 
-export default function Home({ data, loggedIn }) {
+export default function Home({ data, loggedIn, randPost }) {
   let [active, setActive] = useState(false)
   const router = useRouter()
   const href = keys.url + router.asPath
@@ -55,7 +55,7 @@ export default function Home({ data, loggedIn }) {
           </p>
         </div>
 
-        <PostShow post={data?.randPost} />
+        <PostShow post={JSON.parse(randPost)} />
 
         <footer>
         </footer>
@@ -70,6 +70,7 @@ export async function getServerSideProps(context) {
     
     const posts = await Post
       .find({})
+    
     const rand = Math.floor(Math.random() * posts.length)
     const randPost = posts[rand]
 
@@ -78,8 +79,8 @@ export async function getServerSideProps(context) {
     }
     const authenticated = await Admin
       .findById(decoded?.id)
-
+    
     return {
-      props: { data: JSON.stringify(randPost), loggedIn: !!authenticated },
+      props: { loggedIn: !!authenticated, randPost: randPost ? JSON.stringify(randPost) : null },
     }
 }

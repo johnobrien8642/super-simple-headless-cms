@@ -19,13 +19,22 @@ const PostShow = ({ post, single }) => {
       )
     }
   }
-
+  
   if (post) {
     return (
       <div
         className='post-show col-md'
       >
-        <Image className='w-100' src={post?.link} alt='post image' />
+        <Image 
+          width='1200' 
+          height='800' 
+          objectFit='contain' 
+          className='w-100' 
+          src={post?.link} 
+          alt='post image'
+          placeholder='blur'
+          blurDataURL={Buffer.from(post.blurString)}
+        />
         <span className='number'>{post?.number}</span>
         <h1>{post?.title}</h1>
         <p>{post?.description}</p>
