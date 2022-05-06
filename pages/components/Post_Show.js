@@ -35,14 +35,7 @@ const PostShow = ({ post, single }) => {
           placeholder='blur'
           blurDataURL={Buffer.from(post.blurString)}
         />
-        <span className='number'>{post?.number}</span>
-        <h1>{post?.title}</h1>
         <p>{post?.description}</p>
-        <p
-          className='price'
-        >
-          Asking Price: ${post?.price}
-        </p>
         {handleViewButton()}
       </div>
     )

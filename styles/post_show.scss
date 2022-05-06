@@ -4,6 +4,7 @@
   width: 80%;
   margin: 2% auto;
   padding: 0;
+  height: fit-content;
 
   .image-container {
     position: relative;
@@ -23,8 +24,13 @@
   }
 
   p {
+    display: none;
     margin: 4%;
     margin-left: 3%;
+  }
+
+  p.show {
+    display: inline-block;
   }
 
   .price {
