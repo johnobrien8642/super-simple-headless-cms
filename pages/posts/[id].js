@@ -43,9 +43,9 @@ export async function getStaticPaths() {
     .find({})
 
   const paths = posts.map((post) => ({
-    params: { id: post._id.toString() },
+    params: { 'id': post._id.toString() },
   }))
-  return { paths: JSON.stringify(paths), fallback: false }
+  return { paths, fallback: false }
 }
 
 export async function getStaticProps({ params }) {
