@@ -28,7 +28,7 @@ export default function Home({ data, loggedIn }) {
         <Head>
           <title>Mikowski</title>
           {/* <link rel="icon" href="/favicon.ico" /> */}
-          <meta name='description' content="Working under an anonymous pseudonym, find all of the reclusive author and artist's work hosted here for free." />
+          <meta name='description' content="Do you like good writing and cool pictures? Hi, my name's Mikowski, this is my website, I host everything here for free." />
           <link rel='canonical'  href={href}/>
         </Head>
 
