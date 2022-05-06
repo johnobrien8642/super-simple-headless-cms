@@ -7,7 +7,7 @@
 launch.json
 .gitignore
 generate.js
-
+raw.js
 
 # testing
 /coverage
