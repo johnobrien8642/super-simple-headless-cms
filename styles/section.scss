@@ -11,7 +11,13 @@
     justify-content: space-between;
     
     a {
+      visibility: hidden;
       color: black;
+      font-size: 1.5rem;
+    }
+
+    a.show {
+      visibility: visible;
     }
   }
 }

@@ -17,19 +17,17 @@ const SectionPage = ({
     const pPieceId = JSON.parse(pieceId)
     
     function handlePrevOrNext(s) {
-      if (s) {
-        return (
-          <Link
-            href={{ pathname: '/piece/section', query: { sectionId: s._id } }}
-          >
-            {handleSection(s)}
-          </Link>
-        )
-      }
+      return (
+        <Link
+          href={{ pathname: '/piece/section', query: { sectionId: s?._id } }}
+        >
+          <a className={`${s ? 'show' : ''}`}>{handleSection(s)}</a>
+        </Link>
+      )
     }
     
     function handleSection(s) {
-      return s.sectionNumber + (s.title ? ` - ${s.title}` : '')
+      return s?.sectionNumber + (s?.title ? ` - ${s?.title}` : '')
     }
     
     return (
@@ -44,7 +42,7 @@ const SectionPage = ({
           <Link
             href={{ pathname: '/pieces/roll' }}
           >
-            All Pieces
+            <a className='show'>All Pieces</a>
           </Link>
           {handlePrevOrNext(pNextSection)}
         </div>
