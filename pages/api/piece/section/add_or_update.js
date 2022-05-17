@@ -13,6 +13,7 @@ export default async (req, res) => {
   
   if (req.method === 'POST') {
     const { deleteBool, update, pieceId, sectionId, textHook, numberHook, titleHook, _id } = req.body
+    
     try {
       if (deleteBool) {
         section = await Section.findById(_id)
@@ -29,14 +30,39 @@ export default async (req, res) => {
             .findById(sectionToUpdate._id)
           
           sectionUpdateObj.sectionNumber = (i + 1)
-
           
           await sectionUpdateObj.save()
         }
         
       } else {
         if (update === 'true') {
+          section = await Section.findById(sectionId)
+          section.title = titleHook
+          section.sectionNumber = numberHook
+          section.sectionText = textHook
+
+          await section.save()
+
+          piece = await Piece
+            .findById(pieceId)
+            .populate('sections')
+
+          piece.sections.splice(piece.sections.findIndex(obj => obj._id.toString() === section._id.toString()), 1)
           
+          piece.sections.splice(section.sectionNumber - 1, 0, section._id)
+  
+          for (let i = 0; i < piece.sections.length; i++) {
+            sectionToUpdate = piece.sections[i]
+  
+            sectionUpdateObj = await Section
+              .findById(sectionToUpdate._id)
+            
+            sectionUpdateObj.sectionNumber = (i + 1)
+            
+            await sectionUpdateObj.save()
+          }
+
+          await piece.save()
         } else {
           section = new Section({
             piece: pieceId,
@@ -63,6 +89,7 @@ export default async (req, res) => {
             
             await sectionUpdateObj.save()
           }
+
           await piece.save()
         }
       }

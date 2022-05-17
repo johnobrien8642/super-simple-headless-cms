@@ -30,6 +30,7 @@ const AddSection = ({
     }
     if (update === 'true' && initialRef.current === false) {
       divRef.current.innerHTML = pSection.sectionText
+      setText(pSection.sectionText)
       initialRef.current = true
     }
   }, [authenticated, update, divRef, pSection])
@@ -111,7 +112,7 @@ const AddSection = ({
             value={textHook}
             ref={divRef}
             onInput={e => {
-              setText(e.target.innerText)
+              setText(e.target.innerHTML)
               divRef.current.value = e.target.innerText
             }}
           ></div>
