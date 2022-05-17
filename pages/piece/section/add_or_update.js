@@ -22,13 +22,15 @@ const AddSection = ({
   let [error, setError] = useState('')
   let [deleteBool, setDelete] = useState(false)
   let divRef = useRef(null)
+  let initialRef = useRef(false)
   
   useEffect(() => {
     if (!authenticated) {
       router.push('/')
     }
-    if (update === 'true') {
+    if (update === 'true' && initialRef.current === false) {
       divRef.current.innerHTML = pSection.sectionText
+      initialRef.current = true
     }
   }, [authenticated, update, divRef, pSection])
   
@@ -109,7 +111,8 @@ const AddSection = ({
             value={textHook}
             ref={divRef}
             onInput={e => {
-              setText(e.target.innerHTML)
+              setText(e.target.innerText)
+              divRef.current.value = e.target.innerText
             }}
           ></div>
           <button>Submit</button>
