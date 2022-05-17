@@ -48,6 +48,8 @@ export default function Home({ data, loggedIn, randPost }) {
           </p>
           <p>
             I do have an email that I'm going to put here out of my own curiosity.
+          </p>
+          <p>
             mikowski.me@protonmail.com
           </p>
           <p>
