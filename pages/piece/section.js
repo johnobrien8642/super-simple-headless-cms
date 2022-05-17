@@ -62,7 +62,7 @@ const SectionPage = ({
           <Link
             href={{ pathname: '/pieces/roll' }}
           >
-            All Pieces
+            <a className='show all-pieces'>All Pieces</a>
           </Link>
           {handlePrevOrNext(pNextSection)}
         </div>
