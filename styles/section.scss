@@ -1,5 +1,11 @@
 .single-section-container {
 
+  .section-text,
+  .section-text p,
+  .section-text span {
+    font-size: 1.4rem;
+  }
+
   .links {
     display: flex;
     justify-content: space-between;
