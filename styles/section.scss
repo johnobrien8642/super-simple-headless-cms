@@ -9,6 +9,12 @@
   .links {
     display: flex;
     justify-content: space-between;
+
+    .all-pieces {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
     
     a {
       visibility: hidden;

@@ -27,7 +27,11 @@ const SectionPage = ({
     }
     
     function handleSection(s) {
-      return s?.sectionNumber + (s?.title ? ` - ${s?.title}` : '')
+      if (s) {
+        return s.sectionNumber + (s.title ? ` - ${s.title}` : '')
+      } else {
+        return ''
+      }
     }
     
     return (
@@ -42,7 +46,7 @@ const SectionPage = ({
           <Link
             href={{ pathname: '/pieces/roll' }}
           >
-            <a className='show'>All Pieces</a>
+            <a className='show all-pieces'>All Pieces</a>
           </Link>
           {handlePrevOrNext(pNextSection)}
         </div>

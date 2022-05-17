@@ -45,6 +45,10 @@
       .section-container {
         display: flex;
       }
+
+      .section-container > a {
+        font-size: 1.4rem;
+      }
     }
 
     .sections-container.open {
