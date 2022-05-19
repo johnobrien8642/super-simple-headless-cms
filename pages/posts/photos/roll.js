@@ -46,7 +46,6 @@ const Roll = ({ posts }) => {
       <div
         className='roll container'
       >
-        <h1>Photos</h1>
         <div
           className='inner row'
         >

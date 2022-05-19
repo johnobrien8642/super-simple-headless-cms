@@ -143,7 +143,6 @@ const Roll = ({ data }) => {
         className='roll container pieces-container'
       >
         {handleAdminLinks('addNewPiece')}
-        <h1>Pieces</h1>
         {JSON.parse(pieces)?.map((p, i) => {
           return (
             <React.Fragment
