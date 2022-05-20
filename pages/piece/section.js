@@ -43,11 +43,11 @@ const SectionPage = ({
         >
           <a className='show all-pieces'>All</a>
         </Link>
+        <h4 className='top'>{pSection.piece.title}</h4>
         <div
           className='links my-5'
         >
           {handlePrevOrNext(pPrevSection)}
-          <h4>{pSection.piece.title}</h4>
           {handlePrevOrNext(pNextSection)}
         </div>
         <h1>{handleSection(pSection)}</h1>
@@ -59,14 +59,14 @@ const SectionPage = ({
           className='links my-5'
         >
           {handlePrevOrNext(pPrevSection)}
-          <h4>{pSection.piece.title}</h4>
           {handlePrevOrNext(pNextSection)}
         </div>
-          <Link
-            href={{ pathname: '/pieces/roll' }}
-          >
-            <a className='show all-pieces'>All</a>
-          </Link>
+        <h4 className='bottom'>{pSection.piece.title}</h4>
+        <Link
+          href={{ pathname: '/pieces/roll' }}
+        >
+          <a className='show all-pieces'>All</a>
+        </Link>
       </div>
     )
 }

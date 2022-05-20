@@ -11,11 +11,24 @@
     color: black;
   }
 
-  .links {
-    display: flex;
-    justify-content: space-between;
+  h4 {
+    text-align: center;
+  }
 
-    
+  .links {
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+
+    a:first-child {
+      grid-column: 1 / 1;
+      text-align: left;
+    }
+
+    a:last-child {
+      grid-column: 3 / 3;
+      text-align: right;
+    }
+
     a {
       visibility: hidden;
       color: black;
