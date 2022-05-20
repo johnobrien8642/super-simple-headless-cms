@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import Header from './components/Header'
-import PostShow from './components/Post_Show'
 import keys from '../config/keys'
 import connectDb from '../lib/mongodb'
-import Post from '../models/Post'
 import Admin from '../models/Admin'
 import Logout from './components/Logout'
 import { useRouter } from 'next/router'
@@ -28,39 +27,82 @@ export default function Home({ data, loggedIn, randPost }) {
         <Head>
           <title>Mikowski</title>
           {/* <link rel="icon" href="/favicon.ico" /> */}
-          <meta name='description' content="Do you like good writing and cool pictures? Hi, my name's Mikowski, this is my website, I host everything here for free." />
+          <meta name='description' content="I'm a writer writing under the pseudonym Mikowski. My work spans from fiction pieces, to philosophy. I post everything here for free, tell your friends." />
           <link rel='canonical'  href={href}/>
         </Head>
 
         <div
           className='index-container'
         >
-          <h1 className='h1'>Hello</h1>
           <p>
-            Hello. My name's Mikowksi. You can find all of my writing pieces here for
-            free. You can also find all of my photography.
+            I'll introduce myself as Mikowski. This is not my real name, but this is the only name
+            you'll need to know me by. In this world, anonymity is the new ideal. I never plan on
+            revealing my actual God-given identity, birthname, history, age... especially age, who 
+            needs to know someone's age? I propose we go back to a world where you don't know someone's
+            age, and don't want to know. What are we all doing in this life, counting the seconds
+            until we must die? Pathetic.
           </p>
           <p>
-            Mikowski is my artist's pseudonym. The only way you'll ever find anything
-            out about me is by reading my writing. I doubt you'll find anything out
-            about me by looking at my pictures, but I do enjoy taking pictures, so 
-            I do hope you enjoy those.
+            What do I write about? Well, that's a very large question that I'm terrible at answering. I
+            will tell you what kind of writing that I personally do enjoy.
           </p>
           <p>
-            I do have an email that I'm going to put here out of my own curiosity.
+            I like writing that makes you feel like the characters you just read were actual real people.
+          </p>
+          <p>
+            I like writing with a sense of humor, and by extension, the writers. If I make a mistake and buy
+            humorless writing, I throw it into the garbage.
+          </p>
+          <p>
+            I like writing where descriptions of events, places, characters, and interactions, are completely
+            to the point, and only poetic through undeniability. What I mean by undeniably poetic is that the
+            writing is still legible, and understandable, but also through the talent and skill of the writer
+            takes on a feeling of poetry. This is in contrast to writers who try to write prose as poetry,
+            which I personally don't like.
+          </p>
+          <p>
+            I don't like post-modernism, or a writer trying to become personally famous. I think these are one
+            in the same. Post-modernism, to me, is mostly just public self-flagellation mixed with public
+            indecency of the naked-under-the-trenchcoat-with-a-hardon kind. You know what I mean.
+          </p>
+          <p>
+            Speaking of which, writing shouldn't be masturbatory, it should birth something new. I like when
+            that happens.
+          </p>
+          <p>
+            I do have an email below here:
           </p>
           <p>
             mikowski.me@protonmail.com
           </p>
           <p>
-            Message about whatever you like. No guarantees I'll get back.
+            First of all, yes, email me with typos if you find them. I do all of my own proof-reading, editing
+            etc because I'm not paying people a bunch of money to post writing onto my own damn website for free.
+            And besides, no one tells me how to write, what to write, what not to write. The best way to get me to
+            write a certain way, actually, is to tell me how/what to write with the intention of getting me to write
+            the opposite, because I'll probably do so, just to spite you. Freedom is a quantity in limited supply
+            these days, despite what the world appears to be.
           </p>
+          <p>
+            I know I'm going to regret putting this email here, but I can't help myself. If I ever
+            become successful then a bunch of people are going to inundate my email, and then I'll
+            never be able to write again because of how engrossed I'll be in the interactions, which will
+            most certainly range from cogent to insane. But, alas, this is the internet, and I'll repeat,
+            I just can't help myself. And besides, how presumptuous and egotistical of me to assume
+            that I'd become successful?
+          </p>
+          <Link
+              href='/pieces/roll'
+              className='nav-link'
+              passHref
+            >
+              <a
+                className='nav-link my-auto'
+              >
+                Pieces
+              </a>
+            </Link>
         </div>
-
-        <PostShow post={JSON.parse(randPost)} />
-
-        <footer>
-        </footer>
       </div>
     </React.Fragment>
   )
@@ -69,12 +111,6 @@ export default function Home({ data, loggedIn, randPost }) {
 export async function getServerSideProps(context) {
     await connectDb()
     let decoded
-    
-    const posts = await Post
-      .find({})
-    
-    const rand = Math.floor(Math.random() * posts.length)
-    const randPost = posts[rand]
 
     if (context.req.cookies.token) {
       decoded = jwt.verify(context.req.cookies.token, process.env.SECRET_KEY)
@@ -83,6 +119,6 @@ export async function getServerSideProps(context) {
       .findById(decoded?.id)
     
     return {
-      props: { loggedIn: !!authenticated, randPost: randPost ? JSON.stringify(randPost) : null },
+      props: { loggedIn: !!authenticated },
     }
 }

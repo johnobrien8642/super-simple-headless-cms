@@ -19,16 +19,6 @@ const AdminPage = ({ data }) => {
           <Logout />
           <NewAdmin />
           <Link
-            href={'/posts/create_post'}
-          >
-            Create Post
-          </Link>
-          <Link
-            href={'/posts/sympathy_exchange'}
-          >
-            Create Sympathy Item
-          </Link>
-          <Link
             href={'/pieces/roll'}
           >
             Create Writing

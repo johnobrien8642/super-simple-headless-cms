@@ -55,7 +55,7 @@ const Header = ({ loggedIn }) => {
         }}
       >
         <h3>Mikowski</h3>
-        <p>Letters. Photography.</p>
+        <p>Letters for your health.</p>
       </button>
 
       <button 
@@ -102,25 +102,6 @@ const Header = ({ loggedIn }) => {
                 className='nav-link'
               >
                 Hi
-              </a>
-            </Link>
-          </li>
-          <li
-            className={`nav-item${active3 ? ' active' : ''}`}
-            onClick={() => {
-              reset()
-              setActive3(true)
-            }}
-          >
-            <Link
-              href='/posts/photos/roll'
-              className='nav-link'
-              passHref
-            >
-              <a
-                className='nav-link'
-              >
-                Pictures
               </a>
             </Link>
           </li>
