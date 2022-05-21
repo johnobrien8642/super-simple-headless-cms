@@ -4,12 +4,8 @@ import Logout from '../components/Logout'
 import { useRouter } from 'next/router'
 
 const Header = ({ loggedIn }) => {
-  let [active, setActive] = useState(false)
-  let [active1, setActive1] = useState(false)
-  let [active2, setActive2] = useState(false)
-  let [active3, setActive3] = useState(false)
-  let [active4, setActive4] = useState(false)
-  
+  let [active, setActive] = useState('')
+  let [openNav, setOpenNav] = useState('')
   const dropdownRef = useRef(null)
   const router = useRouter()
   const pathname = router.pathname
@@ -19,23 +15,12 @@ const Header = ({ loggedIn }) => {
       dropdownRef.current.focus()
     }
 
-    if (pathname.includes('contact')) {
-      setActive2(true)
-    } else if (pathname.includes('photos')) {
-      setActive3(true)
-    } else if (pathname.includes('digital_abstentionism')) {
-      setActive4(true)
-    } else {
-      setActive1(true)
+    if (pathname === '/') {
+      setActive('Hi')
+    } else if (pathname === '/pieces/roll') {
+      setActive('Pieces')
     }
   })
-
-  function reset() {
-    setActive1(false)
-    setActive2(false)
-    setActive3(false)
-    setActive4(false)
-  }
   
   function handleLoggedIn() {
     if (loggedIn) {
@@ -67,7 +52,7 @@ const Header = ({ loggedIn }) => {
         aria-expanded="false" 
         aria-label="Toggle navigation"
         onClick={() => {
-          setActive(!active)
+          setOpenNav(!openNav)
         }}
       >
         <span className="navbar-toggler-icon"></span>
@@ -75,12 +60,12 @@ const Header = ({ loggedIn }) => {
 
       <div
         id='navbarNav'
-        className={`${active ? 'active ' : 'collapse '}navbar-collapse bg-light`}
+        className={`${openNav ? 'active ' : 'collapse '}navbar-collapse bg-light`}
         tabIndex={-1}
         ref={dropdownRef}
         onBlur={e => {
           if (!e.relatedTarget) {
-            setActive(false)
+            setOpenNav(false)
           }
         }}
       >
@@ -88,10 +73,9 @@ const Header = ({ loggedIn }) => {
           className='navbar-nav'
         >
           <li
-            className={`${active1 ? 'active ' : ''}nav-item`}
+            className={`nav-item${active === 'Hi' ? ' active ' : ''}`}
             onClick={() => {
-              reset()
-              setActive1(true)
+              setActive('Hi')
             }}
           >
             <Link
@@ -106,10 +90,9 @@ const Header = ({ loggedIn }) => {
             </Link>
           </li>
           <li
-            className={`nav-item${active4 ? ' active' : ''}`}
+            className={`nav-item${active === 'Pieces' ? ' active ' : ''}`}
             onClick={() => {
-              reset()
-              setActive4(true)
+              setActive('Pieces')
             }}
           >
             <Link

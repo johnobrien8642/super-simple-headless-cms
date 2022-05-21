@@ -50,7 +50,7 @@ export default function Home({ data, loggedIn, randPost }) {
               passHref
             >
               <a
-                className='nav-link my-auto'
+                className='pieces-link'
               >
                 Pieces
               </a>
