@@ -5,7 +5,6 @@ import Link from 'next/link'
 const AddPiece = ({}) => {
   const router = useRouter()
   const { update, pieceId, title, summary } = router.query
-  console.log(router.query)
   let [titleHook, setTitle] = useState(title ? title : '')
   let [summaryHook, setSummary] = useState(summary ? summary : '')
   
