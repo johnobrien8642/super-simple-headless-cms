@@ -164,6 +164,7 @@ const Roll = ({ data }) => {
                   {p.title}
                   {handleDeleteButton(loggedIn, 'title', p._id)}
                 </h3>
+                <h6>{p.summary}</h6>
                 {handleAdminLinks('addSection', p)}
                 <div
                   className={`sections-container my-1${toggle.includes(p._id.toString())? ' open' : ''}`}
