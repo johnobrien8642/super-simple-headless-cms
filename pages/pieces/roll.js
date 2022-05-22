@@ -10,7 +10,7 @@ import keys from '../../config/keys'
 import jwt from 'jsonwebtoken'
 
 const Roll = ({ data }) => {
-  let [toggle, toggleSections] = useState(false)
+  let [toggle, toggleSections] = useState([])
   let [warn, setWarn] = useState('')
   const router = useRouter()
   const path = keys.url + router.asPath
@@ -153,7 +153,11 @@ const Roll = ({ data }) => {
               >
                 <h3
                   onClick={() => {
-                    toggleSections(toggle ? '' : p._id)
+                    if (toggle.includes(p._id)) {
+                      toggleSections([...toggle.splice(toggle.findIndex(_id => _id.toString() === p._id.toString()), 1)])
+                    } else {
+                      toggleSections(toggle.concat(p._id))
+                    }
                   }}
                 >
                   {p.title}
@@ -161,7 +165,7 @@ const Roll = ({ data }) => {
                 </h3>
                 {handleAdminLinks('addSection', p)}
                 <div
-                  className={`sections-container my-1${toggle === p._id? ' open' : ''}`}
+                  className={`sections-container my-1${toggle.includes(p._id)? ' open' : ''}`}
                 >
                   {p.sections.map(s => {
                     return (
