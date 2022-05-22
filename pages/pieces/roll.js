@@ -153,10 +153,11 @@ const Roll = ({ data }) => {
               >
                 <h3
                   onClick={() => {
-                    if (toggle.includes(p._id)) {
-                      toggleSections([...toggle.splice(toggle.findIndex(_id => _id.toString() === p._id.toString()), 1)])
+                    if (toggle.includes(p._id.toString())) {
+                      toggle.splice(toggle.findIndex(_id => _id.toString() === p._id.toString()), 1)
+                      toggleSections([...toggle])
                     } else {
-                      toggleSections(toggle.concat(p._id))
+                      toggleSections(toggle.concat(p._id.toString()))
                     }
                   }}
                 >
@@ -165,7 +166,7 @@ const Roll = ({ data }) => {
                 </h3>
                 {handleAdminLinks('addSection', p)}
                 <div
-                  className={`sections-container my-1${toggle.includes(p._id)? ' open' : ''}`}
+                  className={`sections-container my-1${toggle.includes(p._id.toString())? ' open' : ''}`}
                 >
                   {p.sections.map(s => {
                     return (
