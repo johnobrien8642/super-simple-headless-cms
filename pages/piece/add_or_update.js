@@ -4,9 +4,10 @@ import Link from 'next/link'
 
 const AddPiece = ({}) => {
   const router = useRouter()
-  const { update, title, summary } = router.query
-  let [titleHook, setTitle] = useState(title)
-  let [summaryHook, setSummary] = useState(summary)
+  const { update, pieceId, title, summary } = router.query
+  console.log(router.query)
+  let [titleHook, setTitle] = useState(title ? title : '')
+  let [summaryHook, setSummary] = useState(summary ? summary : '')
   
   return (
     <div
@@ -29,6 +30,7 @@ const AddPiece = ({}) => {
             },
             body: JSON.stringify({
               update,
+              _id: pieceId,
               titleHook,
               summaryHook
             })
@@ -48,6 +50,7 @@ const AddPiece = ({}) => {
           <input
             name='title'
             type='text'
+            value={titleHook}
             onInput={e => {
               setTitle(e.target.value)
             }}
@@ -60,6 +63,7 @@ const AddPiece = ({}) => {
           <textarea
             name='summary'
             type='text'
+            value={summaryHook}
             onInput={e => {
               setSummary(e.target.value)
             }}

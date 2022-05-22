@@ -3,6 +3,16 @@
   .piece-container {
     width: fit-content;
 
+    .header-container {
+      display: flex;
+
+      a {
+        color: blue;
+        text-decoration: underline;
+        margin-left: 1rem;
+      }
+    }
+
     form {
       .warning {
         display: none;

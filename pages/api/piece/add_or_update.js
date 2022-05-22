@@ -20,7 +20,12 @@ export default async (req, res) => {
         }
       } else {
         if (update === 'true') {
+          piece = await Piece.findById(_id)
+
+          piece.title = titleHook
+          piece.summary = summaryHook
           
+          await piece.save()
         } else {
           piece = new Piece({ title: titleHook, summary: summaryHook })
           await piece.save()

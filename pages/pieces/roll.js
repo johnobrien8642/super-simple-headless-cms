@@ -30,6 +30,15 @@ const Roll = ({ data }) => {
 
   function handleAdminLinks(loc, obj1, obj2) {
     if (loggedIn) {
+      if (loc === 'editPiece') {
+        return (
+          <Link
+            href={{ pathname: '/piece/add_or_update', query: { update: true, pieceId: obj1._id, title: obj1.title, summary: obj1.summary } }}
+          >
+            <a>Edit piece</a>
+          </Link>
+        )
+      }
       if (loc === 'addNewPiece') {
         return (
           <Link
@@ -151,19 +160,24 @@ const Roll = ({ data }) => {
               <div
                 className='piece-container my-3'
               >
-                <h3
-                  onClick={() => {
-                    if (toggle.includes(p._id.toString())) {
-                      toggle.splice(toggle.findIndex(_id => _id.toString() === p._id.toString()), 1)
-                      toggleSections([...toggle])
-                    } else {
-                      toggleSections(toggle.concat(p._id.toString()))
-                    }
-                  }}
+                <div
+                  className='header-container'
                 >
-                  {p.title}
-                  {handleDeleteButton(loggedIn, 'title', p._id)}
-                </h3>
+                  <h3
+                    onClick={() => {
+                      if (toggle.includes(p._id.toString())) {
+                        toggle.splice(toggle.findIndex(_id => _id.toString() === p._id.toString()), 1)
+                        toggleSections([...toggle])
+                      } else {
+                        toggleSections(toggle.concat(p._id.toString()))
+                      }
+                    }}
+                  >
+                    {p.title}
+                    {handleDeleteButton(loggedIn, 'title', p._id)}
+                  </h3>
+                  {handleAdminLinks('editPiece', p)}
+                </div>
                 <h6>{p.summary}</h6>
                 {handleAdminLinks('addSection', p)}
                 <div
