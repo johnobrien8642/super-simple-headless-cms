@@ -153,7 +153,7 @@ const Roll = ({ data }) => {
               >
                 <h3
                   onClick={() => {
-                    toggleSections(!toggle)
+                    toggleSections(toggle ? '' : p._id)
                   }}
                 >
                   {p.title}
@@ -161,7 +161,7 @@ const Roll = ({ data }) => {
                 </h3>
                 {handleAdminLinks('addSection', p)}
                 <div
-                  className={`sections-container my-1${toggle ? ' open' : ''}`}
+                  className={`sections-container my-1${toggle === p._id? ' open' : ''}`}
                 >
                   {p.sections.map(s => {
                     return (
