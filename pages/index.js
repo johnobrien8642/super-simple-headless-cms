@@ -36,7 +36,7 @@ export default function Home({ data, loggedIn, randPost }) {
         >
           <p>
             Hello, my name's Mikowski. I post all of my writing here for free, find the links
-            to them either above or below.
+            to them above or below.
           </p>
           <p>
             My email: mikowski.me@protonmail.com
