@@ -35,8 +35,8 @@ export default function Home({ data, loggedIn, randPost }) {
           className='index-container'
         >
           <p>
-            Hello, my name's Mikowski. I write. I post all of my writing here for free, find the links
-            to them either below or above. Enjoy.
+            Hello, my name's Mikowski. I post all of my writing here for free, find the links
+            to them either above or below.
           </p>
           <p>
             My email: mikowski.me@protonmail.com
