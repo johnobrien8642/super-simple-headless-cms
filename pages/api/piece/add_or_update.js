@@ -8,7 +8,7 @@ export default async (req, res) => {
   let section
   
   if (req.method === 'POST') {
-    const { deleteBool, _id, update, titleHook, summaryHook } = req.body
+    const { deleteBool, _id, update, titleHook, summaryHook, finishedHook } = req.body
     try {
       if (deleteBool) {
         piece = await Piece.findById(_id).populate('sections')
@@ -24,10 +24,14 @@ export default async (req, res) => {
 
           piece.title = titleHook
           piece.summary = summaryHook
+          piece.finished = finishedHook
           
           await piece.save()
         } else {
           piece = new Piece({ title: titleHook, summary: summaryHook })
+          if (finishedHook) {
+            piece.finished = finishedHook
+          }
           await piece.save()
         }
       }
