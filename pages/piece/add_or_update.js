@@ -8,7 +8,7 @@ const AddPiece = ({}) => {
   let [titleHook, setTitle] = useState(title ? title : '')
   let [summaryHook, setSummary] = useState(summary ? summary : '')
   let [finishedHook, setFinished] = useState(finished ? finished : false)
-  console.log(finished)
+  
   return (
     <div
       className='add-piece container mt-5'
