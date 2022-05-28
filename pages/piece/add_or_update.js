@@ -8,7 +8,7 @@ const AddPiece = ({}) => {
   let [titleHook, setTitle] = useState(title ? title : '')
   let [summaryHook, setSummary] = useState(summary ? summary : '')
   let [finishedHook, setFinished] = useState(finished ? finished : false)
-  console.log(finishedHook)
+  console.log(finished)
   return (
     <div
       className='add-piece container mt-5'
@@ -68,7 +68,7 @@ const AddPiece = ({}) => {
             <input
               name='title'
               type='radio'
-              defaultChecked={finishedHook}
+              defaultChecked={finishedHook === 'true'}
               onClick={() => {
                 setFinished(true)
               }}
@@ -81,7 +81,7 @@ const AddPiece = ({}) => {
             <input
               name='title'
               type='radio'
-              defaultChecked={!finishedHook}
+              defaultChecked={finishedHook === 'false' || !finishedHook}
               onClick={() => {
                 setFinished(false)
               }}
