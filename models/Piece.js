@@ -15,6 +15,10 @@ const PieceSchema = new Schema({
       ref: 'Section'
     }
   ],
+  finished: {
+    type: Boolean,
+    default: false
+  },
   updatedAt: {
     type: Date,
     default: Date.now

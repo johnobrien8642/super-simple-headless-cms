@@ -33,7 +33,7 @@ const Roll = ({ data }) => {
       if (loc === 'editPiece') {
         return (
           <Link
-            href={{ pathname: '/piece/add_or_update', query: { update: true, pieceId: obj1._id, title: obj1.title, summary: obj1.summary } }}
+            href={{ pathname: '/piece/add_or_update', query: { update: true, pieceId: obj1._id, title: obj1.title, summary: obj1.summary, finished: obj1.finished } }}
           >
             <a>Edit piece</a>
           </Link>
@@ -151,6 +151,12 @@ const Roll = ({ data }) => {
       <div
         className='roll container pieces-container'
       >
+        <div
+          className='explainer'
+        >
+          <span>F = Finished</span>
+          <span>O = Ongoing</span>
+        </div>
         {handleAdminLinks('addNewPiece')}
         {JSON.parse(pieces)?.map((p, i) => {
           return (
@@ -176,6 +182,7 @@ const Roll = ({ data }) => {
                     {p.title}
                     {handleDeleteButton(loggedIn, 'title', p._id)}
                   </h3>
+                  <sup>{p.finished ? 'F' : 'O'}</sup>
                   {handleAdminLinks('editPiece', p)}
                 </div>
                 <h6>{p.summary}</h6>

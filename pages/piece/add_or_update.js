@@ -4,10 +4,11 @@ import Link from 'next/link'
 
 const AddPiece = ({}) => {
   const router = useRouter()
-  const { update, pieceId, title, summary } = router.query
+  const { update, pieceId, title, summary, finished } = router.query
   let [titleHook, setTitle] = useState(title ? title : '')
   let [summaryHook, setSummary] = useState(summary ? summary : '')
-  
+  let [finishedHook, setFinished] = useState(finished ? finished : false)
+  console.log(finishedHook)
   return (
     <div
       className='add-piece container mt-5'
@@ -31,7 +32,8 @@ const AddPiece = ({}) => {
               update,
               _id: pieceId,
               titleHook,
-              summaryHook
+              summaryHook,
+              finishedHook
             })
           })
           const returnedData = await res.json()
@@ -55,6 +57,37 @@ const AddPiece = ({}) => {
             }}
           ></input>
         </label>
+        <div
+          className='status'
+        >
+          <span>Status: </span>
+          <label
+            htmlFor='title'
+          >
+            Finished
+            <input
+              name='title'
+              type='radio'
+              defaultChecked={finishedHook}
+              onClick={() => {
+                setFinished(true)
+              }}
+            ></input>
+          </label>
+          <label
+            htmlFor='title'
+          >
+            Ongoing
+            <input
+              name='title'
+              type='radio'
+              defaultChecked={!finishedHook}
+              onClick={() => {
+                setFinished(false)
+              }}
+            ></input>
+          </label>
+        </div>
         <label
           htmlFor='summary'
         >

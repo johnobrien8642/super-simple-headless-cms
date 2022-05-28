@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 
 const Header = ({ loggedIn }) => {
   let [active, setActive] = useState('')
+
+  
   let [openNav, setOpenNav] = useState('')
   const dropdownRef = useRef(null)
   const router = useRouter()
