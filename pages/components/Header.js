@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 
 const Header = ({ loggedIn }) => {
   let [active, setActive] = useState('')
-
   
   let [openNav, setOpenNav] = useState('')
   const dropdownRef = useRef(null)
@@ -21,6 +20,8 @@ const Header = ({ loggedIn }) => {
       setActive('Hi')
     } else if (pathname === '/pieces/roll') {
       setActive('Pieces')
+    } else if (pathname === '/essays/roll') {
+      setActive('Essays')
     }
   })
   
@@ -106,6 +107,24 @@ const Header = ({ loggedIn }) => {
                 className='nav-link'
               >
                 Pieces
+              </a>
+            </Link>
+          </li>
+          <li
+            className={`nav-item${active === 'Essays' ? ' active ' : ''}`}
+            onClick={() => {
+              setActive('Essays')
+            }}
+          >
+            <Link
+              href='/essays/roll'
+              className='nav-link'
+              passHref
+            >
+              <a
+                className='nav-link'
+              >
+                Essays
               </a>
             </Link>
           </li>

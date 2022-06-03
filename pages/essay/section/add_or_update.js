@@ -2,19 +2,19 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Section from '../../../models/Section'
-import Piece from '../../../models/Piece'
+import Essay from '../../../models/Essay'
 import Admin from '../../../models/Admin'
 import connectDb from '../../../lib/mongodb'
 import jwt from 'jsonwebtoken'
 
 const AddSection = ({ 
-  piece,
+  essay,
   section,
   authenticated
 }) => {
   const router = useRouter()
 	const { update, writingId, sectionId, title, text, sectionLength, type } = router.query
-  const pPiece = JSON.parse(piece)
+  const pEssay = JSON.parse(essay)
   const pSection = JSON.parse(section)
   let [titleHook, setTitle] = useState(pSection?.title ? pSection.title : '')
   let [textHook, setText] = useState('')
@@ -41,7 +41,7 @@ const AddSection = ({
         className='add-section-container container mt-5 hide'
       >
         <Link
-          href='/pieces/roll'
+          href='/essays/roll'
         >
           Back To Roll
         </Link>
@@ -137,7 +137,7 @@ export async function getServerSideProps(context) {
 
   const { writingId, sectionId } = context.query
 
-  const piece = await Piece
+  const essay = await Essay
     .findById(writingId)
     .populate('sections')
 
@@ -148,7 +148,7 @@ export async function getServerSideProps(context) {
     .findById(decoded?.id)
 
   return {
-    props: { piece: JSON.stringify(piece), section: JSON.stringify(section), authenticated: !!authenticated },
+    props: { essay: JSON.stringify(essay), section: JSON.stringify(section), authenticated: !!authenticated },
   };
 }
 

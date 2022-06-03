@@ -1,6 +1,7 @@
 import connectDb from '../../../../lib/mongodb'
 import Section from '../../../../models/Section'
 import Piece from '../../../../models/Piece'
+import Essay from '../../../../models/Essay'
 import mongoose from 'mongoose'
 
 export default async (req, res) => {
@@ -8,23 +9,32 @@ export default async (req, res) => {
   let section
   let sectionToUpdate
   let sectionUpdateObj
-  let piece
+  let writing
   let index
+  let Model
+  let Models = {
+    piece: Piece,
+    essay: Essay
+  }
+  let resolveWritingTypeId = {}
   
   if (req.method === 'POST') {
-    const { deleteBool, update, pieceId, sectionId, textHook, numberHook, titleHook, _id } = req.body
+    const { deleteBool, update, writingId, sectionId, textHook, numberHook, titleHook, _id, type } = req.body
+    Model = Models[type]
     
+    resolveWritingTypeId[type] = writingId
+
     try {
       if (deleteBool) {
         section = await Section.findById(_id)
         await Section.deleteOne({ _id: mongoose.Types.ObjectId(_id) })
-        piece = await Piece
-          .findById(section.piece)
+        writing = await Model
+          .findById(section[type])
 
-        piece.sections.splice(piece.sections.findIndex(_id => _id === section._id), 1)
+        writing.sections.splice(writing.sections.findIndex(_id => _id === section._id), 1)
 
-        for (let i = 0; i < piece.sections.length; i++) {
-          sectionToUpdate = piece.sections[i]
+        for (let i = 0; i < writing.sections.length; i++) {
+          sectionToUpdate = writing.sections[i]
 
           sectionUpdateObj = await Section
             .findById(sectionToUpdate._id)
@@ -43,16 +53,16 @@ export default async (req, res) => {
 
           await section.save()
 
-          piece = await Piece
-            .findById(pieceId)
+          writing = await Model
+            .findById(writingId)
             .populate('sections')
 
-          piece.sections.splice(piece.sections.findIndex(obj => obj._id.toString() === section._id.toString()), 1)
+          writing.sections.splice(writing.sections.findIndex(obj => obj._id.toString() === section._id.toString()), 1)
           
-          piece.sections.splice(section.sectionNumber - 1, 0, section._id)
+          writing.sections.splice(section.sectionNumber - 1, 0, section._id)
   
-          for (let i = 0; i < piece.sections.length; i++) {
-            sectionToUpdate = piece.sections[i]
+          for (let i = 0; i < writing.sections.length; i++) {
+            sectionToUpdate = writing.sections[i]
   
             sectionUpdateObj = await Section
               .findById(sectionToUpdate._id)
@@ -62,25 +72,26 @@ export default async (req, res) => {
             await sectionUpdateObj.save()
           }
 
-          await piece.save()
+          await writing.save()
         } else {
           section = new Section({
-            piece: pieceId,
             title: titleHook,
             sectionNumber: numberHook,
             sectionText: textHook
           })
+
+          section[type] = writingId
   
           await section.save()
   
-          piece = await Piece
-            .findById(pieceId)
+          writing = await Model
+            .findById(writingId)
             .populate('sections')
           
-          piece.sections.splice(section.sectionNumber - 1, 0, section._id)
+          writing.sections.splice(section.sectionNumber - 1, 0, section._id)
   
-          for (let i = 0; i < piece.sections.length; i++) {
-            sectionToUpdate = piece.sections[i]
+          for (let i = 0; i < writing.sections.length; i++) {
+            sectionToUpdate = writing.sections[i]
   
             sectionUpdateObj = await Section
               .findById(sectionToUpdate._id)
@@ -90,7 +101,7 @@ export default async (req, res) => {
             await sectionUpdateObj.save()
           }
 
-          await piece.save()
+          await writing.save()
         }
       }
       res.status(200).json({ success: true, section })

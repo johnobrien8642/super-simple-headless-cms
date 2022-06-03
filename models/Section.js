@@ -1,12 +1,14 @@
-import { ObjectId } from 'mongodb'
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const SectionSchema = new Schema({
   piece: {
     type: mongoose.Types.ObjectId,
-    ref: 'Piece',
-    required: true
+    ref: 'Piece'
+  },
+  essay: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Essay'
   },
   title: {
     type: String

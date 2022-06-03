@@ -14,7 +14,7 @@ const AddPiece = ({}) => {
       className='add-piece container mt-5'
     >
       <Link
-        href='/pieces/roll'
+        href='/essays/roll'
       >
         Back To Roll
       </Link>
@@ -39,7 +39,7 @@ const AddPiece = ({}) => {
           })
           const returnedData = await res.json()
           if (res.ok) {
-            router.push('/pieces/roll')
+            router.push('/essays/roll')
           } else {
             console.log('Error in piece/add_or_update:', returnedData.errorMessage)
           }

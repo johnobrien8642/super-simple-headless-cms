@@ -44,6 +44,40 @@
       font-size: 1.4rem;
       color: black
     }
+    
+    .subscribe-form-container {
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      margin: 2rem auto;
+      text-align: center;
+      border: 1px solid black;
+      padding: .5rem;
+
+      form {
+        display: flex;
+        flex-direction: column;
+
+        input {
+          padding: .5rem;
+          font-size: 1.5rem;
+          outline: none;
+        }
+        
+        button {
+          width: fit-content;
+          margin: .5rem auto;
+        }
+      }
+    }
+
+    .bottom-links {
+      display: flex;
+      
+      a {
+        margin-right: .5rem;
+      }
+    }
   }
 
   .post-show {
@@ -123,3 +157,44 @@
     }
   }
 }
+
+.send-email-container {
+  form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+
+      textarea {
+        min-height: 300px;
+      }
+    }
+
+    button {
+      width: fit-content;
+      padding: .5rem 1rem;
+    }
+  }
+}
+
+.unsubscribe-container {
+  .waiting.hidden {
+    display: none;
+  }
+
+  .waiting.active {
+    display: block;
+  }
+
+  .confirmed.hidden {
+    display: none;
+  }
+
+  .confirmed.active {
+    display: block;
+  }
+}
+

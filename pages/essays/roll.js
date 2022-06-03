@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import connectDb from '../../lib/mongodb'
 import Header from '../components/Header'
-import Piece from '../../models/Piece'
+import Essay from '../../models/Essay'
 import Admin from '../../models/Admin'
 import { useRouter } from 'next/router'
 import keys from '../../config/keys'
@@ -15,6 +15,8 @@ const Roll = ({ data }) => {
   const router = useRouter()
   const path = keys.url + router.asPath
   const { loggedIn, pieces } = data
+  
+  // const { update, writingId, title, summary, finished } = router.pathname
   
   function handleRowDivider(p , i) {
     let i2 = 0
@@ -33,25 +35,25 @@ const Roll = ({ data }) => {
       if (loc === 'editPiece') {
         return (
           <Link
-            href={{ pathname: '/piece/add_or_update', query: { update: true, writingId: obj1._id, title: obj1.title, summary: obj1.summary, finished: obj1.finished, type: 'piece' } }}
+            href={{ pathname: '/essay/add_or_update', query: { update: true, writingId: obj1._id, title: obj1.title, summary: obj1.summary, finished: obj1.finished, type: 'essay' } }}
           >
-            <a>Edit piece</a>
+            <a>Edit essay</a>
           </Link>
         )
       }
       if (loc === 'addNewPiece') {
         return (
           <Link
-            href={{ pathname: '/piece/add_or_update', query: { update: false, type: 'piece' } }}
+            href={{ pathname: '/essay/add_or_update', query: { update: false, type: 'essay' } }}
           >
-            Add New Piece
+            Add New Essay
           </Link>
         )
       }
       if (loc === 'addSection') {
         return (
           <Link
-            href={{ pathname: `/piece/section/add_or_update`, query: { update: false, writingId: obj1._id, sectionLength: obj1.sections.length + 1, type: 'piece' }}}
+            href={{ pathname: `/essay/section/add_or_update`, query: { update: false, writingId: obj1._id, sectionLength: obj1.sections.length + 1, type: 'essay' }}}
           >
             <a className='add-section-link my-1'>Add Section</a>
           </Link>
@@ -60,7 +62,7 @@ const Roll = ({ data }) => {
       if (loc === 'editSection') {
         return (
           <Link
-            href={{ pathname: `/piece/section/add_or_update`, query: { update: true, writingId: obj1._id, sectionId: obj2._id, type: 'piece' } }}
+            href={{ pathname: `/essay/section/add_or_update`, query: { update: true, writingId: obj1._id, sectionId: obj2._id, type: 'essay' } }}
           >
             <a className='section-edit-link'>Edit</a>
           </Link>
@@ -114,14 +116,14 @@ const Roll = ({ data }) => {
                 body: JSON.stringify({
                   deleteBool: true,
                   _id,
-                  type: 'piece'
+                  type: 'essay'
                 })
               })
               const returnedData = await res.json()
               if (res.ok) {
                 window.location.reload()
               } else {
-                console.log('Error in pieces/roll', returnedData.errorMessage)
+                console.log('Error in essays/roll', returnedData.errorMessage)
               }
             }}
           >
@@ -197,7 +199,7 @@ const Roll = ({ data }) => {
                         className='section-container my-1'
                         key={s._id}
                       >
-                        <Link href={{ pathname: '/piece/section', query: { sectionId: s._id }}}>
+                        <Link href={{ pathname: '/essay/section', query: { sectionId: s._id }}}>
                           {handleSection(s)}
                         </Link>
                         {handleAdminLinks('editSection', p, s)}
@@ -223,7 +225,7 @@ export async function getServerSideProps(context) {
     decoded = jwt.verify(context.req.cookies.token, process.env.SECRET_KEY)
   }
 
-  const pieces = await Piece
+  const pieces = await Essay
     .find({})
     .populate('sections')
 

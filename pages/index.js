@@ -6,6 +6,7 @@ import keys from '../config/keys'
 import connectDb from '../lib/mongodb'
 import Admin from '../models/Admin'
 import Logout from './components/Logout'
+import SubscribeForm from './components/Subscribe_Form'
 import { useRouter } from 'next/router'
 import jwt from 'jsonwebtoken'
 
@@ -44,7 +45,11 @@ export default function Home({ data, loggedIn, randPost }) {
           <p>
             Unserious inquiries only, please.
           </p>
-          <Link
+          <SubscribeForm />
+          <div
+            className='bottom-links'
+          >
+            <Link
               href='/pieces/roll'
               className='nav-link'
               passHref
@@ -55,6 +60,18 @@ export default function Home({ data, loggedIn, randPost }) {
                 Pieces
               </a>
             </Link>
+          <Link
+              href='/essays/roll'
+              className='nav-link'
+              passHref
+            >
+              <a
+                className='pieces-link'
+              >
+                Essays
+              </a>
+            </Link>
+          </div>
         </div>
       </div>
     </React.Fragment>

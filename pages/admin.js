@@ -28,6 +28,11 @@ const AdminPage = ({ data }) => {
           >
             Main Page
           </Link>
+          <Link
+            href={'/util/send_emails'}
+          >
+            Send Emails
+          </Link>
         </React.Fragment>
       )
     } else {
