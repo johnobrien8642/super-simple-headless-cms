@@ -148,6 +148,8 @@ const Roll = ({ data }) => {
   return (
     <React.Fragment>
       <Head>
+        <title>Essays</title>
+        <meta name='description' content='All essays by Mikowski in their entirety, available to read.' />
         <link rel='canonical' href={path} />
       </Head>
       <Header loggedIn={loggedIn} />

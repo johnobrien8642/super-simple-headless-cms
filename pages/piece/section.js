@@ -2,6 +2,9 @@ import Piece from '../../models/Piece'
 import Section from '../../models/Section'
 import connectDb from '../../lib/mongodb'
 import Link from 'next/link'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import keys from '../../config/keys'
 
 const SectionPage = ({ 
     data: { 
@@ -15,6 +18,8 @@ const SectionPage = ({
     const pPrevSection = JSON.parse(prevSection)
     const pNextSection = JSON.parse(nextSection)
     const pWritingId = JSON.parse(writingId)
+    const router = useRouter()
+    const path = keys.url + router.asPath
     
     function handlePrevOrNext(s) {
       return (
@@ -38,6 +43,11 @@ const SectionPage = ({
       <div
         className='single-section-container container my-5'
       >
+        <Head>
+          <title>{pSection.piece.title}</title>
+          <meta name='description' content={`${pSection.piece.summary ? pSection.piece.summary + ' By Mikowski.' : 'By Mikowski.'}`} />
+          <link rel='canonical' href={path} />
+        </Head>
         <Link
           href={{ pathname: '/pieces/roll' }}
         >

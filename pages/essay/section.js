@@ -2,6 +2,9 @@ import Essay from '../../models/Essay'
 import Section from '../../models/Section'
 import connectDb from '../../lib/mongodb'
 import Link from 'next/link'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import keys from '../../config/keys'
 
 const SectionPage = ({ 
     data: { 
@@ -15,6 +18,8 @@ const SectionPage = ({
     const pPrevSection = JSON.parse(prevSection)
     const pNextSection = JSON.parse(nextSection)
     const pEssayId = JSON.parse(essayId)
+    const router = useRouter()
+    const path = keys.url + router.asPath
     
     function handlePrevOrNext(s) {
       return (
@@ -38,6 +43,11 @@ const SectionPage = ({
       <div
         className='single-section-container container my-5'
       >
+        <Head>
+          <title>{pSection.essay.title}</title>
+          <meta name='description' content={`${pSection.essay.summary ? pSection.essay.summary + ' By Mikowski.' : 'By Mikowski.'}`} />
+          <link rel='canonical' href={path} />
+        </Head>
         <Link
           href={{ pathname: '/essays/roll' }}
         >
@@ -77,7 +87,7 @@ export async function getServerSideProps(context) {
 
   const section = await Section
     .findById(sectionId)
-    .populate('piece')
+    .populate('essay')
   
   const essay = await Essay
     .findById(section.essay)
