@@ -49,7 +49,7 @@ const SubscribeForm = () => {
           if (res.ok) {
             setEmail('')
             setWaiting(false)
-            setSuccess("I've sent you an email, if you received it, you're successfully subscribed. If not, double check your email and try again. - Mikowski")
+            setSuccess("I've sent you an email, if you received it, you're successfully subscribed. If not, double-check your email and try again. - Mikowski")
           } else {
             if (returnedData.alreadyExists) {
               setWaiting(false)
