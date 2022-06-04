@@ -5,14 +5,6 @@ const SubscribeForm = () => {
   let [success, setSuccess] = useState('')
   let [error, setError] = useState('')
 
-  useEffect(() => {
-    if (success) {
-      setTimeout(() => {
-        setSuccess('')
-      }, 3000)
-    }
-  }, [success])
-
   function handleSuccessOrError() {
     if (success) {
       return (
@@ -48,12 +40,17 @@ const SubscribeForm = () => {
               email
             })
           })
-          console.log(res)
+          
+          const returnedData = await res.json()
           if (res.ok) {
             setEmail('')
-            setSuccess("You're subscribed")
+            setSuccess("I've sent you an email, if you received it, you're successfully subscribed. If not, double check your email and try again. - Mikowski")
           } else {
-            setError('There was an error, double-check and make sure email is correct and a valid email.')
+            if (returnedData.alreadyExists) {
+              setError("You're already subscribed.")
+            } else {
+              setError('There was an error, double-check and make sure email is correct and a valid email.')
+            }
           }
         }}
       >

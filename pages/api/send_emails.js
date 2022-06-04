@@ -29,7 +29,7 @@ export default async (req, res) => {
     try {
       await sendEmail(subs[i], { emailTitle: title, writingTitle: section.piece.title, sectionId, writingType })
     } catch (err) {
-      return res.status(500).json({ success: false, errorMessage: err.message })
+      console.log(`Error sending to ${sub.email}: ${err.message}`)
     }
   }
   res.status(200).json({ success: true })

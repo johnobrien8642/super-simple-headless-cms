@@ -10,6 +10,7 @@ import mongoose from 'mongoose'
 export default async (req, res) => {
   await connectDb()
   let sub
+  let fetchedSub
   const { email, jsonwebtoken } = req.body
 
   const ses = new aws.SESClient({
@@ -23,18 +24,23 @@ export default async (req, res) => {
   
   if (req.method === 'POST') {
     if (!validator.validate(email)) return res.status(500).json({ success: false, errorMessage: 'Email is invalid'})
-    try {
-      sub = new Sub({ email })
-      sub.jsonwebtoken = jwt.sign({ id: sub._id }, process.env.SECRET_KEY)
-      await sub.save()
+    fetchedSub = await Sub.find({ email: email })
+    if (!fetchedSub.length) {
       try {
-        await sendEmail(sub)
+        sub = new Sub({ email })
+        sub.jsonwebtoken = jwt.sign({ id: sub._id }, process.env.SECRET_KEY)
+        try {
+          await sendEmail(sub)
+          await sub.save()
+        } catch (err) {
+          return res.status(500).json({ success: false, errorMessage: err.message })
+        }
+        res.status(200).json({ success: true, sub })
       } catch (err) {
         return res.status(500).json({ success: false, errorMessage: err.message })
       }
-      res.status(200).json({ success: true, sub })
-    } catch (err) {
-      return res.status(500).json({ success: false, errorMessage: err.message })
+    } else {
+      return res.status(400).json({ success: false, alreadyExists: 1 })
     }
   } else if (req.method === 'DELETE') {
     try {
