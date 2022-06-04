@@ -3,9 +3,13 @@ import { useState, useEffect, useRef } from 'react'
 const SubscribeForm = () => {
   let [email, setEmail] = useState('')
   let [success, setSuccess] = useState('')
+  let [waiting, setWaiting] = useState(false)
   let [error, setError] = useState('')
 
   function handleSuccessOrError() {
+    if (waiting) {
+      return <div className='spinner-border waiting'></div>
+    }
     if (success) {
       return (
         <p>{success}</p>
@@ -29,7 +33,7 @@ const SubscribeForm = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault()
-
+          setWaiting(true)
           const res = await fetch(`/api/handle_subscription`, {
             method: 'POST',
             headers: {
@@ -44,12 +48,15 @@ const SubscribeForm = () => {
           const returnedData = await res.json()
           if (res.ok) {
             setEmail('')
+            setWaiting(false)
             setSuccess("I've sent you an email, if you received it, you're successfully subscribed. If not, double check your email and try again. - Mikowski")
           } else {
             if (returnedData.alreadyExists) {
-              setError("You're already subscribed.")
+              setWaiting(false)
+              setError("You're already subscribed. - Mikowski")
             } else {
-              setError('There was an error, double-check and make sure email is correct and a valid email.')
+              setWaiting(false)
+              setError('My system said that email was invalid, double-check your email and try again. - Mikowski')
             }
           }
         }}
