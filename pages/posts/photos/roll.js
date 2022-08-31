@@ -12,7 +12,6 @@ const Roll = ({ posts }) => {
   const href = process.env.URL + router.asPath
   let [postsHook, setPosts] = useState(JSON.parse(posts))
 
-
   function handleRowDivider(p , i) {
     let i2 = 0
     i2 += (i + 1)

@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-const DeleteBtn = ({ post, loggedIn }) => {
+const DeleteBtn = ({ post }) => {
   let [error, setError] = useState('')
-  
+  let [loggedIn, setLoggedIn] = useState(false)
+  useEffect(() => {
+    if (window.localStorage.getItem('loggedIn')) {
+      setLoggedIn(true)
+    }
+  }, [])
   if (loggedIn) {
     return (
       <div

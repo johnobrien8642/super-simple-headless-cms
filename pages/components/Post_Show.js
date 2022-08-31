@@ -2,7 +2,7 @@ import Image from 'next/image'
 import DeleteBtn from './Delete_Btn'
 import { useRouter } from 'next/router'
 
-const PostShow = ({ post, single, loggedIn }) => {
+const PostShow = ({ post, single }) => {
   const router = useRouter()
   
   function handleViewButton() {
@@ -45,7 +45,7 @@ const PostShow = ({ post, single, loggedIn }) => {
         />
         <p>{post?.description}</p>
         {handleViewButton()}
-        <DeleteBtn post={post} loggedIn={loggedIn ? true : false} />
+        <DeleteBtn post={post} />
       </div>
     )
   } else {

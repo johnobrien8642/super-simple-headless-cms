@@ -25,6 +25,7 @@ const Login = () => {
           })
           const data = await res.json()
           Cookies.set('token', data.token)
+          window.localStorage.setItem('loggedIn', 'true')
           router.push('/posts/create_post')
         }}
       >

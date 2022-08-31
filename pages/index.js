@@ -19,6 +19,13 @@ export default function Home({ data, loggedIn, randPost }) {
     setTimeout(() => {
       setActive(true)
     }, 500)
+    if (loggedIn) {
+      window.localStorage.setItem('loggedIn', 'true');
+    } else {
+      if (window.localStorage.getItem('loggedIn')) {
+        window.localStorage.removeItem('loggedIn')
+      }
+    }
   })
   
   return (
@@ -43,7 +50,7 @@ export default function Home({ data, loggedIn, randPost }) {
           </p>
         </div>
 
-        <PostShow post={JSON.parse(randPost)} loggedIn={loggedIn ? true : false} />
+        <PostShow post={JSON.parse(randPost)} />
 
         <footer>
         </footer>

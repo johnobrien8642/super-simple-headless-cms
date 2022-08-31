@@ -12,6 +12,7 @@ const Logout = () => {
         onClick={e => {
           e.preventDefault()
           Cookies.remove('token')
+          window.localStorage.removeItem('loggedIn')
           router.push('/admin')
         }}
       >
