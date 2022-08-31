@@ -26,34 +26,20 @@ export default function Home({ data, loggedIn, randPost }) {
       <Header loggedIn={loggedIn} />
       <div className={`${active ? 'active ' : ''}main-page container`}>
         <Head>
-          <title>Mikowski</title>
+          <title>John E. O'Brien</title>
           {/* <link rel="icon" href="/favicon.ico" /> */}
-          <meta name='description' content="Do you like good writing and cool pictures? Hi, my name's Mikowski, this is my website, I host everything here for free." />
+          <meta name='description' content="A place for my visual art." />
           <link rel='canonical'  href={href}/>
         </Head>
 
         <div
           className='index-container'
         >
-          <h1 className='h1'>Hello</h1>
           <p>
-            Hello. My name's Mikowksi. You can find all of my writing pieces here for
-            free. You can also find all of my photography.
+            My name's John, and this is a website where I post all of my visual art.
           </p>
           <p>
-            Mikowski is my artist's pseudonym. The only way you'll ever find anything
-            out about me is by reading my writing. I doubt you'll find anything out
-            about me by looking at my pictures, but I do enjoy taking pictures, so 
-            I do hope you enjoy those.
-          </p>
-          <p>
-            I do have an email that I'm going to put here out of my own curiosity.
-          </p>
-          <p>
-            mikowski.me@protonmail.com
-          </p>
-          <p>
-            Message about whatever you like. No guarantees I'll get back.
+            johnedwardobrienartist@gmail.com
           </p>
         </div>
 
