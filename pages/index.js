@@ -14,7 +14,7 @@ export default function Home({ data, loggedIn, randPost }) {
   let [active, setActive] = useState(false)
   const router = useRouter()
   const href = keys.url + router.asPath
-
+  
   useEffect(() => {
     setTimeout(() => {
       setActive(true)
@@ -43,7 +43,7 @@ export default function Home({ data, loggedIn, randPost }) {
           </p>
         </div>
 
-        <PostShow post={JSON.parse(randPost)} />
+        <PostShow post={JSON.parse(randPost)} loggedIn={loggedIn ? true : false} />
 
         <footer>
         </footer>
