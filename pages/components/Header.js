@@ -3,12 +3,18 @@ import Link from 'next/link'
 import Logout from '../components/Logout'
 import { useRouter } from 'next/router'
 
-const Header = ({ loggedIn }) => {
+const Header = () => {
   let [active, setActive] = useState(false)
   let [active1, setActive1] = useState(false)
   let [active2, setActive2] = useState(false)
   let [active3, setActive3] = useState(false)
   let [active4, setActive4] = useState(false)
+  let [loggedIn, setLoggedIn] = useState(false)
+  useEffect(() => {
+    if (window.localStorage.getItem('loggedIn')) {
+      setLoggedIn(true)
+    }
+  }, [])
   
   const dropdownRef = useRef(null)
   const router = useRouter()
