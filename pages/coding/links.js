@@ -37,7 +37,7 @@ const CodingLinks = () => {
               <Image
                 width='400'
                 height='400'
-                src='/Github-Mark.png'
+                src='/GitHub-Mark.png'
               ></Image>
             </a>
             <a
