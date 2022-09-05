@@ -105,7 +105,26 @@ const Header = ({ loggedIn }) => {
               <a
                 className='nav-link'
               >
-                Pieces
+                Writing
+              </a>
+            </Link>
+          </li>
+          <li
+            className={`nav-item${active3 ? ' active' : ''}`}
+            onClick={() => {
+              reset()
+              setActive3(true)
+            }}
+          >
+            <Link
+              href='/posts/photos/roll'
+              className='nav-link'
+              passHref
+            >
+              <a
+                className='nav-link'
+              >
+                Pictures
               </a>
             </Link>
           </li>
