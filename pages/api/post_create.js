@@ -12,10 +12,12 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     const { link, title, description, price, type } = req.body
 
-    const { base64 } = await getPlaiceholder(link)
+    const linkStr = `https://d10v7123g4b5wr.cloudfront.net/${link}`
+
+    const { base64 } = await getPlaiceholder(linkStr)
     
     const post = new Post({
-      link: link,
+      link: linkStr,
       blurString: base64,
       title: title,
       description: description,

@@ -69,7 +69,7 @@ const Form = () => {
         <div
           className='link'
         >
-          <span>Image Link</span>
+          <span>Filename</span>
           <input
             value={link}
             onInput={e => {
