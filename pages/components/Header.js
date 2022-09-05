@@ -20,8 +20,8 @@ const Header = ({ loggedIn }) => {
       setActive('Hi')
     } else if (pathname === '/pieces/roll') {
       setActive('Pieces')
-    } else if (pathname === '/essays/roll') {
-      setActive('Essays')
+    } else if (pathname === '/photos/roll') {
+      setActive('Photos')
     }
   })
   
@@ -110,10 +110,9 @@ const Header = ({ loggedIn }) => {
             </Link>
           </li>
           <li
-            className={`nav-item${active3 ? ' active' : ''}`}
+            className={`nav-item${active === 'Photos' ? ' active' : ''}`}
             onClick={() => {
-              reset()
-              setActive3(true)
+              setActive('Photos')
             }}
           >
             <Link
