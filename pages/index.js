@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 import Header from './components/Header'
 import keys from '../config/keys'
 import connectDb from '../lib/mongodb'
@@ -42,6 +43,18 @@ export default function Home({ data, loggedIn, randPost }) {
         <div
           className='index-container'
         >
+          <div
+            className='picture-cont my-3'
+          >
+            <Image
+              width='800'
+              height='400'
+              objectFit='contain'
+              className='w-100'
+              src='https://d10v7123g4b5wr.cloudfront.net/DSCF3563.jpg'
+              alt='post image'
+            />
+          </div>
           <p>
             My name's John, and I'm a writer, musician, and sometimes I take pictures, usually
             when I'm travelling. I created this website to share my work. You can find links to
@@ -65,7 +78,7 @@ export default function Home({ data, loggedIn, randPost }) {
                 Writing
               </a>
             </Link>
-          <Link
+            <Link
               href='/photos/roll'
               className='nav-link'
               passHref
