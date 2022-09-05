@@ -43,7 +43,9 @@ export default function Home({ data, loggedIn, randPost }) {
           className='index-container'
         >
           <p>
-            My name's John, and this is a website where I post all of my visual art.
+            My name's John, and I'm a writer, musician, and sometimes I take pictures, usually
+            when I'm travelling. I created this website to share my work. You can find links to
+            my writing and pictures above.
           </p>
           <p>
             johnedwardobrienartist@gmail.com
@@ -60,18 +62,18 @@ export default function Home({ data, loggedIn, randPost }) {
               <a
                 className='pieces-link'
               >
-                Pieces
+                Writing
               </a>
             </Link>
           <Link
-              href='/essays/roll'
+              href='/photos/roll'
               className='nav-link'
               passHref
             >
               <a
                 className='pieces-link'
               >
-                Essays
+                Pictures
               </a>
             </Link>
           </div>
