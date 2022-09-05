@@ -24,6 +24,11 @@ const AdminPage = ({ data }) => {
             Create Writing
           </Link>
           <Link
+            href={'/posts/create_post'}
+          >
+            Create Post
+          </Link>
+          <Link
             href={'/'}
           >
             Main Page
