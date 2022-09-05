@@ -22,6 +22,8 @@ const Header = ({ loggedIn }) => {
       setActive('Pieces')
     } else if (pathname === '/photos/roll') {
       setActive('Photos')
+    } else if (pathname === '/coding/links') {
+      setActive('Coding')
     }
   })
   
@@ -124,6 +126,24 @@ const Header = ({ loggedIn }) => {
                 className='nav-link'
               >
                 Pictures
+              </a>
+            </Link>
+          </li>
+          <li
+            className={`nav-item${active === 'Coding' ? ' active' : ''}`}
+            onClick={() => {
+              setActive('Coding')
+            }}
+          >
+            <Link
+              href='/coding/links'
+              className='nav-link'
+              passHref
+            >
+              <a
+                className='nav-link'
+              >
+                Coding
               </a>
             </Link>
           </li>

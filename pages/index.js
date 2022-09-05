@@ -56,9 +56,10 @@ export default function Home({ data, loggedIn, randPost }) {
             />
           </div>
           <p>
-            My name's John, and I'm a writer, musician, and sometimes I take pictures, usually
-            when I'm travelling. I created this website to share my work. You can find links to
-            my writing and pictures above.
+            My name's John, I was born in Massachusetts, and I currently reside in Denver. I write
+            stream-of-consciousness and contemporary fiction. I also take pictures sometimes, usually when 
+            I'm traveling. Lastly, for my day-job, I'm a professional programmer. My main language is Javascript, 
+            and I've recently begun learning Rust. Links for everything above.
           </p>
           <p>
             johnedwardobrienartist@gmail.com
@@ -87,6 +88,17 @@ export default function Home({ data, loggedIn, randPost }) {
                 className='pieces-link'
               >
                 Pictures
+              </a>
+            </Link>
+            <Link
+              href='/coding/links'
+              className='nav-link'
+              passHref
+            >
+              <a
+                className='pieces-link'
+              >
+                Coding
               </a>
             </Link>
           </div>

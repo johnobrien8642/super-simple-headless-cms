@@ -1,0 +1,17 @@
+.coding-links-container {
+
+  .inner {
+    display: flex;
+    justify-content: space-evenly;
+    a {
+      width: 50%;
+      height: auto;
+    }
+    @media screen and (min-width: 420px) {
+      a {
+        width: 25%;
+        height: auto;
+      }
+    }
+  }
+}
