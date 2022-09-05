@@ -42,8 +42,7 @@ const Header = ({ loggedIn }) => {
           router.push('/')
         }}
       >
-        <h3>Mikowski</h3>
-        <p>Letters for your health.</p>
+        <h3>John E. O'Brien</h3>
       </button>
 
       <button 
@@ -110,8 +109,8 @@ const Header = ({ loggedIn }) => {
               </a>
             </Link>
           </li>
-          <li
-            className={`nav-item${active === 'Essays' ? ' active ' : ''}`}
+          {/* <li
+            className={`nav-item${active4 ? ' active' : ''}`}
             onClick={() => {
               setActive('Essays')
             }}
@@ -127,7 +126,7 @@ const Header = ({ loggedIn }) => {
                 Essays
               </a>
             </Link>
-          </li>
+          </li> */}
           <li>
             {handleLoggedIn()}
           </li>

@@ -14,11 +14,18 @@ export default function Home({ data, loggedIn, randPost }) {
   let [active, setActive] = useState(false)
   const router = useRouter()
   const href = keys.url + router.asPath
-
+  
   useEffect(() => {
     setTimeout(() => {
       setActive(true)
     }, 500)
+    if (loggedIn) {
+      window.localStorage.setItem('loggedIn', 'true');
+    } else {
+      if (window.localStorage.getItem('loggedIn')) {
+        window.localStorage.removeItem('loggedIn')
+      }
+    }
   })
   
   return (
@@ -26,9 +33,9 @@ export default function Home({ data, loggedIn, randPost }) {
       <Header loggedIn={loggedIn} />
       <div className={`${active ? 'active ' : ''}main-page container`}>
         <Head>
-          <title>Mikowski</title>
+          <title>John E. O'Brien</title>
           {/* <link rel="icon" href="/favicon.ico" /> */}
-          <meta name='description' content="I'm a writer writing under the pseudonym Mikowski. My work spans from fiction pieces, to philosophy. I post everything here for free, tell your friends." />
+          <meta name='description' content="A writer and musician who also likes to take a picture or two when travelling." />
           <link rel='canonical'  href={href}/>
         </Head>
 
@@ -36,14 +43,10 @@ export default function Home({ data, loggedIn, randPost }) {
           className='index-container'
         >
           <p>
-            Hello, my name's Mikowski. I post all of my writing here for free, find the links
-            to them above or below.
+            My name's John, and this is a website where I post all of my visual art.
           </p>
           <p>
-            My email: mikowski.me@protonmail.com
-          </p>
-          <p>
-            Unserious inquiries only, please.
+            johnedwardobrienartist@gmail.com
           </p>
           <SubscribeForm />
           <div

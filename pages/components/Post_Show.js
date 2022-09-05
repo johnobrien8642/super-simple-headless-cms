@@ -1,9 +1,10 @@
 import Image from 'next/image'
+import DeleteBtn from './Delete_Btn'
 import { useRouter } from 'next/router'
 
 const PostShow = ({ post, single }) => {
   const router = useRouter()
-
+  
   function handleViewButton() {
     if (!single) {
       return(
@@ -20,23 +21,31 @@ const PostShow = ({ post, single }) => {
     }
   }
   
+  const props = {
+    width: '1200',
+    height: '800',
+    objectFit: 'contain',
+    className: 'w-100',
+    src: post?.link,
+    alt: 'post image'
+  }
+
+  if (post?.blurString) {
+    props.placeholder = 'blur';
+    props.blurDataURL = Buffer.from(post.blurString);
+  }
+
   if (post) {
     return (
       <div
         className='post-show col-md'
       >
         <Image 
-          width='1200' 
-          height='800' 
-          objectFit='contain' 
-          className='w-100' 
-          src={post?.link} 
-          alt='post image'
-          placeholder='blur'
-          blurDataURL={Buffer.from(post.blurString)}
+          {...props}
         />
         <p>{post?.description}</p>
         {handleViewButton()}
+        <DeleteBtn post={post} />
       </div>
     )
   } else {

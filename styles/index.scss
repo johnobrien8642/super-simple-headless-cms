@@ -24,11 +24,11 @@
   height: 100%;
 
   .index-container {
-    margin-top: 5%;
-
+    p:first-child {
+      margin-top: 1.8rem !important;
+    }
     p {
-      font-size: 1.4rem;
-
+      font-size: 1.5rem;
       button {
         background-color: transparent;
         border: none;
