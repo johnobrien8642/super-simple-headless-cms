@@ -18,11 +18,11 @@ const Header = ({ loggedIn }) => {
 
     if (pathname === '/') {
       setActive('Hi')
-    } else if (pathname === '/pieces/roll') {
+    } else if (pathname.match('/pieces/roll')) {
       setActive('Pieces')
-    } else if (pathname === '/photos/roll') {
+    } else if (pathname.match('/photos/roll')) {
       setActive('Photos')
-    } else if (pathname === '/coding/links') {
+    } else if (pathname.match('/coding/links')) {
       setActive('Coding')
     }
   })
