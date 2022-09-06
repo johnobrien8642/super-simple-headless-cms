@@ -8,12 +8,13 @@ import connectDb from '../../lib/mongodb'
 const SendEmails = ({ data }) => {
   let [title, setTitle] = useState('')
   let [sectionId, setSectionId] = useState('')
+  let [writingDesc, setWritingDesc] = useState('')
   let [writingType, setWritingType] = useState('piece')
   let [sending, setSending] = useState(false)
   let [success, setSuccess] = useState('')
   let [error, setError] = useState('')
   const router = useRouter()
-
+  
   useEffect(() => {
     if (!data) router.push('/')
   }, [data])
@@ -57,7 +58,8 @@ const SendEmails = ({ data }) => {
               body: JSON.stringify({
                 title,
                 sectionId,
-                writingType
+                writingType,
+                writingDesc
               })
             })
             const returnedData = await res.json()
@@ -91,6 +93,17 @@ const SendEmails = ({ data }) => {
                 setSectionId(e.target.value)
               }}
             ></input>
+          </label>
+          <label
+            htmlFor='description'
+          >
+            Description
+            <textarea
+              name='description'
+              onChange={e => {
+                setWritingDesc(e.target.value)
+              }}
+            ></textarea>
           </label>
           <label
             htmlFor='type'

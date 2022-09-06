@@ -9,7 +9,7 @@ import mongoose from 'mongoose'
 export default async (req, res) => {
   await connectDb()
   let subs
-  const { title, sectionId, writingType } = req.body
+  const { title, sectionId, writingType, writingDesc } = req.body
   
   const ses = new aws.SESClient({
     apiVerison: "2010-12-01",
@@ -27,9 +27,9 @@ export default async (req, res) => {
   subs = await Sub.find({})
   for (let i = 0; i < subs.length; i++) {
     try {
-      await sendEmail(subs[i], { emailTitle: title, writingTitle: section.piece.title, sectionId, writingType })
+      await sendEmail(subs[i], { emailTitle: title, writingTitle: section.piece.title, sectionId, writingType, writingDesc })
     } catch (err) {
-      console.log(`Error sending to ${sub.email}: ${err.message}`)
+      console.log(`Error sending to ${subs[i].email}: ${err.message}`)
     }
   }
   res.status(200).json({ success: true })
