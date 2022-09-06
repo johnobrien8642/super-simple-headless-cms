@@ -40,7 +40,7 @@ export default async (req, res) => {
     });
     
     await transporter.sendMail({
-      from: 'mikowski.me@gmail.com',
+      from: 'johnedwardobrienartist@gmail.com',
       to: sub.email,
       subject: data.emailTitle,
       html: newWritingEmail(sub, data)
