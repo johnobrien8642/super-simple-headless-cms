@@ -61,6 +61,19 @@ export default function Home({ data, loggedIn, randPost }) {
             I'm traveling. Lastly, for my day-job, I'm a professional programmer. My main language is Javascript, 
             and I've recently begun learning Rust. Links for everything above.
           </p>
+          <a
+            href='https://twitter.com/johneobrien_'
+            className='twitter-icon-link'
+          >
+            <Image
+              width='100'
+              height='100'
+              src='/twitter-icon.png'
+            ></Image>
+            <span
+              className='text'
+            >@johneobrien_</span>
+          </a>
           <p>
             johnedwardobrienartist@gmail.com
           </p>

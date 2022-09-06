@@ -24,6 +24,17 @@
   height: 100%;
 
   .index-container {
+    .twitter-icon-link {
+      position: relative;
+      text-decoration: none;
+      .text {
+        display: inline-block;
+        position: relative;
+        transform: translateY(-50%);
+        color: black;
+        font-size: 2rem;
+      }
+    }
     .picture-cont  {
       display: flex;
       justify-content: center;
