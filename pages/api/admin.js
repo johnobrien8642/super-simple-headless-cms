@@ -9,7 +9,7 @@ export default async (req, res) => {
 	if (method === 'POST') {
 		try {
 			const admin = await Admin.create({
-				adminName: body.adminName,
+				username: body.username,
 				password: await bcrypt.hash(body.password, 10)
 			});
 

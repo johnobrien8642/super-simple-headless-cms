@@ -1,92 +1,92 @@
-import\t{\tuseState\t}\tfrom\t'react';
-import\t{\tuseRouter\t}\tfrom\t'next/router';
-import\tLink\tfrom\t'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-const\tAddPiece\t=\t({})\t=>\t{
-	const\trouter\t=\tuseRouter();
-	const\t{\tupdate,\twritingId,\ttitle,\tsummary,\tfinished,\ttype\t}\t=\trouter.query;
-	let\t[titleHook,\tsetTitle]\t=\tuseState(title\t?\ttitle\t:\t'');
-	let\t[summaryHook,\tsetSummary]\t=\tuseState(summary\t?\tsummary\t:\t'');
-	let\t[finishedHook,\tsetFinished]\t=\tuseState(finished\t?\tfinished\t:\tfalse);
+const AddPiece = ({}) => {
+	const router = useRouter();
+	const { update, writingId, title, summary, finished, type } = router.query;
+	let [titleHook, setTitle] = useState(title ? title : '');
+	let [summaryHook, setSummary] = useState(summary ? summary : '');
+	let [finishedHook, setFinished] = useState(finished ? finished : false);
 
-	return\t(
-		<div\tclassName="add-piece\tcontainer\tmt-5">
-			<Link\thref="/pieces/roll">Back\tTo\tRoll</Link>
+	return (
+		<div className="add-piece container mt-5">
+			<Link href="/pieces/roll">Back To Roll</Link>
 			<form
 				className="form"
-				onSubmit={async\t(e)\t=>\t{
+				onSubmit={async (e) => {
 					e.preventDefault();
-					const\tres\t=\tawait\tfetch('/api/writing/add_or_update',\t{
-						method:\t'POST',
-						headers:\t{
-							Accept:\t'application/json',
-							'Content-Type':\t'application/json'
+					const res = await fetch('/api/writing/add_or_update', {
+						method: 'POST',
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json'
 						},
-						body:\tJSON.stringify({
+						body: JSON.stringify({
 							update,
-							_id:\twritingId,
+							_id: writingId,
 							titleHook,
 							summaryHook,
 							finishedHook,
 							type
 						})
 					});
-					const\treturnedData\t=\tawait\tres.json();
-					if\t(res.ok)\t{
+					const returnedData = await res.json();
+					if (res.ok) {
 						router.push('/pieces/roll');
-					}\telse\t{
+					} else {
 						console.log(
-							'Error\tin\tpiece/add_or_update:',
+							'Error in piece/add_or_update:',
 							returnedData.errorMessage
 						);
 					}
 				}}
 			>
-				<label\thtmlFor="title">
+				<label htmlFor="title">
 					Title
 					<input
 						name="title"
 						type="text"
 						value={titleHook}
-						onInput={(e)\t=>\t{
+						onInput={(e) => {
 							setTitle(e.target.value);
 						}}
 					></input>
 				</label>
-				<div\tclassName="status">
-					<span>Status:\t</span>
-					<label\thtmlFor="title">
+				<div className="status">
+					<span>Status: </span>
+					<label htmlFor="title">
 						Finished
 						<input
 							name="title"
 							type="radio"
-							defaultChecked={finishedHook\t===\t'true'}
-							onClick={()\t=>\t{
+							defaultChecked={finishedHook === 'true'}
+							onClick={() => {
 								setFinished(true);
 							}}
 						></input>
 					</label>
-					<label\thtmlFor="title">
+					<label htmlFor="title">
 						Ongoing
 						<input
 							name="title"
 							type="radio"
 							defaultChecked={
-								finishedHook\t===\t'false'\t||\t!finishedHook
+								finishedHook === 'false' || !finishedHook
 							}
-							onClick={()\t=>\t{
+							onClick={() => {
 								setFinished(false);
 							}}
 						></input>
 					</label>
 				</div>
-				<label\thtmlFor="summary">
+				<label htmlFor="summary">
 					Summary
 					<textarea
 						name="summary"
 						type="text"
 						value={summaryHook}
-						onInput={(e)\t=>\t{
+						onInput={(e) => {
 							setSummary(e.target.value);
 						}}
 					></textarea>
@@ -97,4 +97,4 @@ const\tAddPiece\t=\t({})\t=>\t{
 	);
 };
 
-export\tdefault\tAddPiece;
+export default AddPiece;

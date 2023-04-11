@@ -7,7 +7,7 @@ export default async (req, res) => {
 	await dbConnect();
 
 	const admin = await Admin.findOne({
-		adminName: req.body.adminName
+		username: req.body.username
 	});
 
 	let authenticated;

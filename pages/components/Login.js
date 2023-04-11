@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
 const Login = () => {
-	let [adminName, setAdminName] = useState('');
+	let [username, setUsername] = useState('');
 	let [password, setPassword] = useState('');
 	let [error, setError] = useState('');
 	const router = useRouter();
@@ -21,7 +21,7 @@ const Login = () => {
 							'Content-Type': 'application/json'
 						},
 						body: JSON.stringify({
-							adminName: adminName,
+							username: username,
 							password: password
 						})
 					});
@@ -39,7 +39,7 @@ const Login = () => {
 				<input
 					onInput={(e) => {
 						e.preventDefault();
-						setAdminName(e.target.value);
+						setUsername(e.target.value);
 					}}
 				/>
 				<label>Password</label>

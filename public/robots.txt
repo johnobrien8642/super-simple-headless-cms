@@ -1,4 +1,4 @@
-User-agent:\t*
-Disallow:\t/posts/create_post
-User-agent:\t*
-Disallow:\t/admin
+User-agent: *
+Disallow: /posts/create_post
+User-agent: *
+Disallow: /admin

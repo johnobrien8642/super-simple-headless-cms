@@ -1,8 +1,8 @@
-<xml\tversion="1.0"\tencoding="UTF-8">
-\t\t\t<urlset\txmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-\t\t\t\t\t<url>
-\t\t\t\t\t\t\t<loc>https://www.johnedwardobrien.com</loc>
-\t\t\t\t\t\t\t<lastmod>2022-01-05</lastmod>
-\t\t\t\t\t</url>
-\t\t\t</urlset>
-\t\t\t</xml>
+<xml version="1.0" encoding="UTF-8">
+   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+     <url>
+       <loc>https://www.johnedwardobrien.com</loc>
+       <lastmod>2022-01-05</lastmod>
+     </url>
+   </urlset>
+   </xml>

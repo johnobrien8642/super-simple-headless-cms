@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 const NewAdmin = () => {
-	let [adminName, setAdminName] = useState('');
+	let [username, setUsername] = useState('');
 	let [password, setPassword] = useState('');
 	let [confirmPassword, setConfirmPassword] = useState('');
 	let [warning, setWarning] = useState(false);
@@ -22,7 +22,7 @@ const NewAdmin = () => {
 								'Content-Type': 'application/json'
 							},
 							body: JSON.stringify({
-								adminName: adminName,
+								username: username,
 								password: password
 							})
 						});
@@ -44,7 +44,7 @@ const NewAdmin = () => {
 				<input
 					onInput={(e) => {
 						e.preventDefault();
-						setAdminName(e.target.value);
+						setUsername(e.target.value);
 					}}
 				/>
 				<label>Password</label>
