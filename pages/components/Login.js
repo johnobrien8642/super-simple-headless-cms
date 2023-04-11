@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 const Login = () => {
   let [adminName, setAdminName] = useState('')
   let [password, setPassword] = useState('')
+  let [error, setError] = useState('')
   const router = useRouter()
 
   return (
@@ -24,26 +25,31 @@ const Login = () => {
             body: JSON.stringify({ adminName: adminName, password: password })
           })
           const data = await res.json()
-          Cookies.set('token', data.token)
-          window.localStorage.setItem('loggedIn', 'true')
-          router.push('/posts/create_post')
+          if (data.token) {
+            Cookies.set('token', data.token)
+            window.localStorage.setItem('loggedIn', 'true')
+            router.push('/posts/create_post')
+          } else {
+            setError(data.error)
+          }
         }}
       >
         <label>Admin Name</label>
-        <input 
+        <input
           onInput={e => {
             e.preventDefault()
             setAdminName(e.target.value)
           }}
         />
         <label>Password</label>
-        <input 
+        <input
           onInput={e => {
             e.preventDefault()
             setPassword(e.target.value)
           }}
         />
         <button>Login</button>
+        <p>{error}</p>
       </form>
     </div>
   )
