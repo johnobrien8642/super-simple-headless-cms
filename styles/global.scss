@@ -1,32 +1,32 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 .warning {
-  display: none;
+	display: none;
 
-  .active {
-    display: block;
-  }
+	.active {
+		display: block;
+	}
 }
 
 button {
-  border: 1px solid black;
-  border-radius: 3px;
-  background-color: transparent;
-  transition: background-color 500ms;
+	border: 1px solid black;
+	border-radius: 3px;
+	background-color: transparent;
+	transition: background-color 500ms;
 
-  &:hover {
-    cursor: pointer;
-    background-color: rgb(0, 0, 0, .1);
-  }
+	&:hover {
+		cursor: pointer;
+		background-color: rgb(0, 0, 0, .1);
+	}
 }
 
 h1, h2, h3, h4, h5, p {
-  &:hover {
-    cursor: default;
-  }
+	&:hover {
+		cursor: default;
+	}
 }
 
 body {
-  position: relative;
-  z-index: 1;
+	position: relative;
+	z-index: 1;
 }

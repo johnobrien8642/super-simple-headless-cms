@@ -1,28 +1,28 @@
 .single-post-show {
-  margin-bottom: 150px;
+	margin-bottom: 150px;
 
-  .go-back-btn {
-    margin: 2% 0;
-  }
+	.go-back-btn {
+		margin: 2% 0;
+	}
 
-  .post-show {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
-    border: none;
-  }
+	.post-show {
+		margin-left: 0;
+		margin-right: 0;
+		width: 100%;
+		border: none;
+	}
 
-  @media (min-width: 990px) {
-    .post-show {
-      width: 90%;
-      max-width: 900px;
-      margin: 2% auto;
-    }  
-  }
+	@media (min-width: 990px) {
+		.post-show {
+			width: 90%;
+			max-width: 900px;
+			margin: 2% auto;
+		}
+	}
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  .single-post-show {
-    max-width: 600px;
-  }
+	.single-post-show {
+		max-width: 600px;
+	}
 }

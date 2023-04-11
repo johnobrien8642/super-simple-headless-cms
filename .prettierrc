@@ -1,0 +1,13 @@
+{
+\t\t"singleQuote":\ttrue,
+\t\t"printWidth":\t80,
+\t\t"formatOnSave":\ttrue,
+\t\t"proseWrap":\t"always",
+\t\t"tabWidth":\t4,
+\t\t"requireConfig":\tfalse,
+\t\t"useTabs":\tfalse,
+\t\t"trailingComma":\t"none",
+\t\t"bracketSpacing":\ttrue,
+\t\t"jsxBracketSameLine":\tfalse,
+\t\t"semi":\ttrue
+}
