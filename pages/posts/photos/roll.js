@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
+import jwt from 'jsonwebtoken'
 import { useRouter } from 'next/router';
 import PostShow from '../../components/Post_Show';
 import Header from '../../components/Header';
 import connectDb from '../../../lib/mongodb';
 import Post from '../../../models/Post';
+import Admin from '../../../models/Admin';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-const Roll = ({ posts }) => {
+const Roll = ({ posts, loggedIn }) => {
 	const router = useRouter();
 	const href = process.env.URL + router.asPath;
 	let [postsHook, setPosts] = useState(JSON.parse(posts));
@@ -41,7 +43,7 @@ const Roll = ({ posts }) => {
 			<Head>
 				<link rel="canonical" href={href} />
 			</Head>
-			<Header />
+			<Header loggedIn={loggedIn}/>
 			<div className="roll container">
 				<div className="inner row">
 					<InfiniteScroll
@@ -63,13 +65,19 @@ const Roll = ({ posts }) => {
 	);
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
 	await connectDb();
+	let decoded;
+	if (context.req.cookies.token) {
+		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY);
+	}
+
+	const authenticated = await Admin.findById(decoded?.id);
 	const posts = await Post.find({
 		type: 'Photo'
 	});
 
-	return { props: { posts: JSON.stringify(posts) } };
+	return { props: { loggedIn: !!authenticated, posts: JSON.stringify(posts) } };
 }
 
 export default Roll;

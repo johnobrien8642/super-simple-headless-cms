@@ -2,10 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Logout from '../components/Logout';
 import { useRouter } from 'next/router';
+import { Text } from '@chakra-ui/react'
 
 const Header = ({ loggedIn }) => {
 	let [active, setActive] = useState('');
-
 	let [openNav, setOpenNav] = useState('');
 	const dropdownRef = useRef(null);
 	const router = useRouter();
@@ -42,7 +42,7 @@ const Header = ({ loggedIn }) => {
 					router.push('/');
 				}}
 			>
-				<h3>John E. O'Brien</h3>
+				<Text as='h3'>Photo and Writing Site Demo</Text>
 			</button>
 
 			<button
@@ -76,18 +76,6 @@ const Header = ({ loggedIn }) => {
 				<ul className="navbar-nav">
 					<li
 						className={`nav-item${
-							active === 'Hi' ? ' active ' : ''
-						}`}
-						onClick={() => {
-							setActive('Hi');
-						}}
-					>
-						<Link href="/" passHref>
-							Hi
-						</Link>
-					</li>
-					<li
-						className={`nav-item${
 							active === 'Pieces' ? ' active ' : ''
 						}`}
 						onClick={() => {
@@ -114,23 +102,8 @@ const Header = ({ loggedIn }) => {
 							Pictures
 						</Link>
 					</li>
-					<li
-						className={`nav-item${
-							active === 'Coding' ? ' active' : ''
-						}`}
-						onClick={() => {
-							setActive('Coding');
-						}}
-					>
-						<Link
-							href="/coding/links"
-							className="nav-link"
-							passHref
-						>
-							Coding
-						</Link>
-					</li>
 					<li>{handleLoggedIn()}</li>
+					<li><Text as='h5' display='inline-block' color='gray' m='auto'>Admin Mode</Text></li>
 				</ul>
 			</div>
 		</nav>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Button } from '@chakra-ui/react'
 
 const DeleteBtn = ({ post }) => {
 	let [error, setError] = useState('');
@@ -35,7 +36,7 @@ const DeleteBtn = ({ post }) => {
 						}
 					}}
 				>
-					<button>Delete</button>
+					<Button my={5} type='submit'>Delete</Button>
 					<span className={`error${error ? ' active' : ''}`}>
 						{error}
 					</span>

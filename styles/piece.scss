@@ -1,3 +1,12 @@
+.add-piece-container {
+	form {
+		label:last {
+			display: inline-block;
+			margin-top: 2%;
+		}
+	}
+}
+
 .add-section-container {
 	form {
 		display: flex;
@@ -9,7 +18,8 @@
 		}
 
 		.text-input-container {
-			border: 1px solid black;
+			border: 1px solid gray;
+			border-radius: 1rem;
 			min-height: 50vh;
 			padding: 1rem;
 		}

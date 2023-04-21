@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import keys from '../../config/keys';
 import connectDb from '../../lib/mongodb.js';
 import Post from '../../models/Post';
+import { Button } from '@chakra-ui/react'
 
 function SinglePost({ post, blurDataUrl }) {
 	const router = useRouter();
@@ -17,7 +18,7 @@ function SinglePost({ post, blurDataUrl }) {
 				<Head>
 					<link rel="canonical" href={path} />
 				</Head>
-				<button
+				<Button
 					className="go-back-btn"
 					onClick={(e) => {
 						e.preventDefault();
@@ -29,7 +30,7 @@ function SinglePost({ post, blurDataUrl }) {
 					}}
 				>
 					Go back
-				</button>
+				</Button>
 				<PostShow
 					post={JSON.parse(post)}
 					blur={blurDataUrl}

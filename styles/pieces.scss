@@ -42,16 +42,9 @@
 		}
 
 		.delete-button-container {
-			display: flex;
-			font-size: .6rem;
-			align-self: center;
 
 			.main-delete-btn.hide {
 				display: none;
-			}
-
-			button {
-				margin: 0 .1rem;
 			}
 		}
 
@@ -77,6 +70,7 @@
 
 			.section-container > a {
 				font-size: 1.4rem;
+				margin-right: 1rem;
 			}
 		}
 
@@ -97,11 +91,18 @@
 			display: inline-block;
 			color: blue;
 			text-decoration: underline;
+			margin-left: 3%;
 		}
 
 		.section-edit-link {
 			margin-left: .5rem;
 			text-decoration: underline;
 		}
+	}
+
+	.piece-container.admin-mode {
+		border: 1px solid gray;
+		border-radius: 1rem;
+		padding: 1rem;
 	}
 }

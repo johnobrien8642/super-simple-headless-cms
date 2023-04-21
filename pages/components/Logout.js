@@ -1,12 +1,13 @@
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { Button } from '@chakra-ui/react'
 
 const Logout = () => {
 	const router = useRouter();
 
 	return (
 		<div className="logout container">
-			<button
+			<Button
 				onClick={(e) => {
 					e.preventDefault();
 					Cookies.remove('token');
@@ -15,7 +16,7 @@ const Logout = () => {
 				}}
 			>
 				logout
-			</button>
+			</Button>
 		</div>
 	);
 };

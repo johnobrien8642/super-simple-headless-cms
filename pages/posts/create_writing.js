@@ -33,7 +33,7 @@ export async function getServerSideProps(context) {
 	await connectDb();
 	const decoded = jwt.verify(
 		context.req.cookies.token,
-		process.env.SECRET_KEY
+		process.env.NEXT_PUBLIC_SECRET_KEY
 	);
 	const authenticated = await Admin.findById(decoded.id);
 

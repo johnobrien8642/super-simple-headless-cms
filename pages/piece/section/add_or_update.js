@@ -6,6 +6,7 @@ import Piece from '../../../models/Piece';
 import Admin from '../../../models/Admin';
 import connectDb from '../../../lib/mongodb';
 import jwt from 'jsonwebtoken';
+import { Input, Text, Button } from '@chakra-ui/react'
 
 const AddSection = ({ piece, section, authenticated }) => {
 	const router = useRouter();
@@ -37,7 +38,10 @@ const AddSection = ({ piece, section, authenticated }) => {
 	if (authenticated) {
 		return (
 			<div className="add-section-container container mt-5 hide">
-				<Link href="/pieces/roll">Back To Roll</Link>
+				<Text as='h4' textDecoration={'underline'} mb={50}><Link href="/pieces/roll">Back To Roll</Link></Text>
+				<Text fontSize='1.2rem' fontStyle='italic'>
+					Think of sections like chapters.
+				</Text>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
@@ -67,7 +71,7 @@ const AddSection = ({ piece, section, authenticated }) => {
 						);
 						const returnedData = await res.json();
 						if (res.ok) {
-							router.push('/essays/roll');
+							router.push('/pieces/roll');
 						} else {
 							console.log(
 								'Error in piece/section/add_or_update:',
@@ -77,29 +81,35 @@ const AddSection = ({ piece, section, authenticated }) => {
 					}}
 				>
 					<label htmlFor="title">
-						Title (optional)
-						<input
-							name="title"
-							type="text"
-							value={titleHook}
-							onInput={(e) => {
-								setTitle(e.target.value);
-							}}
-						></input>
+						<Text as='h5'>Title</Text>
 					</label>
+					<Input
+						name="title"
+						type="text"
+						value={titleHook}
+						onInput={(e) => {
+							setTitle(e.target.value);
+						}}
+					></Input>
+					<Text fontSize='1.2rem' fontStyle='italic' mt='2%'>
+						Section Number determines your section order. For example, if you already have 5 sections
+						and mark this new section as "2", then this section will appear as the second section,
+						and increment the other following sections. If you don't want to change section order,
+						leave the default value in place.
+					</Text>
 					<label htmlFor="number" className="section-number">
-						Section Number
-						<input
-							name="number"
-							type="number"
-							min="1"
-							value={numberHook}
-							onInput={(e) => {
-								setNumber(e.target.value);
-							}}
-						></input>
+						<Text as='h5'>Section Number<Text as='span' color='red'> *</Text></Text>
 					</label>
-					<h3>Input Text</h3>
+					<Input
+						name="number"
+						type="number"
+						min="1"
+						value={numberHook}
+						onInput={(e) => {
+							setNumber(e.target.value);
+						}}
+					></Input>
+					<Text as='h5'>Section Text<Text as='span' color='red'> *</Text></Text>
 					<span>{error ? error : ''}</span>
 					<div
 						className="text-input-container container"
@@ -111,7 +121,7 @@ const AddSection = ({ piece, section, authenticated }) => {
 							divRef.current.value = e.target.innerText;
 						}}
 					></div>
-					<button>Submit</button>
+					<Button type='submit'>Submit</Button>
 				</form>
 			</div>
 		);
@@ -124,7 +134,7 @@ export async function getServerSideProps(context) {
 	await connectDb();
 	let decoded;
 	if (context.req.cookies.token) {
-		decoded = jwt.verify(context.req.cookies.token, process.env.SECRET_KEY);
+		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY);
 	}
 
 	const { writingId, sectionId } = context.query;

@@ -8,6 +8,7 @@ import Admin from '../../models/Admin';
 import { useRouter } from 'next/router';
 import keys from '../../config/keys';
 import jwt from 'jsonwebtoken';
+import { Text, Button, Box } from '@chakra-ui/react'
 
 const Roll = ({ data }) => {
 	let [toggle, toggleSections] = useState([]);
@@ -45,38 +46,42 @@ const Roll = ({ data }) => {
 							}
 						}}
 					>
-						Edit piece
+						<Button>Edit</Button>
 					</Link>
 				);
 			}
 			if (loc === 'addNewPiece') {
 				return (
-					<Link
-						href={{
-							pathname: '/piece/add_or_update',
-							query: { update: false, type: 'piece' }
-						}}
-					>
-						Add New Piece
-					</Link>
+					<Text as='h4' textDecoration={'underline'}>
+						<Link
+							href={{
+								pathname: '/piece/add_or_update',
+								query: { update: false, type: 'piece' }
+							}}
+						>
+							Add New Writing Pieces
+						</Link>
+					</Text>
 				);
 			}
 			if (loc === 'addSection') {
 				return (
-					<Link
-						className="add-section-link my-1"
-						href={{
-							pathname: `/piece/section/add_or_update`,
-							query: {
-								update: false,
-								writingId: obj1._id,
-								sectionLength: obj1.sections.length + 1,
-								type: 'piece'
-							}
-						}}
-					>
-						Add Section
-					</Link>
+					<Text as='h4' textDecoration={'underline'}>
+						<Link
+							className="add-section-link my-1"
+							href={{
+								pathname: `/piece/section/add_or_update`,
+								query: {
+									update: false,
+									writingId: obj1._id,
+									sectionLength: obj1.sections.length + 1,
+									type: 'piece'
+								}
+							}}
+						>
+							Add Section
+						</Link>
+					</Text>
 				);
 			}
 			if (loc === 'editSection') {
@@ -92,7 +97,7 @@ const Roll = ({ data }) => {
 							}
 						}}
 					>
-						<a className="section-edit-link">Edit</a>
+						<Button>Edit</Button>
 					</Link>
 				);
 			}
@@ -109,7 +114,8 @@ const Roll = ({ data }) => {
 			if (warn === _id) {
 				return (
 					<React.Fragment>
-						<button
+						<Button
+							mr={2}
 							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
@@ -117,14 +123,15 @@ const Roll = ({ data }) => {
 							}}
 						>
 							Cancel Delete
-						</button>
-						<button
+						</Button>
+						<Button
 							onClick={(e) => {
 								e.stopPropagation();
 							}}
+							type='submit'
 						>
 							Confirm Delete
-						</button>
+						</Button>
 					</React.Fragment>
 				);
 			}
@@ -159,7 +166,7 @@ const Roll = ({ data }) => {
 							}
 						}}
 					>
-						<button
+						<Button
 							className={`main-delete-btn${
 								warn === _id ? ' hide' : ''
 							}`}
@@ -170,7 +177,7 @@ const Roll = ({ data }) => {
 							}}
 						>
 							Delete
-						</button>
+						</Button>
 						<p
 							className={`mx-1 warning${
 								warn === _id ? ' show' : ''
@@ -188,24 +195,20 @@ const Roll = ({ data }) => {
 	return (
 		<React.Fragment>
 			<Head>
-				<title>Pieces</title>
+				<title>Writing Pieces</title>
 				<meta
 					name="description"
-					content="All pieces by Mikowski in their entirety, available to read."
+					content="All writing pieces in one place."
 				/>
 				<link rel="canonical" href={path} />
 			</Head>
 			<Header loggedIn={loggedIn} />
-			<div className="roll container pieces-container">
-				<div className="explainer">
-					<span>F = Finished</span>
-					<span>O = Ongoing</span>
-				</div>
+			<Box mt={5} className={`roll container pieces-container`}>
 				{handleAdminLinks('addNewPiece')}
 				{JSON.parse(pieces)?.map((p, i) => {
 					return (
 						<React.Fragment key={p._id}>
-							<div className="piece-container my-3">
+							<div className={`piece-container my-3  ${loggedIn ? 'admin-mode' : ''}`}>
 								<div className="header-container">
 									<h3
 										onClick={() => {
@@ -239,17 +242,12 @@ const Roll = ({ data }) => {
 											p._id
 										)}
 									</h3>
-									<sup>{p.finished ? 'F' : 'O'}</sup>
 									{handleAdminLinks('editPiece', p)}
 								</div>
 								<h6>{p.summary}</h6>
 								{handleAdminLinks('addSection', p)}
 								<div
-									className={`sections-container my-1${
-										toggle.includes(p._id.toString())
-											? ' open'
-											: ''
-									}`}
+									className={`sections-container my-1 open`}
 								>
 									{p.sections.map((s) => {
 										return (
@@ -287,7 +285,7 @@ const Roll = ({ data }) => {
 						</React.Fragment>
 					);
 				})}
-			</div>
+			</Box>
 		</React.Fragment>
 	);
 };
@@ -296,7 +294,7 @@ export async function getServerSideProps(context) {
 	await connectDb();
 	let decoded;
 	if (context.req.cookies.token) {
-		decoded = jwt.verify(context.req.cookies.token, process.env.SECRET_KEY);
+		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY);
 	}
 
 	const pieces = await Piece.find({}).populate('sections');

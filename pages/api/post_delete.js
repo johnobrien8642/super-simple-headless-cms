@@ -7,8 +7,8 @@ export default async (req, res) => {
 	const s3 = new aws.S3();
 	const SESConfig = {
 		apiVersion: '2010-12-01',
-		accessKeyId: process.env.MY_AWS_ACCESS_KEY,
-		secretAccessKey: process.env.MY_AWS_SECRET_ACCESS_KEY,
+		accessKeyId: process.env.NEXT_PUBLIC_MY_AWS_ACCESS_KEY,
+		secretAccessKey: process.env.NEXT_PUBLIC_MY_AWS_SECRET_ACCESS_KEY,
 		region: 'us-east-1'
 	};
 	s3.config.update(SESConfig);

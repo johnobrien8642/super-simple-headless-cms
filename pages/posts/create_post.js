@@ -6,6 +6,7 @@ import Form from '../components/Form';
 import connectDb from '../../lib/mongodb';
 import Admin from '../../models/Admin';
 import jwt from 'jsonwebtoken';
+import { Text, Center } from '@chakra-ui/react'
 
 const CreatePost = ({ data }) => {
 	const router = useRouter();
@@ -22,10 +23,12 @@ const CreatePost = ({ data }) => {
 				<meta name="robots" content="noindex,nofollow" />
 			</Head>
 			<div className="create-post-container container">
-				<Link href={'/admin'}>Admin Page</Link>
-				<Link href={'/'}>Main Page</Link>
-				<Link href={'/sympathy_exchange'}>Sympathy Exchange</Link>
-				<Form />
+				<Center>
+					<Link href={'/admin'}><Text as='h3' textDecoration={'underline'}>Admin Page</Text></Link>
+					<Link href={'/auth/repl'}><Text as='h3'textDecoration={'underline'}>Repl</Text></Link>
+					<Link href={'/'}><Text as='h3' textDecoration={'underline'}>Main Page</Text></Link>
+					<Form />
+				</Center>
 			</div>
 		</React.Fragment>
 	);
@@ -35,7 +38,7 @@ export async function getServerSideProps(context) {
 	await connectDb();
 	const decoded = jwt.verify(
 		context.req.cookies.token,
-		process.env.SECRET_KEY
+		process.env.NEXT_PUBLIC_SECRET_KEY
 	);
 	const authenticated = await Admin.findById(decoded.id);
 

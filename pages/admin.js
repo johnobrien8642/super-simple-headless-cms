@@ -7,6 +7,7 @@ import NewAdmin from './components/New_Admin';
 import connectDb from '../lib/mongodb';
 import Admin from '../models/Admin';
 import jwt from 'jsonwebtoken';
+import { Text } from '@chakra-ui/react'
 
 const AdminPage = ({ data }) => {
 	function handleComponents() {
@@ -17,11 +18,13 @@ const AdminPage = ({ data }) => {
 						<meta name="robots" content="noindex,nofollow" />
 					</Head>
 					<Logout />
-					<NewAdmin />
-					<Link href={'/pieces/roll'}>Create Writing</Link>
-					<Link href={'/posts/create_post'}>Create Post</Link>
-					<Link href={'/'}>Main Page</Link>
-					<Link href={'/util/send_emails'}>Send Emails</Link>
+					<Text as='h3' textDecoration={'underline'}><Link href={'/piece/add_or_update'}>Create Writing</Link></Text>
+					<Text as='h3' textDecoration={'underline'}><Link href={'/posts/create_post'}>Create Post</Link></Text>
+					<Text as='h3' textDecoration={'underline'}><Link href={'/'}>Main Page</Link></Text>
+					<Text as='h3' textDecoration={'underline'}><Link href={'/util/send_emails'}>Send Emails</Link></Text>
+					<Text as='h3' textDecoration={'underline'}><Link href={'/auth/repl'}>Repl</Link></Text>
+					<Text fontSize='1.2rem' mt='5%'>Admins can perform any of the actions above.</Text>
+					<Text fontSize='1.2rem'>Check out the Repl window to interact directly with the database!</Text>
 				</React.Fragment>
 			);
 		} else {
@@ -42,7 +45,7 @@ export async function getServerSideProps(context) {
 	await connectDb();
 	let decoded;
 	if (context.req.cookies.token) {
-		decoded = jwt.verify(context.req.cookies.token, process.env.SECRET_KEY);
+		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY);
 	}
 	const authenticated = await Admin.findById(decoded?.id);
 

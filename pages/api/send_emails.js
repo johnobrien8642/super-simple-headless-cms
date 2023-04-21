@@ -15,21 +15,18 @@ export default async (req, res) => {
 		apiVerison: '2010-12-01',
 		region: 'us-east-1',
 		credentials: {
-			accessKeyId: process.env.MY_AWS_ACCESS_KEY,
-			secretAccessKey: process.env.MY_AWS_SECRET_ACCESS_KEY
+			accessKeyId: process.env.NEXT_PUBLIC_MY_AWS_ACCESS_KEY,
+			secretAccessKey: process.env.NEXT_PUBLIC_MY_AWS_SECRET_ACCESS_KEY
 		}
 	});
 
-	const section = await Section.findById(sectionId).populate('piece');
+	// const section = await Section.findById(sectionId).populate('piece');
 
 	subs = await Sub.find({});
 	for (let i = 0; i < subs.length; i++) {
 		try {
 			await sendEmail(subs[i], {
 				emailTitle: title,
-				writingTitle: section.piece.title,
-				sectionId,
-				writingType,
 				writingDesc
 			});
 		} catch (err) {
@@ -44,7 +41,7 @@ export default async (req, res) => {
 		});
 
 		await transporter.sendMail({
-			from: 'johnedwardobrienartist@gmail.com',
+			from: 'johnobriendeveloper@gmail.com',
 			to: sub.email,
 			subject: data.emailTitle,
 			html: newWritingEmail(sub, data)

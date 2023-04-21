@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Center, Input, Button } from '@chakra-ui/react'
+import axios from 'axios'
 
 const Form = () => {
-	let [link, setLink] = useState('');
+	let [file, setFile] = useState('');
 	let [title, setTitle] = useState('');
 	let [description, setDescription] = useState('');
 	let [price, setPrice] = useState('');
 	let [photo, setPhoto] = useState(true);
 	let [success, setSuccess] = useState(false);
 	let [error, setError] = useState('');
+	let fileInputRef = useRef(null)
 
 	useEffect(() => {
 		if (success) {
@@ -19,7 +22,8 @@ const Form = () => {
 	});
 
 	function reset() {
-		setLink('');
+		setFile('');
+		fileInputRef.current.value = ''
 		setTitle('');
 		setDescription('');
 		setPrice('');
@@ -28,33 +32,58 @@ const Form = () => {
 
 	return (
 		<div className="form container">
-			<button
+			{/* <Button
 				onClick={(e) => {
 					e.preventDefault();
 					setPhoto(!photo);
 				}}
 			>
 				{photo ? 'Photo' : 'Book'}
-			</button>
+			</Button> */}
 			<form
 				onSubmit={async (e) => {
 					e.preventDefault();
-					const res = await fetch(`/api/post_create`, {
+					const res = await fetch(`/api/post_s3_url`, {
 						method: 'POST',
 						headers: {
 							Accept: 'application/json',
 							'Content-Type': 'application/json'
 						},
 						body: JSON.stringify({
-							link: link,
-							title: title,
-							description: description,
-							price: price,
-							type: photo ? 'Photo' : 'Book'
+							name: file.name,
+							type: file.type
 						})
 					});
 
-					if (res.ok) {
+					const data1 = await res.json()
+
+					const url = data1.url
+					const fileKey = data1.key
+
+					await axios.put(url, file, {
+						headers: {
+							'Content-Type': file.type,
+							'Allow-Access-Control-Origin': '*'
+						},
+					});
+
+					const res2 = await fetch(`/api/post_create`, {
+						method: 'POST',
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							fileKey,
+							url,
+							title,
+							description,
+							price,
+							type: 'Photo'
+						})
+					});
+
+					if (res2.ok) {
 						reset();
 						setSuccess(true);
 					} else {
@@ -66,16 +95,18 @@ const Form = () => {
 			>
 				<div className="link">
 					<span>Filename</span>
-					<input
-						value={link}
+					<Input
+						ref={fileInputRef}
+						accept='*'
+						type='file'
 						onInput={(e) => {
-							setLink(e.target.value);
+							setFile(e.target.files[0]);
 						}}
 					/>
 				</div>
 				<div className="title">
 					<span>Title</span>
-					<input
+					<Input
 						value={title}
 						onInput={(e) => {
 							setTitle(e.target.value);
@@ -84,7 +115,7 @@ const Form = () => {
 				</div>
 				<div className="description">
 					<span>Description</span>
-					<input
+					<Input
 						value={description}
 						onInput={(e) => {
 							setDescription(e.target.value);
@@ -93,7 +124,7 @@ const Form = () => {
 				</div>
 				<div className="price">
 					<span>Price</span>
-					<input
+					<Input
 						type="number"
 						value={price}
 						onInput={(e) => {
@@ -101,7 +132,7 @@ const Form = () => {
 						}}
 					/>
 				</div>
-				<button>Create</button>
+				<Button type='submit'>Create</Button>
 				<span className={`success${success ? ' active' : ''}`}>
 					Success
 				</span>

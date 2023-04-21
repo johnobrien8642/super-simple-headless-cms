@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import DeleteBtn from './Delete_Btn';
 import { useRouter } from 'next/router';
+import { Button } from '@chakra-ui/react'
 
 const PostShow = ({ post, single }) => {
 	const router = useRouter();
@@ -8,7 +9,7 @@ const PostShow = ({ post, single }) => {
 	function handleViewButton() {
 		if (!single) {
 			return (
-				<button
+				<Button
 					className="view-btn"
 					onClick={(e) => {
 						e.preventDefault();
@@ -16,7 +17,7 @@ const PostShow = ({ post, single }) => {
 					}}
 				>
 					View
-				</button>
+				</Button>
 			);
 		}
 	}
@@ -32,7 +33,7 @@ const PostShow = ({ post, single }) => {
 
 	if (post?.blurString) {
 		props.placeholder = 'blur';
-		props.blurDataURL = Buffer.from(post.blurString);
+		props.blurDataURL = Buffer.from(post.blurString).toString('base64');
 	}
 
 	if (post) {

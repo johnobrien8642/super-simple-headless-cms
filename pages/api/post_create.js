@@ -1,6 +1,7 @@
 import connectDb from '../../lib/mongodb.js';
 import Post from '../../models/Post';
 import { getPlaiceholder } from 'plaiceholder';
+import { FSx } from 'aws-sdk';
 
 export default async (req, res) => {
 	await connectDb();
@@ -8,9 +9,9 @@ export default async (req, res) => {
 	const postCount = await Post.find({}).count();
 
 	if (req.method === 'POST') {
-		const { link, title, description, price, type } = req.body;
+		const { fileKey, url, title, description, price, type } = req.body
 
-		const linkStr = `https://d10v7123g4b5wr.cloudfront.net/${link}`;
+		const linkStr = `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${fileKey}`;
 
 		const { base64 } = await getPlaiceholder(linkStr);
 

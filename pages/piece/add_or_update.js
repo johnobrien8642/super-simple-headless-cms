@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { Button, Text, Input, Textarea, Box } from '@chakra-ui/react'
 
 const AddPiece = ({}) => {
 	const router = useRouter();
 	const { update, writingId, title, summary, finished, type } = router.query;
 	let [titleHook, setTitle] = useState(title ? title : '');
 	let [summaryHook, setSummary] = useState(summary ? summary : '');
-	let [finishedHook, setFinished] = useState(finished ? finished : false);
-
+	let [errors, setErrors] = useState([])
+	console.log(errors)
 	return (
-		<div className="add-piece container mt-5">
-			<Link href="/pieces/roll">Back To Roll</Link>
+		<div className="add-piece-container container mt-5">
+			<Text as='h4' textDecoration={'underline'}><Link href="/pieces/roll">Back To Roll</Link></Text>
 			<form
 				className="form"
 				onSubmit={async (e) => {
@@ -27,7 +28,6 @@ const AddPiece = ({}) => {
 							_id: writingId,
 							titleHook,
 							summaryHook,
-							finishedHook,
 							type
 						})
 					});
@@ -42,56 +42,54 @@ const AddPiece = ({}) => {
 					}
 				}}
 			>
+				<Box width='60%' m='5%'>
+					<Text fontStyle='italic' as='h4' mt={10}>How to create a writing piece</Text>
+					<Text fontStyle='italic'>
+						To create a writing piece, enter your piece's title and optional
+						short summary below. Click submit. After successful submission, you'll
+						be taken back to the pieces index page, where you can start adding sections
+						to your piece.
+					</Text>
+				</Box>
+				<Text as='h2' mt={10}>Create Writing Piece</Text>
 				<label htmlFor="title">
-					Title
-					<input
-						name="title"
-						type="text"
-						value={titleHook}
-						onInput={(e) => {
-							setTitle(e.target.value);
-						}}
-					></input>
+					<Text as='h5'>Title<Text as='span' color='red'> *</Text></Text>
 				</label>
-				<div className="status">
-					<span>Status: </span>
-					<label htmlFor="title">
-						Finished
-						<input
-							name="title"
-							type="radio"
-							defaultChecked={finishedHook === 'true'}
-							onClick={() => {
-								setFinished(true);
-							}}
-						></input>
-					</label>
-					<label htmlFor="title">
-						Ongoing
-						<input
-							name="title"
-							type="radio"
-							defaultChecked={
-								finishedHook === 'false' || !finishedHook
-							}
-							onClick={() => {
-								setFinished(false);
-							}}
-						></input>
-					</label>
-				</div>
+				<Input
+					name="title"
+					type="text"
+					value={titleHook}
+					placeholder='Moby Dick'
+					onInput={(e) => {
+						setTitle(e.target.value);
+					}}
+				></Input>
 				<label htmlFor="summary">
-					Summary
-					<textarea
-						name="summary"
-						type="text"
-						value={summaryHook}
-						onInput={(e) => {
-							setSummary(e.target.value);
-						}}
-					></textarea>
+					<Text as='h5'>Summary</Text>
 				</label>
-				<button>Submit</button>
+				<Textarea
+					name="summary"
+					type="text"
+					value={summaryHook}
+					placeholder='A story about a guy and a whale, or something like that.'
+					onInput={(e) => {
+						setSummary(e.target.value);
+					}}
+				></Textarea>
+				<Text mt={10} as='h5' color='red'>{errors}</Text>
+				<Button
+					type='submit'
+					mt={50}
+					onClick={(e) => {
+						if (!titleHook) {
+							e.preventDefault()
+							errors = [...errors, 'Title is required']
+							setErrors(errors)
+						}
+					}}
+				>
+					Submit
+				</Button>
 			</form>
 		</div>
 	);

@@ -39,12 +39,7 @@
 			display: flex;
 			justify-content: center;
 		}
-
-		p:first-child {
-			margin-top: 1.8rem !important;
-		}
 		p {
-			font-size: 1.5rem;
 			button {
 				background-color: transparent;
 				border: none;
@@ -164,8 +159,29 @@
 }
 
 .navbar-nav {
+	align-items: center;
+
+	li {
+		height: fit-content;
+	}
+
+	li:last-child {
+		margin: 1.5rem 0;
+	}
+
+	@media (min-width: 48em) {
+		li:last-child {
+			margin-top: 0;
+			margin-left: 5rem;
+		}
+	}
+
 	.nav-item.active a {
 		color: black !important;
+	}
+
+ 	h5 {
+		margin: auto;
 	}
 }
 

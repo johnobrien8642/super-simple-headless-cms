@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import jwt from 'jsonwebtoken';
 import connectDb from '../../lib/mongodb';
+import { Input, Textarea, Button, Text } from '@chakra-ui/react'
 
 const SendEmails = ({ data }) => {
 	let [title, setTitle] = useState('');
@@ -21,23 +22,23 @@ const SendEmails = ({ data }) => {
 
 	function handleSending() {
 		if (sending) {
-			return <div className="spinner-border"></div>;
+			return <div className="spinner-border m-5"></div>;
 		}
 	}
 
 	function handleSuccessOrError() {
 		if (success) {
-			return <p>{success}</p>;
+			return <Text as='h5' mt='5%'>{success}</Text>;
 		}
 		if (error) {
-			return <p>{error}</p>;
+			return <Text as='h5' mt='5%' color='red'>{error}</Text>;
 		}
 	}
 
 	if (data) {
 		return (
 			<div className="send-email-container container mt-5">
-				<Link href="/admin">Admin</Link>
+				<Text as='h3' textDecoration={'underline'} mb={50}><Link href="/admin">Admin Page</Link></Text>
 				<h3>Send Emails</h3>
 				<form
 					onSubmit={async (e) => {
@@ -70,44 +71,23 @@ const SendEmails = ({ data }) => {
 				>
 					<label htmlFor="title">
 						Title
-						<input
+						<Input
 							name="title"
 							onInput={(e) => {
 								setTitle(e.target.value);
 							}}
-						></input>
-					</label>
-					<label htmlFor="sectionId">
-						Section Id
-						<input
-							name="sectionId"
-							onInput={(e) => {
-								setSectionId(e.target.value);
-							}}
-						></input>
+						></Input>
 					</label>
 					<label htmlFor="description">
 						Description
-						<textarea
+						<Textarea
 							name="description"
 							onChange={(e) => {
 								setWritingDesc(e.target.value);
 							}}
-						></textarea>
+						></Textarea>
 					</label>
-					<label htmlFor="type">
-						Writing Type
-						<select
-							className="writing-type-dd"
-							onChange={(e) => {
-								setWritingType(e.target.value);
-							}}
-						>
-							<option value="piece">Piece</option>
-							<option value="essay">Essay</option>
-						</select>
-					</label>
-					<button>Submit</button>
+					<Button type='submit'>Submit</Button>
 				</form>
 				{handleSending()}
 				{handleSuccessOrError()}
@@ -120,7 +100,7 @@ export async function getServerSideProps(context) {
 	await connectDb();
 	let decoded;
 	if (context.req.cookies.token) {
-		decoded = jwt.verify(context.req.cookies.token, process.env.SECRET_KEY);
+		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY);
 	}
 	const authenticated = await Admin.findById(decoded?.id);
 

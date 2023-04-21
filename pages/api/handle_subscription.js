@@ -17,8 +17,8 @@ export default async (req, res) => {
 		apiVerison: '2010-12-01',
 		region: 'us-east-1',
 		credentials: {
-			accessKeyId: process.env.MY_AWS_ACCESS_KEY,
-			secretAccessKey: process.env.MY_AWS_SECRET_ACCESS_KEY
+			accessKeyId: process.env.NEXT_PUBLIC_MY_AWS_ACCESS_KEY,
+			secretAccessKey: process.env.NEXT_PUBLIC_MY_AWS_SECRET_ACCESS_KEY
 		}
 	});
 
@@ -33,7 +33,7 @@ export default async (req, res) => {
 				sub = new Sub({ email });
 				sub.jsonwebtoken = jwt.sign(
 					{ id: sub._id },
-					process.env.SECRET_KEY
+					process.env.NEXT_PUBLIC_SECRET_KEY
 				);
 				try {
 					await sendEmail(sub);
@@ -56,7 +56,7 @@ export default async (req, res) => {
 		try {
 			const decoded = await jwt.verify(
 				jsonwebtoken,
-				process.env.SECRET_KEY
+				process.env.NEXT_PUBLIC_SECRET_KEY
 			);
 			await Sub.deleteOne({ _id: decoded.id });
 			res.status(200).json({
@@ -76,9 +76,9 @@ export default async (req, res) => {
 		});
 
 		await transporter.sendMail({
-			from: 'mikowski.me@gmail.com',
+			from: 'johnobriendeveloper@gmail.com',
 			to: sub.email,
-			subject: "Hey, it's Mikowski",
+			subject: "Hey... thanks!",
 			html: welcomeEmail(sub)
 		});
 	}

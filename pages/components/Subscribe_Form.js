@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Button, Input, Text } from '@chakra-ui/react'
 
 const SubscribeForm = () => {
 	let [email, setEmail] = useState('');
@@ -20,10 +21,18 @@ const SubscribeForm = () => {
 
 	return (
 		<div className="subscribe-form-container">
-			<h5>
+			<Text fontSize='1.2rem'>
 				Subscribe with your email and I'll send you an email
 				notification when I upload new writing.
-			</h5>
+			</Text>
+			<Text>
+				Every email comes with an unsubscribe link, try it out!
+			</Text>
+			<Text>
+				And in the very unlikely event of an error,
+				you can always sign in as an admin and go to the Repl
+				window to delete your own Subscription document!
+			</Text>
 			<form
 				onSubmit={async (e) => {
 					e.preventDefault();
@@ -44,7 +53,7 @@ const SubscribeForm = () => {
 						setEmail('');
 						setWaiting(false);
 						setSuccess(
-							"I've sent you an email, if you received it, you're successfully subscribed. If not, double-check your email and try again. - Mikowski"
+							"I've sent you an email, if you received it, you're successfully subscribed. If not, double-check your email and try again."
 						);
 					} else {
 						if (returnedData.alreadyExists) {
@@ -53,19 +62,19 @@ const SubscribeForm = () => {
 						} else {
 							setWaiting(false);
 							setError(
-								'My system said that email was invalid, double-check your email and try again. - Mikowski'
+								'My system said that email was invalid, double-check your email and try again.'
 							);
 						}
 					}
 				}}
 			>
-				<input
+				<Input
 					value={email}
 					onInput={(e) => {
 						setEmail(e.target.value);
 					}}
-				></input>
-				<button>Subscribe</button>
+				></Input>
+				<Button type='submit'>Subscribe</Button>
 				{handleSuccessOrError()}
 			</form>
 			<p className="guarantee">
