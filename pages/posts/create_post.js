@@ -23,12 +23,9 @@ const CreatePost = ({ data }) => {
 				<meta name="robots" content="noindex,nofollow" />
 			</Head>
 			<div className="create-post-container container">
-				<Center>
-					<Link href={'/admin'}><Text as='h3' textDecoration={'underline'}>Admin Page</Text></Link>
-					<Link href={'/auth/repl'}><Text as='h3'textDecoration={'underline'}>Repl</Text></Link>
-					<Link href={'/'}><Text as='h3' textDecoration={'underline'}>Main Page</Text></Link>
-					<Form />
-				</Center>
+				<Link href={'/admin'}><Text as='h3' textDecoration={'underline'}>Admin Page</Text></Link>
+				<Link href={'/'}><Text as='h3' textDecoration={'underline'}>Main Page</Text></Link>
+				<Form />
 			</div>
 		</React.Fragment>
 	);
