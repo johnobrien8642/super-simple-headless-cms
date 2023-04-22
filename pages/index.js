@@ -133,7 +133,6 @@ export default function Home({ data, loggedIn, randPost }) {
 							Vercel (for hosting and deployment management)
 						</ListItem>
 					</UnorderedList>
-					<p>johnobriendeveloper@gmail.com</p>
 					<SubscribeForm />
 					<div className="bottom-links">
 						<Text m={0} textDecoration={'underline'}>
@@ -152,15 +151,6 @@ export default function Home({ data, loggedIn, randPost }) {
 								passHref
 							>
 								Pictures
-							</Link>
-						</Text>
-						<Text m={0} textDecoration={'underline'}>
-							<Link
-								href="/coding/links"
-								className="nav-link pieces-link"
-								passHref
-							>
-								Coding
 							</Link>
 						</Text>
 					</div>
