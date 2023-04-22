@@ -39,7 +39,7 @@ export default function Home({ data, loggedIn, randPost }) {
 					{/* <link rel="icon" href="/favicon.ico" /> */}
 					<meta
 						name="description"
-						content="A writer and musician who also likes to take a picture or two when travelling."
+						content="A Next.js site demo with photo upload and writing creation features."
 					/>
 					<link rel="canonical" href={href} />
 				</Head>
@@ -79,7 +79,7 @@ export default function Home({ data, loggedIn, randPost }) {
 								Mongoose
 							</ListItem>
 							<ListItem>
-								Boostrap
+								Bootstrap
 							</ListItem>
 							<ListItem>
 								Sass
