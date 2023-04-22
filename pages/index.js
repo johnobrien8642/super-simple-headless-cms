@@ -46,7 +46,7 @@ export default function Home({ data, loggedIn, randPost }) {
 
 				<div className="index-container">
 					<Text mt='5%' as='h2'>
-						Welcome! This site looks simple, but has a lot going on.
+						Welcome! This site looks simple, but has a lot going on. To Push.
 					</Text>
 					<Text>
 						Want to dive under the hood? When you're ready, manually navigate to /admin in the browser
