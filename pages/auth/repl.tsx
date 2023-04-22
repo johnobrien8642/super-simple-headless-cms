@@ -57,7 +57,7 @@ const ReplWindow = ({ data }: ReplWindowPropType) => {
 			password: ''
 		}
 
-	if (process.env.NEXT_PUBLIC_SUPER_ACTIVE === 'false' || data) {
+	// if (process.env.NEXT_PUBLIC_SUPER_ACTIVE === 'false' || data) {
 		return (
 			<Center>
 				<Grid
@@ -140,7 +140,7 @@ const ReplWindow = ({ data }: ReplWindowPropType) => {
 				</ Grid>
 			</Center>
 		)
-	}
+	// }
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
