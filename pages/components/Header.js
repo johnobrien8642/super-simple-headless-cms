@@ -103,7 +103,7 @@ const Header = ({ loggedIn }) => {
 						</Link>
 					</li>
 					<li>{handleLoggedIn()}</li>
-					<li><Text as='h5' display='inline-block' color='gray' m='auto'>Admin Mode</Text></li>
+					<li><Text display={loggedIn ? 'inline-block': 'none'} as='h5' color='gray' m='auto'>Admin Mode</Text></li>
 				</ul>
 			</div>
 		</nav>
