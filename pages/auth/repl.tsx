@@ -145,11 +145,17 @@ const ReplWindow = ({ data }: ReplWindowPropType) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	await dbConnect();
+	type jwtType = {
+		id: string;
+	} & jwt.JwtPayload
 	let decoded;
+	let authenticated
 	if (context.req.cookies.token) {
-		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY);
+		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY!) as jwtType;
+		if (decoded) {
+			authenticated = await Admin.findById(decoded.id);
+		}
 	}
-	const authenticated = await Admin.findById(decoded?.id);
 
 	return {
 		props: {
