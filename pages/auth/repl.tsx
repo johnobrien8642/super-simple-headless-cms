@@ -67,8 +67,8 @@ const ReplWindow = ({ data }: ReplWindowPropType) => {
 					mt={'5%'}
 				>
 					<Box>
-						<Link href={'/admin'}><Text as='h3' textDecoration={'underline'}>Admin Page</Text></Link>
-						<Link href={'/create_post'}><Text as='h3' textDecoration={'underline'} mb={10}>Create Post</Text></Link>
+						<Text as='h3' textDecoration={'underline'}><Link href={'/admin'}>Admin Page</Link></Text>
+						<Text as='h3' textDecoration={'underline'} mb={10}><Link href={'/create_post'}>Create Post</Link></Text>
 						<Formik
 							initialValues={codeEditorInitVals}
 							onSubmit={async (values, actions) => {
