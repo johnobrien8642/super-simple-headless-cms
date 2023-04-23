@@ -13,7 +13,7 @@ function SinglePost({ post, blurDataUrl }) {
 
 	return (
 		<div className="outer-container">
-			<Header />
+			<Header  />
 			<div className="single-post-show container">
 				<Head>
 					<link rel="canonical" href={path} />

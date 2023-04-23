@@ -5,7 +5,7 @@ const DeleteBtn = ({ post }) => {
 	let [error, setError] = useState('');
 	let [loggedIn, setLoggedIn] = useState(false);
 	useEffect(() => {
-		if (window.localStorage.getItem('loggedIn')) {
+		if (window.localStorage.getItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR)) {
 			setLoggedIn(true);
 		}
 	}, []);

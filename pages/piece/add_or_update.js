@@ -9,7 +9,7 @@ const AddPiece = ({}) => {
 	let [titleHook, setTitle] = useState(title ? title : '');
 	let [summaryHook, setSummary] = useState(summary ? summary : '');
 	let [errors, setErrors] = useState([])
-	console.log(errors)
+
 	return (
 		<div className="add-piece-container container mt-5">
 			<Text as='h4' textDecoration={'underline'}><Link href="/pieces/roll">Back To Roll</Link></Text>

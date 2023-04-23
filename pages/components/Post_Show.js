@@ -1,10 +1,12 @@
 import Image from 'next/image';
+import Link from 'next/link'
 import DeleteBtn from './Delete_Btn';
 import { useRouter } from 'next/router';
-import { Button } from '@chakra-ui/react'
+import { Button, Text, Card, CardBody } from '@chakra-ui/react'
 
-const PostShow = ({ post, single }) => {
+const PostShow = ({ post, single, loggedIn }) => {
 	const router = useRouter();
+	const { title, description, price, link } = post
 
 	function handleViewButton() {
 		if (!single) {
@@ -25,7 +27,6 @@ const PostShow = ({ post, single }) => {
 	const props = {
 		width: '1200',
 		height: '800',
-		objectFit: 'contain',
 		className: 'w-100',
 		src: post?.link,
 		alt: 'post image'
@@ -38,12 +39,37 @@ const PostShow = ({ post, single }) => {
 
 	if (post) {
 		return (
-			<div className="post-show col-md">
+			<Card className="post-show col-md" variant='elevated' boxShadow='var(--chakra-shadows-xl)'>
 				<Image {...props} />
-				<p>{post?.description}</p>
-				{handleViewButton()}
-				<DeleteBtn post={post} />
-			</div>
+				<CardBody>
+					{!!title &&
+						<Text as='h5'>{title}</Text>
+					}
+					{!!description &&
+						<Text fontSize='1.1rem'>{description}</Text>
+					}
+					{!!price &&
+						<Text>{`$${price}`}</Text>
+					}
+					{handleViewButton(loggedIn)}
+				</CardBody>
+				{loggedIn &&
+					<Text fontSize='1.5rem' m='1rem' textDecoration='underline'>
+						<Link href={{
+							pathname: '/posts/create_post',
+							query: {
+								update: true,
+								title,
+								description,
+								price,
+								link,
+								_id: post._id
+							}
+						}}>Edit</Link>
+					</Text>
+				}
+				<DeleteBtn post={post} loggedIn={loggedIn} />
+			</Card>
 		);
 	} else {
 		return (

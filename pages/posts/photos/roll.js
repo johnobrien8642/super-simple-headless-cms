@@ -43,7 +43,7 @@ const Roll = ({ posts, loggedIn }) => {
 			<Head>
 				<link rel="canonical" href={href} />
 			</Head>
-			<Header loggedIn={loggedIn}/>
+			<Header />
 			<div className="roll container">
 				<div className="inner row">
 					<InfiniteScroll
@@ -53,7 +53,7 @@ const Roll = ({ posts, loggedIn }) => {
 						{postsHook.map((p, i) => {
 							return (
 								<React.Fragment key={p._id}>
-									<PostShow post={p} />
+									<PostShow post={p} loggedIn={loggedIn} />
 									{handleRowDivider(p, i)}
 								</React.Fragment>
 							);

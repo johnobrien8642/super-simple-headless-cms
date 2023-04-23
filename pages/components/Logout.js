@@ -11,7 +11,7 @@ const Logout = () => {
 				onClick={(e) => {
 					e.preventDefault();
 					Cookies.remove('token');
-					window.localStorage.removeItem('loggedIn');
+					window.localStorage.removeItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR);
 					router.push('/admin');
 				}}
 			>

@@ -4,12 +4,19 @@ import Logout from '../components/Logout';
 import { useRouter } from 'next/router';
 import { Text } from '@chakra-ui/react'
 
-const Header = ({ loggedIn }) => {
+const Header = () => {
 	let [active, setActive] = useState('');
 	let [openNav, setOpenNav] = useState('');
+	let [loggedIn, setLoggedIn] = useState(false)
 	const dropdownRef = useRef(null);
 	const router = useRouter();
 	const pathname = router.pathname;
+
+	useEffect(() => {
+		if(window.localStorage.getItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR)) {
+			setLoggedIn(true)
+		}
+	}, [])
 
 	useEffect(() => {
 		if (active) {

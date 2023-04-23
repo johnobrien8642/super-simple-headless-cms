@@ -22,17 +22,17 @@ export default function Home({ data, loggedIn, randPost }) {
 			setActive(true);
 		}, 500);
 		if (loggedIn) {
-			window.localStorage.setItem('loggedIn', 'true');
+			window.localStorage.setItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR, 'true');
 		} else {
-			if (window.localStorage.getItem('loggedIn')) {
-				window.localStorage.removeItem('loggedIn');
+			if (window.localStorage.getItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR)) {
+				window.localStorage.removeItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR);
 			}
 		}
 	});
 
 	return (
 		<React.Fragment>
-			<Header loggedIn={loggedIn} />
+			<Header />
 			<div className={`${active ? 'active ' : ''}main-page container`}>
 				<Head>
 					<title>Site Demo</title>

@@ -202,7 +202,7 @@ const Roll = ({ data }) => {
 				/>
 				<link rel="canonical" href={path} />
 			</Head>
-			<Header loggedIn={loggedIn} />
+			<Header />
 			<Box mt={5} className={`roll container pieces-container`}>
 				{handleAdminLinks('addNewPiece')}
 				{JSON.parse(pieces)?.map((p, i) => {

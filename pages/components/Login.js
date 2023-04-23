@@ -32,7 +32,7 @@ const Login = () => {
 						const data = await res.json();
 						if (data.token) {
 							Cookies.set('token', data.token);
-							window.localStorage.setItem('loggedIn', 'true');
+							window.localStorage.setItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR, 'true');
 							router.push('/posts/create_post');
 						} else {
 							setError(data.error);
