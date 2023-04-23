@@ -48,14 +48,14 @@ export async function getStaticPaths() {
 	const paths = posts.map((post) => ({
 		params: { id: post._id.toString() }
 	}));
-	return { paths, fallback: false };
+	return { paths, fallback: 'blocking' };
 }
 
 export async function getStaticProps({ params }) {
 	await connectDb();
 	const post = await Post.findById(params.id);
 
-	return { props: { post: JSON.stringify(post) } };
+	return { props: { post: JSON.stringify(post) }, revalidate: 10 };
 }
 
 export default SinglePost;
