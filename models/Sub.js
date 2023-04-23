@@ -15,6 +15,6 @@ const SubSchema = new Schema({
 	}
 });
 
-const Sub = mongoose.models.Sub || mongoose.model('Sub', SubSchema, 'subs');
+const Sub = mongoose.models.Sub || mongoose.model('Sub', SubSchema, 'demo-subs');
 
 export default Sub;

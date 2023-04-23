@@ -104,6 +104,6 @@ adminSchema.static('updateAdminPassword', async function updateAdminPassword(adm
 	}
 })
 
-const Admin = mongoose.models.Admin || mongoose.model<AdminType, AdminModel>('Admin', adminSchema);
+const Admin = mongoose.models.Admin || mongoose.model<AdminType, AdminModel>('Admin', adminSchema, 'demo-admins');
 
 export default Admin

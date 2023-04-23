@@ -30,6 +30,6 @@ const PieceSchema = new Schema({
 });
 
 const Piece =
-	mongoose.models.Piece || mongoose.model('Piece', PieceSchema, 'pieces');
+	mongoose.models.Piece || mongoose.model('Piece', PieceSchema, 'demo-pieces');
 
 export default Piece;

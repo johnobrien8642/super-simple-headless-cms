@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Center, Input, Button } from '@chakra-ui/react'
+import { Center, Input, Button, Spinner } from '@chakra-ui/react'
 import axios from 'axios'
 
 const Form = () => {
@@ -10,6 +10,7 @@ const Form = () => {
 	let [photo, setPhoto] = useState(true);
 	let [success, setSuccess] = useState(false);
 	let [error, setError] = useState('');
+	let [loading, setLoading] = useState(false);
 	let fileInputRef = useRef(null)
 
 	useEffect(() => {
@@ -43,6 +44,7 @@ const Form = () => {
 			<form
 				onSubmit={async (e) => {
 					e.preventDefault();
+					setLoading(true)
 					const res = await fetch(`/api/post_s3_url`, {
 						method: 'POST',
 						headers: {
@@ -82,7 +84,7 @@ const Form = () => {
 							type: 'Photo'
 						})
 					});
-
+					setLoading(false)
 					if (res2.ok) {
 						reset();
 						setSuccess(true);
@@ -133,6 +135,7 @@ const Form = () => {
 					/>
 				</div>
 				<Button type='submit'>Create</Button>
+				<Spinner display={loading ? 'block': 'none'} />
 				<span className={`success${success ? ' active' : ''}`}>
 					Success
 				</span>

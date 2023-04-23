@@ -30,6 +30,6 @@ const EssaySchema = new Schema({
 });
 
 const Essay =
-	mongoose.models.Essay || mongoose.model('Essay', EssaySchema, 'essays');
+	mongoose.models.Essay || mongoose.model('Essay', EssaySchema, 'demo-essays');
 
 export default Essay;

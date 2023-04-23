@@ -33,6 +33,6 @@ const SectionSchema = new Schema({
 
 const Section =
 	mongoose.models.Section ||
-	mongoose.model('Section', SectionSchema, 'sections');
+	mongoose.model('Section', SectionSchema, 'demo-sections');
 
 export default Section;
