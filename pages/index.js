@@ -146,7 +146,7 @@ export default function Home({ data, loggedIn, randPost }) {
 						</Text>
 						<Text m={0} textDecoration={'underline'}>
 							<Link
-								href="/photos/roll"
+								href="/posts/photos/roll"
 								className="nav-link pieces-link"
 								passHref
 							>
