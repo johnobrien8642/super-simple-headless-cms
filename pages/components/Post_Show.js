@@ -6,6 +6,7 @@ import { Button, Text, Card, CardBody } from '@chakra-ui/react'
 
 const PostShow = ({ post, single, loggedIn }) => {
 	const router = useRouter();
+	console.log(post)
 	const { title, description, price, link } = post
 
 	function handleViewButton() {
