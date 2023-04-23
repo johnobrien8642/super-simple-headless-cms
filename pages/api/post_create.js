@@ -9,7 +9,7 @@ export default async (req, res) => {
 
 	if (req.method === 'POST') {
 		const { fileKey, url, title, description, price, type, update, _id } = req.body
-		console.log(_id)
+
 		let post
 		if (!update) {
 			const linkStr = `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${fileKey}`;
@@ -25,7 +25,6 @@ export default async (req, res) => {
 				number: postCount + 1
 			});
 		} else {
-			console.log(_id)
 			post = await Post.findById(_id)
 			post.title = title
 			post.description = description

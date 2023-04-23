@@ -6,39 +6,38 @@ import { Button, Text, Card, CardBody } from '@chakra-ui/react'
 
 const PostShow = ({ post, single, loggedIn }) => {
 	const router = useRouter();
-	console.log(post)
-	const { title, description, price, link } = post
-
-	function handleViewButton() {
-		if (!single) {
-			return (
-				<Button
-					className="view-btn"
-					onClick={(e) => {
-						e.preventDefault();
-						router.push(`/posts/${post?._id}`);
-					}}
-				>
-					View
-				</Button>
-			);
-		}
-	}
-
-	const props = {
-		width: '1200',
-		height: '800',
-		className: 'w-100',
-		src: post?.link,
-		alt: 'post image'
-	};
-
-	if (post?.blurString) {
-		props.placeholder = 'blur';
-		props.blurDataURL = Buffer.from(post.blurString).toString('base64');
-	}
-
 	if (post) {
+		const { title, description, price, link } = post
+
+		function handleViewButton() {
+			if (!single) {
+				return (
+					<Button
+						className="view-btn"
+						onClick={(e) => {
+							e.preventDefault();
+							router.push(`/posts/${post?._id}`);
+						}}
+					>
+						View
+					</Button>
+				);
+			}
+		}
+
+		const props = {
+			width: '1200',
+			height: '800',
+			className: 'w-100',
+			src: post.link,
+			alt: 'post image'
+		};
+
+		if (post?.blurString) {
+			props.placeholder = 'blur';
+			props.blurDataURL = Buffer.from(post.blurString).toString('base64');
+		}
+
 		return (
 			<Card className="post-show col-md" variant='elevated' boxShadow='var(--chakra-shadows-xl)'>
 				<Image {...props} />
@@ -73,11 +72,7 @@ const PostShow = ({ post, single, loggedIn }) => {
 			</Card>
 		);
 	} else {
-		return (
-			<div className="post-show col-md">
-				<p>Sorry, no photos to show yet</p>
-			</div>
-		);
+		return <></>
 	}
 };
 

@@ -13,7 +13,6 @@ const Roll = ({ posts, loggedIn }) => {
 	const router = useRouter();
 	const href = process.env.URL + router.asPath;
 	let [postsHook, setPosts] = useState(JSON.parse(posts));
-	console.log(postsHook)
 
 	function handleRowDivider(p, i) {
 		let i2 = 0;
