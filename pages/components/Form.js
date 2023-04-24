@@ -113,7 +113,9 @@ const Form = () => {
 					}
 				}}
 			>
-				<Image {...props} />
+				{update &&
+					<Image {...props} />
+				}
 				<div className="link">
 					<span>Filename</span>
 					<Input
@@ -121,6 +123,7 @@ const Form = () => {
 						ref={fileInputRef}
 						accept='*'
 						type='file'
+						value={undefined}
 						onInput={(e) => {
 							setFile(e.target.files[0]);
 						}}
