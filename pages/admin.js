@@ -8,37 +8,28 @@ import connectDb from '../lib/mongodb';
 import Admin from '../models/Admin';
 import jwt from 'jsonwebtoken';
 import { Text } from '@chakra-ui/react'
+import AdminHeader from './components/AdminHeader';
+
 
 const AdminPage = ({ data }) => {
-	function handleComponents() {
-		if (data) {
-			return (
-				<React.Fragment>
-					<Head>
-						<meta name="robots" content="noindex,nofollow" />
-					</Head>
-					<Logout />
-					<Text as='h3' textDecoration={'underline'}><Link href={'/piece/add_or_update'}>Create Writing</Link></Text>
-					<Text as='h3' textDecoration={'underline'}><Link href={'/posts/create_post'}>Create Post</Link></Text>
-					<Text as='h3' textDecoration={'underline'}><Link href={'/'}>Main Page</Link></Text>
-					<Text as='h3' textDecoration={'underline'}><Link href={'/util/send_emails'}>Send Emails</Link></Text>
-					<Text as='h3' textDecoration={'underline'}><Link href={'/auth/repl'}>Repl</Link></Text>
-					<Text fontSize='1.2rem' mt='5%'>Admins can perform any of the actions above.</Text>
-					<Text fontSize='1.2rem'>Check out the Repl window to interact directly with the database!</Text>
-				</React.Fragment>
-			);
-		} else {
-			return (
-				<React.Fragment>
-					<Login />
-				</React.Fragment>
-			);
-		}
-	}
 
-	return (
-		<div className="admin-container container">{handleComponents()}</div>
-	);
+	if (data) {
+		return (
+			<>
+				<Head>
+					<meta name="robots" content="noindex,nofollow" />
+				</Head>
+				<AdminHeader />
+				<Text>Welcome to the Admin home page</Text>
+			</>
+		);
+	} else {
+		return (
+			<>
+				<Login />
+			</>
+		);
+	}
 };
 
 export async function getServerSideProps(context) {
