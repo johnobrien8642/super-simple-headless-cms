@@ -3,32 +3,44 @@ import { assetTypes } from '../template_options';
 const Schema = mongoose.Schema;
 
 const AssetsSchema = new Schema({
-	assetLink: {
+	assetKey: {
 		type: String,
-		required: true,
 		file: true,
-		formTitle: 'Asset File'
+		formTitle: 'Asset File',
+		dataFormKey: 'assetFile'
 	},
-	thumbnailLink: {
+	thumbnailKey: {
 		type: String,
 		file: true,
-		formTitle: 'Thumbnail File'
+		formTitle: 'Thumbnail File',
+		dataFormKey: 'thumbnailFile'
 	},
 	blurString: {
 		type: Buffer,
-		required: true,
 		hide: true
 	},
 	title: {
 		type: String
 	},
 	description: {
-		type: String
+		type: String,
+		textbox: true
+	},
+	extLink: {
+		type: String,
+		formTitle: 'External Link'
 	},
 	type: {
 		type: String,
 		enum: assetTypes,
-		required: true
+		required: true,
+		select: true,
+		enumKey: 'assetTypes'
+	},
+	schemaName: {
+		type: String,
+		default: 'Assets',
+		hide: true
 	},
 	createdAt: {
 		type: Date,

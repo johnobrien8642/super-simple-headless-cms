@@ -10,7 +10,8 @@ import axios from 'axios';
 import mongoose from 'mongoose';
 import FormFields from './FormFields';
 import TemplateForm from './TemplateForm';
-import { useManagePageForm } from '../contexts/useManagePageForm';
+import { useManagePageForm, dataInitialValue } from '../contexts/useManagePageForm';
+import { cloneDeep } from 'lodash';
 
 const PageForm = ({}) => {
 	const router = useRouter()
@@ -21,7 +22,8 @@ const PageForm = ({}) => {
 	let [loading, setLoading] = useState(false);
 	let [id, setId] = useState(null);
 	let fileInputRef = useRef(null)
-	const { pageFormData, formSelected, setFormSelected } = useManagePageForm();
+	const { data, setData, formSelected, setFormSelected, setTopLevelModal } = useManagePageForm();
+	const { formTitle, editItemTraceObj } = formSelected;
 
 	useEffect(() => {
 		handleModelSchema();
@@ -34,7 +36,7 @@ const PageForm = ({}) => {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					schema: 'Page'
+					schema: formTitle
 				})
 			})
 			const data = await res.json();
@@ -65,7 +67,8 @@ const PageForm = ({}) => {
 		// setPrice('');
 		// setError('');
 	}
-	if (formSelected.formFlow[formSelected.formIndex] === 'Page') {
+
+	if (formTitle === 'Page') {
 		return (
 			<div className="form container">
 				<Text as='h2'>New Page</Text>
@@ -80,15 +83,27 @@ const PageForm = ({}) => {
 								'Content-Type': 'application/json'
 							},
 							body: JSON.stringify({
-								...pageFormData,
-								update
+								data: {
+									...data['Page']
+								},
+								update: formSelected.update,
+								itemToEditId: editItemTraceObj[formTitle]
 							})
 						});
 						setLoading(false)
 						if (res2.ok) {
 							const data = await res2.json()
-							setId(data._id)
-							reset();
+							if (formSelected.update) {
+								setFormSelected(prev => {
+									const newData = cloneDeep(prev);
+									newData.formTitle = 'Page';
+									newData.update = '';
+
+									return newData;
+								})
+							}
+							setTopLevelModal(false);
+							setData(dataInitialValue)
 							setSuccess(true);
 						} else {
 							const data = await res2.json();
@@ -97,7 +112,7 @@ const PageForm = ({}) => {
 						}
 					}}
 				>
-					<FormFields fieldArr={fieldArr} nestedKey='templates' />
+					<FormFields fieldArr={fieldArr} dataKey='Templates' />
 					<Button type='submit'>Save</Button>
 				</form>
 			</div>

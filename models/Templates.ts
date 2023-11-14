@@ -10,18 +10,27 @@ const TemplatesSchema = new Schema({
 		type: String,
 		enum: templateOptions,
 		formTitle: 'Template Type',
-		select: true
+		select: true,
+		enumKey: 'templateOptions'
 	},
 	description: {
 		type: String,
 		textbox: true
 	},
-	assets: [
-		{
-			type: mongoose.Types.ObjectId,
-			ref: 'Assets'
-		}
-	],
+	assetsIds: {
+		type: [
+			{
+				type: mongoose.Types.ObjectId,
+				ref: 'Assets'
+			}
+		],
+		formTitle: 'Assets',
+	},
+	schemaName: {
+		type: String,
+		default: 'Templates',
+		hide: true
+	},
 	updatedAt: {
 		type: Date,
 		default: Date.now,

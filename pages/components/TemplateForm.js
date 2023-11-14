@@ -18,13 +18,15 @@ import axios from 'axios';
 import mongoose from 'mongoose';
 import FormFields from './FormFields';
 import AssetForm from './AssetForm';
-import { useManagePageForm } from '../contexts/useManagePageForm';
+import { useManagePageForm, dataInitialValue } from '../contexts/useManagePageForm';
+import { cloneDeep } from 'lodash';
 
 const TemplateForm = ({}) => {
 	const router = useRouter()
 	const { title: uTitle, description: uDescription, price: uPrice, link: uLink, update, _id } = router.query;
 	const [templateFormData, setTemplateFormData] = useState({});
 	const [fieldArr, setFieldArr] = useState(null);
+	const [saveType, setSaveType] = useState('');
 	let [success, setSuccess] = useState(false);
 	let [error, setError] = useState('');
 	let [loading, setLoading] = useState(false);
@@ -32,11 +34,13 @@ const TemplateForm = ({}) => {
 	let [openModal, setOpenModal] = useState(false);
 	let [assetFormOpen, setAssetFormOpen] = useState(false);
 	let fileInputRef = useRef(null)
-	const { formSelected, setFormSelected } = useManagePageForm();
+	const { formSelected, setFormSelected, data, setData } = useManagePageForm();
+	const { formTitle, editItemTraceObj } = formSelected;
 
 	useEffect(() => {
 		handleModelSchema();
 		async function handleModelSchema() {
+			if (formTitle !== 'Templates') return;
 			const res = await fetch('/api/get_model_schema',
 			{
 				method: 'POST',
@@ -45,14 +49,14 @@ const TemplateForm = ({}) => {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					schema: 'Templates'
+					schema: formTitle
 				})
 			})
 			const data = await res.json();
 			const { schemaPaths } = data;
 			setFieldArr(Object.entries(schemaPaths))
 		}
-	}, [])
+	}, [formTitle])
 
 	const props = {
 		width: '1200',
@@ -61,22 +65,7 @@ const TemplateForm = ({}) => {
 		src: uLink,
 		alt: 'post image'
 	};
-
-	useEffect(() => {
-		if (success && id) {
-			router.push(`/posts/${id}`)
-		}
-	}, [success, id]);
-
-	function reset() {
-		setFile('');
-		fileInputRef.current.value = ''
-		setTitle('');
-		setDescription('');
-		setPrice('');
-		setError('');
-	}
-	if (formSelected.formFlow[formSelected.formIndex] === 'Templates') {
+	if (formTitle === 'Templates') {
 		return (
 			<div className="form container">
 				<Text as='h2'>New Template</Text>
@@ -91,16 +80,46 @@ const TemplateForm = ({}) => {
 								'Content-Type': 'application/json'
 							},
 							body: JSON.stringify({
-								...data,
-								update
+								data: data['Templates'],
+								update: formSelected.update,
+								itemToEditId: editItemTraceObj[formTitle]
 							})
 						});
 						setLoading(false)
 						if (res2.ok) {
-							const data = await res2.json()
-							setId(data._id)
-							reset();
-							setSuccess(true);
+							const resData = await res2.json();
+							const { templateId } = resData;
+							setData(prev => {
+								const newData = cloneDeep(prev);
+								if (!formSelected.update) {
+									newData['Page'].templatesIds.push(templateId);
+								}
+								newData['Templates'] = {
+									title: '',
+									templateType: '',
+									description: '',
+									assetsIds: []
+								}
+								if (saveType === 'Save') {
+									setFormSelected(prev => {
+										return {
+											...prev,
+											formTitle: 'Page',
+											prevFormTitle: 'Templates',
+										}
+									})
+								}
+								setSaveType('');
+								return newData;
+							})
+							if (formSelected.update) {
+								setFormSelected(prev => {
+									const newData = cloneDeep(prev);
+									newData.update = '';
+									editItemTraceObj['Templates'] = '';
+									return newData;
+								})
+							}
 						} else {
 							const data = await res2.json();
 							console.log('Error in TemplateForm', data.errorMessage);
@@ -108,28 +127,43 @@ const TemplateForm = ({}) => {
 						}
 					}}
 				>
-					<FormFields fieldArr={fieldArr} nestedKey='templates' />
+					<FormFields fieldArr={fieldArr} dataKey='Assets' />
+					<Flex>
+						<Button
+							type='submit'
+							onClick={() => {
+								setSaveType('Save')
+							}}
+						>
+							Save
+						</Button>
+						<Button
+							mx='1rem'
+							type='submit'
+							onClick={() => {
+								setSaveType('Save and New')
+							}}
+						>
+							Save and New
+						</Button>
+						<Button
+							colorScheme='blue'
+							mr={3}
+							onClick={() => {
+								setFormSelected(prev => {
+									const newData = cloneDeep(prev);
+									newData.formTitle = 'Page';
+									newData.prevFormTitle = 'Templates';
+									newData.update = 'Page';
+									newData.editItemTraceObj['Templates'] = '';
+									return newData;
+								})
+							}}
+						>
+							Go back to Page
+						</Button>
+					</Flex>
 				</form>
-				<Flex
-
-				>
-					<Button type='submit'>Save</Button>
-					<Button type='submit'>Save And New</Button>
-					<Button
-						colorScheme='blue'
-						mr={3}
-						onClick={() => {
-							setFormSelected(prev => {
-								return {
-									...prev,
-									formIndex: prev.formIndex - 1
-								}
-							})
-						}}
-					>
-						Close New Template Form
-					</Button>
-				</Flex>
 			</div>
 		);
 	} else {

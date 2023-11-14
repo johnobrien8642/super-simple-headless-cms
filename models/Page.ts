@@ -11,12 +11,20 @@ const PageSchema = new Schema({
 		type: String,
 		textbox: true
 	},
-	templates: [
-		{
-			type: mongoose.Types.ObjectId,
-			ref: 'Templates'
-		}
-	],
+	templatesIds: {
+		type: [
+			{
+				type: mongoose.Types.ObjectId,
+				ref: 'Templates'
+			}
+		],
+		formTitle: 'Templates',
+	},
+	schemaName: {
+		type: String,
+		default: 'Page',
+		hide: true
+	},
 	updatedAt: {
 		type: Date,
 		default: Date.now,

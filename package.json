@@ -4,11 +4,13 @@
 				"dev": "next dev",
 				"build": "next build",
 				"start": "next start",
-				"prettier": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
+				"prettier": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
+				"proxy": "lcp --proxyUrl https://www.yourdomain.ie"
 		},
 		"dependencies": {
 				"@aws-sdk/client-ses": "^3.100.0",
 				"@aws-sdk/credential-provider-node": "^3.100.0",
+				"@chakra-ui/icons": "^2.1.1",
 				"@chakra-ui/next-js": "^2.1.2",
 				"@chakra-ui/react": "^2.5.5",
 				"@emotion/react": "^11.11.1",
@@ -24,6 +26,7 @@
 				"bcryptjs": "^2.4.3",
 				"bootstrap": "^5.3.0-alpha3",
 				"email-validator": "^2.0.4",
+				"formidable": "^3.5.1",
 				"formik": "^2.2.9",
 				"js-cookie": "^3.0.1",
 				"jsonwebtoken": "^8.5.1",
@@ -36,6 +39,8 @@
 				"plaiceholder": "^2.3.0",
 				"react": "^18.2.0",
 				"react-ace": "^10.1.0",
+				"react-dnd": "^16.0.1",
+				"react-dnd-html5-backend": "^16.0.1",
 				"react-dom": "^18.2.0",
 				"react-infinite-scroll-component": "^6.1.0",
 				"react-markdown": "^8.0.7",

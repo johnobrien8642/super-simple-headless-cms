@@ -20,15 +20,18 @@ import AdminHeader from '../components/AdminHeader';
 import PageForm from '../components/PageForm';
 import TemplateForm from '../components/TemplateForm';
 import AssetForm from '../components/AssetForm';
-import { ManagePageFormProvider } from '../contexts/useManagePageForm.tsx';
+import { ManagePageFormProvider, dataInitialValue } from '../contexts/useManagePageForm.tsx';
 import ListField from '../components/ListField';
 import ListFieldItem from '../components/ListFieldItem';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { cloneDeep } from 'lodash';
 
 
 const ManagePages = ({ admin }) => {
-	const [openModal, setOpenModal] = useState();
-	const [formSelected, setFormSelected] = useState({ formFlow: ['Page', 'Templates', 'Assets'], formIndex: 0 });
-	const [pageFormData, setPageFormData] = useState({});
+	const [topLevelModal, setTopLevelModal] = useState(false);
+	const [formSelected, setFormSelected] = useState({ formTitle: 'Page', formIndex: 0, editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': '' }, update: false });
+	const [data, setData] = useState(dataInitialValue);
 	const [items, setItems] = useState(null);
 
 	useEffect(() => {
@@ -52,47 +55,57 @@ const ManagePages = ({ admin }) => {
 				})
 			})
 			const data = await res.json();
-			const { items } = data;
-			setItems(items);
+			const { availableItems } = data;
+			setItems(availableItems);
 		}
-	}, [])
+	}, [data])
 
 	return (
 		<ManagePageFormProvider
-			pageFormData={pageFormData}
-			setPageFormData={setPageFormData}
+			data={data}
+			setData={setData}
 			formSelected={formSelected}
 			setFormSelected={setFormSelected}
-			setOpenModal={setOpenModal}
-			openModal={openModal}
+			setTopLevelModal={setTopLevelModal}
+			topLevelModal={topLevelModal}
 		>
 			<AdminHeader />
-			<Button onClick={() => setOpenModal(true)}>Create New Page</Button>
+			<Button
+				onClick={() => {
+					setTopLevelModal(true);
+					setData(dataInitialValue);
+					setFormSelected(prev => {
+						return {
+							...prev,
+							formTitle: 'Page',
+							prevFormTitle: '',
+							editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
+							update: ''
+						}
+					});
+				}}
+			>
+				Create New Page
+			</Button>
 			<Flex>
 				{
 					items?.map(obj => {
-						return <Flex
-							width='fit-content'
-							border='black solid .1rem'
-							borderRadius='.5rem'
-							m='1rem'
-							alignItems='center'
-							padding='.5rem'
-						>
-							<ListFieldItem item={obj} type='Page' />
-						</Flex>
+						return <ListFieldItem key={obj._id} item={obj} type='Page' />
 					})
 				}
 			</Flex>
 			<Modal
-				isOpen={openModal}
+				isOpen={topLevelModal}
 				onClose={() => {
-					setOpenModal(false);
-					setPageFormData({});
+					setTopLevelModal(false);
+					setData(dataInitialValue);
 					setFormSelected(prev => {
 						return {
 							...prev,
-							formIndex: 0
+							formTitle: 'Page',
+							prevFormTitle: '',
+							editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
+							update: ''
 						}
 					});
 				}}
@@ -102,21 +115,26 @@ const ManagePages = ({ admin }) => {
 					<ModalHeader></ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
-						<PageForm />
-						<TemplateForm />
-						<AssetForm />
+						<DndProvider backend={HTML5Backend}>
+							<PageForm />
+							<TemplateForm />
+							<AssetForm />
+						</DndProvider>
 					</ModalBody>
 					<ModalFooter>
 						<Button
 							colorScheme='blue'
 							mr={3}
 							onClick={() => {
-								setOpenModal(false);
-								setPageFormData({});
+								setTopLevelModal(false);
+								setData(dataInitialValue);
 								setFormSelected(prev => {
 									return {
 										...prev,
-										formIndex: 0
+										formTitle: 'Page',
+										prevFormTitle: '',
+										editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
+										update: ''
 									}
 								});
 							}}

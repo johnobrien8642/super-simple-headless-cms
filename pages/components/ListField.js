@@ -15,15 +15,16 @@ import {
 } from '@chakra-ui/react'
 import FormFields from './FormFields';
 import { useManagePageForm } from '../contexts/useManagePageForm';
+import { capitalize } from 'lodash';
 
 
-const ListField = ({ obj, index, nestedKey }) => {
-	const [items, setItems] = useState(null);
+const ListField = ({ obj, title }) => {
+	const [availableItems, setAvailableItems] = useState([]);
+	const [chosenItems, setChosenItems] = useState([]);
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [fieldArr, setFieldArr] = useState(null);
-	const [data, setData] = useState({});
-	const { formSelected, setFormSelected, pageFormData, setPageFormData } = useManagePageForm();
+	const { formSelected, setFormSelected, data,  setData} = useManagePageForm();
+	const { formTitle } = formSelected;
 
 	useEffect(() => {
 		handleGetList();
@@ -37,36 +38,15 @@ const ListField = ({ obj, index, nestedKey }) => {
 				},
 				body: JSON.stringify({
 					schema: obj.caster.options.ref,
-					selectedIds: nestedKey.split('.').length > 1 ?
-						pageFormData[nestedKey][index]?.map(obj => obj._id) :
-							pageFormData[nestedKey]?.map(obj => obj._id)
+					nestedItemIds: data?.[formTitle]?.[title] ?? []
 				})
 			})
-			const data = await res.json();
-			const { items } = data;
-			setItems(items);
+			const resData = await res.json();
+			const { availableItems, chosenItems } = resData;
+			setAvailableItems(availableItems);
+			setChosenItems(chosenItems);
 		}
-	}, [])
-
-	useEffect(() => {
-		handleModelSchema();
-		async function handleModelSchema() {
-			const res = await fetch('/api/get_model_schema',
-			{
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					schema: 'Templates'
-				})
-			})
-			const data = await res.json();
-			const { schemaPaths } = data;
-			setFieldArr(Object.entries(schemaPaths));
-		}
-	}, [])
+	}, [data, formTitle])
 
 	return (
 		<Flex
@@ -81,26 +61,18 @@ const ListField = ({ obj, index, nestedKey }) => {
 				padding='.5rem'
 			>
 				{
-					nestedKey.split('.').length === 1 &&
-						pageFormData[nestedKey]?.map(item => {
-							return <ListFieldItem item={item} />
-						})
+					chosenItems?.map(item => {
+						return <ListFieldItem
+							key={item._id}
+							item={item}
+							title={title}
+							chosen='true'
+							type={formTitle}
+						/>
+					})
 				}
 				{
-					nestedKey.split('.').length === 1 &&
-						!pageFormData[nestedKey]?.length &&
-							'No items chosen'
-				}
-				{
-					nestedKey.split('.').length > 1 &&
-						pageFormData[nestedKey][index]?.map(item => {
-							return <ListFieldItem item={item} />
-						})
-				}
-				{
-					nestedKey.split('.').length > 1 &&
-						!pageFormData[nestedKey][index]?.length &&
-							'No items chosen'
+					!chosenItems?.length && 'No items to choose, but this works'
 				}
 			</Box>
 			<Button
@@ -109,7 +81,8 @@ const ListField = ({ obj, index, nestedKey }) => {
 					setFormSelected(prev => {
 						return {
 							...prev,
-							formIndex: prev.formIndex + 1
+							formTitle: obj.caster.options.ref,
+							prevFormTitle: prev.formTitle
 						}
 					})
 				}}
@@ -125,12 +98,18 @@ const ListField = ({ obj, index, nestedKey }) => {
 				padding='.5rem'
 			>
 				{
-					items?.map(item => {
-						return <ListFieldItem item={item} />
+					availableItems?.map(item => {
+						return <ListFieldItem
+							key={item._id}
+							item={item}
+							title={title}
+							chosen='false'
+							type={formTitle}
+						/>
 					})
 				}
 				{
-					!items?.length && 'No items to choose'
+					!availableItems?.length && 'No items to choose, but this works'
 				}
 			</Box>
 		</Flex>

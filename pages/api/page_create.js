@@ -7,31 +7,46 @@ export default async (req, res) => {
 	const postCount = await Page.find({}).count();
 
 	if (req.method === 'POST') {
-		console.log(req.body)
 		const {
-			title,
-			description,
-			update
+			data: {
+				title,
+				description,
+				templatesIds,
+			},
+			update,
+			itemToEditId
 		} = req.body
-
+		console.log(update)
 		let post
-		if (!update) {
+		if (update !== 'Page') {
 			post = new Page({
 				title,
-				description
+				description,
+				templatesIds
 			});
+			try {
+				const savedPage = await post.save();
+				return res.status(200).json({ success: true, _id: savedPage._id });
+			} catch (err) {
+				return res.status(500).json({ success: false, errorMessage: err.message });
+			}
 		} else {
-			// post = await Page.findById(_id)
-			// post.title = title
-			// post.description = description
-			// post.price = price
-		}
+			post = await Page
+				.findOneAndUpdate(
+					{ _id: itemToEditId },
+					{
+						title,
+						description,
+						templatesIds
+					}
+				)
+				try {
 
-		try {
-			const savedPage = await post.save();
-			res.status(200).json({ success: true, _id: savedPage._id });
-		} catch (err) {
-			res.status(500).json({ success: false, errorMessage: err.message });
-		}
+					return res.status(200).json({ success: true, _id: post._id });
+				} catch (err) {
+					return res.status(500).json({ success: false, errorMessage: err.message });
+				}
+			}
+
 	}
 };
