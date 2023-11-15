@@ -1,52 +1,44 @@
 import connectDb from '../../lib/mongodb.js';
 import Page from '../../models/Page';
+import PageManager from '../../models/PageManager';
 
 export default async (req, res) => {
 	await connectDb();
 
-	const postCount = await Page.find({}).count();
-
 	if (req.method === 'POST') {
 		const {
-			data: {
-				title,
-				description,
-				templatesIds,
-			},
+			data,
 			update,
 			itemToEditId
 		} = req.body
-		console.log(update)
-		let post
+
+		let page;
 		if (update !== 'Page') {
-			post = new Page({
-				title,
-				description,
-				templatesIds
+			page = new Page({
+				...data
 			});
 			try {
-				const savedPage = await post.save();
+				let pageManager = await PageManager.findOne({ title: 'manage-pages' });
+				const savedPage = await page.save();
+				await PageManager.findOneAndUpdate({ _id: pageManager._id }, { pageIds: [...pageManager.pageIds, savedPage._id] });
 				return res.status(200).json({ success: true, _id: savedPage._id });
 			} catch (err) {
 				return res.status(500).json({ success: false, errorMessage: err.message });
 			}
 		} else {
-			post = await Page
-				.findOneAndUpdate(
-					{ _id: itemToEditId },
-					{
-						title,
-						description,
-						templatesIds
-					}
-				)
-				try {
-
-					return res.status(200).json({ success: true, _id: post._id });
-				} catch (err) {
-					return res.status(500).json({ success: false, errorMessage: err.message });
-				}
+			try {
+				page = await Page
+					.findOneAndUpdate(
+						{ _id: itemToEditId },
+						{
+							...data
+						}
+					)
+				return res.status(200).json({ success: true, _id: page._id });
+			} catch (err) {
+				return res.status(500).json({ success: false, errorMessage: err.message });
 			}
+		}
 
 	}
 };

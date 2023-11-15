@@ -20,19 +20,19 @@ import AdminHeader from '../components/AdminHeader';
 import PageForm from '../components/PageForm';
 import TemplateForm from '../components/TemplateForm';
 import AssetForm from '../components/AssetForm';
+import { useRouter } from 'next/router';
 import { ManagePageFormProvider, dataInitialValue } from '../contexts/useManagePageForm.tsx';
 import ListField from '../components/ListField';
 import ListFieldItem from '../components/ListFieldItem';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { cloneDeep } from 'lodash';
 
 
 const ManagePages = ({ admin }) => {
 	const [topLevelModal, setTopLevelModal] = useState(false);
 	const [formSelected, setFormSelected] = useState({ formTitle: 'Page', formIndex: 0, editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': '' }, update: false });
 	const [data, setData] = useState(dataInitialValue);
-	const [items, setItems] = useState(null);
+	const [items, setItems] = useState([]);
+	const [renderCount, setRenderCount] = useState(0);
+	const router = useRouter();
 
 	useEffect(() => {
 		if (!admin) {
@@ -43,22 +43,37 @@ const ManagePages = ({ admin }) => {
 	useEffect(() => {
 		handleGetList();
 		async function handleGetList() {
-			const res = await fetch('/api/get_list_field_items',
+			const res = await fetch('/api/handle_page_manager',
 			{
-				method: 'POST',
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				}
+			})
+			const data = await res.json();
+			const { pageManager } = data;
+			setItems(pageManager.pageIds);
+		}
+	}, [topLevelModal]);
+
+	useEffect(() => {
+		handleGetList();
+		async function handleGetList() {
+			if (!items.length) return;
+			const res = await fetch('/api/handle_page_manager',
+			{
+				method: 'PUT',
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					schema: 'Page'
+					pageIdArr: items.map(obj => obj._id)
 				})
 			})
-			const data = await res.json();
-			const { availableItems } = data;
-			setItems(availableItems);
 		}
-	}, [data])
+	}, [items]);
 
 	return (
 		<ManagePageFormProvider
@@ -87,10 +102,20 @@ const ManagePages = ({ admin }) => {
 			>
 				Create New Page
 			</Button>
-			<Flex>
+			<Flex
+				flexDir='column'
+				maxW='1200px'
+			>
 				{
-					items?.map(obj => {
-						return <ListFieldItem key={obj._id} item={obj} type='Page' />
+					items?.map((obj, index) => {
+						return <ListFieldItem
+							key={obj._id}
+							item={obj}
+							type='Page'
+							noForm={true}
+							setItems={setItems}
+							index={index}
+						/>
 					})
 				}
 			</Flex>
@@ -111,15 +136,13 @@ const ManagePages = ({ admin }) => {
 				}}
 			>
 				<ModalOverlay />
-				<ModalContent maxW='800px' position='relative'>
+				<ModalContent maxW='1200px' position='relative'>
 					<ModalHeader></ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
-						<DndProvider backend={HTML5Backend}>
-							<PageForm />
-							<TemplateForm />
-							<AssetForm />
-						</DndProvider>
+						<PageForm />
+						<TemplateForm />
+						<AssetForm />
 					</ModalBody>
 					<ModalFooter>
 						<Button

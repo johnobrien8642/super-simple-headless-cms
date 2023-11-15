@@ -6,5 +6,6 @@ export const templateOptions = [
 export const assetTypes = [
 	'Image',
 	'Video',
+	'Text',
 	'PDF'
 ] as const;

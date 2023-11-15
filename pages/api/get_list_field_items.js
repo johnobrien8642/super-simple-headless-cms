@@ -5,8 +5,14 @@ export default async (req, res) => {
 	const availableItems = await models[schema].find({ _id: { $nin: nestedItemIds ?? [] } })
 	const chosenItems = await models[schema].find({ _id: { $in: nestedItemIds ?? [] } })
 	if (availableItems && chosenItems) {
-		res.status(200).json({ availableItems, chosenItems });
+		const orderedChosenItems = new Array(chosenItems.length);
+		let item;
+		for (let i = 0; i < chosenItems.length; i++) {
+			item = chosenItems[i];
+			orderedChosenItems.splice(nestedItemIds.indexOf(item._id.toString()), 1, item);
+		}
+		return res.status(200).json({ availableItems, chosenItems: orderedChosenItems });
 	} else {
-		res.status(401).json({ error: 'That wasnt a valid model' });
+		return res.status(401).json({ error: 'That wasnt a valid model' });
 	}
 };

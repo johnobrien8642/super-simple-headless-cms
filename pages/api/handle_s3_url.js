@@ -18,13 +18,12 @@ export default async (req, res) => {
 		const fileParams = {
 			Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
 			Key: key,
-			Expires: 600,
+			Expires: 80000,
 			ContentType: type
 		}
 
 		try {
 			const url = await s3.getSignedUrlPromise('putObject', fileParams)
-			console.log(url)
 			return res.status(200).json({ url, key })
 		} catch (err) {
 			return res.status(500).json({ error: err.message })
@@ -33,9 +32,9 @@ export default async (req, res) => {
 		const { keysToDelete } = req.body;
 		let errors = [];
 		let key;
-		console.log(keysToDelete)
 		for (let i = 0; i < keysToDelete.length; i++) {
 			key = keysToDelete[i];
+			if (!key) continue;
 			try {
 				await s3.deleteObject({ Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME, Key: key }, function (err, data) {
 					if (err) errors.push(err);

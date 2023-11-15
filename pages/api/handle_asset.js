@@ -7,14 +7,7 @@ export default async (req, res) => {
 
 	if (req.method === 'POST') {
 		const {
-			data: {
-				assetKey,
-				thumbnailKey,
-				blurString,
-				title,
-				description,
-				type
-			},
+			data,
 			update,
 			itemToEditId
 		} = req.body
@@ -22,11 +15,7 @@ export default async (req, res) => {
 		let asset;
 		if (update !== 'Assets') {
 			asset = new Assets({
-				assetKey,
-				thumbnailKey,
-				title,
-				description,
-				type
+				...data
 			});
 			try {
 				const savedAsset = await asset.save();
@@ -39,11 +28,7 @@ export default async (req, res) => {
 				asset = await Assets.findOneAndUpdate(
 					{ _id: itemToEditId },
 					{
-						assetKey,
-						thumbnailKey,
-						title,
-						description,
-						type
+						...data
 					}
 				)
 				return res.status(200).json({ success: true, savedAssetId: asset._id });

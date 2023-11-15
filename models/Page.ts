@@ -5,7 +5,11 @@ const PageSchema = new Schema({
 	title: {
 		type: String,
 		required: true,
-		textbox: false
+	},
+	folderHref: {
+		type: String,
+		required: true,
+		hide: true
 	},
 	description: {
 		type: String,

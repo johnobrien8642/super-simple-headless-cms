@@ -8,6 +8,10 @@
 	}
 }
 
+.ck-editor__main > .ck-editor__editable {
+	min-height: 350px;
+}
+
 button {
 	border: 1px solid black;
 	border-radius: 3px;
@@ -24,6 +28,10 @@ h1, h2, h3, h4, h5, p {
 	&:hover {
 		cursor: default;
 	}
+}
+
+p {
+	margin-bottom: 0;
 }
 
 body {

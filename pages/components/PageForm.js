@@ -11,7 +11,7 @@ import mongoose from 'mongoose';
 import FormFields from './FormFields';
 import TemplateForm from './TemplateForm';
 import { useManagePageForm, dataInitialValue } from '../contexts/useManagePageForm';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, kebabCase } from 'lodash';
 
 const PageForm = ({}) => {
 	const router = useRouter()
@@ -76,6 +76,7 @@ const PageForm = ({}) => {
 					onSubmit={async (e) => {
 						e.preventDefault();
 						setLoading(true);
+						data['Page'].folderHref = `/${kebabCase(data['Page'].title)}`;
 						const res2 = await fetch(`/api/page_create`, {
 							method: 'POST',
 							headers: {
@@ -98,7 +99,6 @@ const PageForm = ({}) => {
 									const newData = cloneDeep(prev);
 									newData.formTitle = 'Page';
 									newData.update = '';
-
 									return newData;
 								})
 							}

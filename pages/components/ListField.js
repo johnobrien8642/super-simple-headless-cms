@@ -15,16 +15,18 @@ import {
 } from '@chakra-ui/react'
 import FormFields from './FormFields';
 import { useManagePageForm } from '../contexts/useManagePageForm';
-import { capitalize } from 'lodash';
-
+import { capitalize, cloneDeep, sortBy } from 'lodash';
+import { useDrop, useDragDropManager, useDragLayer } from 'react-dnd';
 
 const ListField = ({ obj, title }) => {
 	const [availableItems, setAvailableItems] = useState([]);
 	const [chosenItems, setChosenItems] = useState([]);
 	const [open, setOpen] = useState(false);
+	const [itemIndex, setItemIndex] = useState(null);
 	const [loading, setLoading] = useState(false);
-	const { formSelected, setFormSelected, data,  setData} = useManagePageForm();
+	const { formSelected, setFormSelected, data,  setData } = useManagePageForm();
 	const { formTitle } = formSelected;
+	const dragDropMgr = useDragDropManager();
 
 	useEffect(() => {
 		handleGetList();
@@ -61,13 +63,16 @@ const ListField = ({ obj, title }) => {
 				padding='.5rem'
 			>
 				{
-					chosenItems?.map(item => {
+					chosenItems?.map((item, index) => {
 						return <ListFieldItem
 							key={item._id}
 							item={item}
 							title={title}
 							chosen='true'
 							type={formTitle}
+							index={index}
+							setChosenItems={setChosenItems}
+							chosenItems={chosenItems}
 						/>
 					})
 				}
@@ -105,6 +110,7 @@ const ListField = ({ obj, title }) => {
 							title={title}
 							chosen='false'
 							type={formTitle}
+							setAvailableItems={setAvailableItems}
 						/>
 					})
 				}

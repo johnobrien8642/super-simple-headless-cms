@@ -5,33 +5,22 @@ export default async (req, res) => {
 	await connectDb();
 	if (req.method === 'POST') {
 		const {
-			data: {
-				title,
-				templateType,
-				description,
-				assetsIds,
-			},
+			data,
 			update,
 			itemToEditId
 		} = req.body
-
+		console.log(update)
 		let template;
 		if (update !== 'Templates') {
 			template = new Templates({
-				title,
-				templateType,
-				description,
-				assetsIds
+				...data
 			});
 		} else {
 			try {
 				template = await Templates.findOneAndUpdate(
 					{ _id: itemToEditId },
 					{
-						title,
-						templateType,
-						description,
-						assetsIds
+						...data
 					}
 				);
 				return res.status(200).json({ success: true, templateId: template._id });

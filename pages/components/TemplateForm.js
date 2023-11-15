@@ -19,7 +19,7 @@ import mongoose from 'mongoose';
 import FormFields from './FormFields';
 import AssetForm from './AssetForm';
 import { useManagePageForm, dataInitialValue } from '../contexts/useManagePageForm';
-import { cloneDeep } from 'lodash';
+import { clone, cloneDeep } from 'lodash';
 
 const TemplateForm = ({}) => {
 	const router = useRouter()
@@ -65,6 +65,14 @@ const TemplateForm = ({}) => {
 		src: uLink,
 		alt: 'post image'
 	};
+
+	const resetObj = {
+		title: '',
+		type: '',
+		description: '',
+		assetsIds: []
+	};
+
 	if (formTitle === 'Templates') {
 		return (
 			<div className="form container">
@@ -94,12 +102,7 @@ const TemplateForm = ({}) => {
 								if (!formSelected.update) {
 									newData['Page'].templatesIds.push(templateId);
 								}
-								newData['Templates'] = {
-									title: '',
-									templateType: '',
-									description: '',
-									assetsIds: []
-								}
+								newData['Templates'] = resetObj;
 								if (saveType === 'Save') {
 									setFormSelected(prev => {
 										return {
@@ -150,11 +153,16 @@ const TemplateForm = ({}) => {
 							colorScheme='blue'
 							mr={3}
 							onClick={() => {
+								setData(prev => {
+									const newData = cloneDeep(prev);
+									newData['Templates'] = resetObj;
+									return newData;
+								})
 								setFormSelected(prev => {
 									const newData = cloneDeep(prev);
 									newData.formTitle = 'Page';
 									newData.prevFormTitle = 'Templates';
-									newData.update = 'Page';
+									newData.update = newData.editItemTraceObj['Page'] ? 'Page' : '';
 									newData.editItemTraceObj['Templates'] = '';
 									return newData;
 								})

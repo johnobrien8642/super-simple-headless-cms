@@ -3,11 +3,11 @@ import Link from 'next/link';
 import Logout from '../components/Logout';
 import { useRouter } from 'next/router';
 import { Text } from '@chakra-ui/react'
+import { kebabCase } from 'lodash';
 
-const Header = () => {
-	let [active, setActive] = useState('');
-	let [openNav, setOpenNav] = useState('');
-	let [loggedIn, setLoggedIn] = useState(false)
+const Header = ({ pages, pageSelected, setPageSelected }) => {
+	const [openNav, setOpenNav] = useState('');
+	const [loggedIn, setLoggedIn] = useState(false)
 	const dropdownRef = useRef(null);
 	const router = useRouter();
 	const pathname = router.pathname;
@@ -18,25 +18,9 @@ const Header = () => {
 		}
 	}, [])
 
-	useEffect(() => {
-		if (active) {
-			dropdownRef.current.focus();
-		}
-
-		if (pathname === '/') {
-			setActive('Hi');
-		} else if (pathname.match('/pieces/roll')) {
-			setActive('Pieces');
-		} else if (pathname.match('/photos/roll')) {
-			setActive('Photos');
-		} else if (pathname.match('/coding/links')) {
-			setActive('Coding');
-		}
-	});
-
 	function handleLoggedIn() {
 		if (loggedIn) {
-			return Logout();
+			return Logout({ router });
 		}
 	}
 
@@ -49,7 +33,7 @@ const Header = () => {
 					router.push('/');
 				}}
 			>
-				<Text as='h3'>Photo and Writing Site Demo</Text>
+				<Text as='h3'>John Edward O'Brien</Text>
 			</button>
 
 			<button
@@ -81,34 +65,25 @@ const Header = () => {
 				}}
 			>
 				<ul className="navbar-nav">
-					<li
-						className={`nav-item${
-							active === 'Pieces' ? ' active ' : ''
-						}`}
-						onClick={() => {
-							setActive('Pieces');
-						}}
-					>
-						<Link href="/pieces/roll" className="nav-link" passHref>
-							Writing
-						</Link>
-					</li>
-					<li
-						className={`nav-item${
-							active === 'Photos' ? ' active' : ''
-						}`}
-						onClick={() => {
-							setActive('Photos');
-						}}
-					>
-						<Link
-							href="/posts/photos/roll"
-							className="nav-link"
-							passHref
-						>
-							Pictures
-						</Link>
-					</li>
+					{
+						pages?.map(obj => {
+							return <li
+								className={`nav-item`}
+								onClick={() => {
+									setPageSelected(obj.title);
+								}}
+							>
+								<Link href={obj.folderHref} className="nav-link" passHref>
+									<Text
+										fontWeight={(pageSelected || router.asPath) === obj.folderHref ? '600' : '400'}
+										fontColor={(pageSelected || router.asPath) === obj.folderHref ? 'black' : ''}
+									>
+										{obj.title}
+									</Text>
+								</Link>
+							</li>
+						})
+					}
 					<li>{handleLoggedIn()}</li>
 					<li><Text display={loggedIn ? 'inline-block': 'none'} as='h5' color='gray' m='auto'><Link href='/admin'>Admin Mode</Link></Text></li>
 				</ul>

@@ -6,9 +6,10 @@ const TemplatesSchema = new Schema({
 	title: {
 		type: String
 	},
-	templateType: {
+	type: {
 		type: String,
 		enum: templateOptions,
+		required: true,
 		formTitle: 'Template Type',
 		select: true,
 		enumKey: 'templateOptions'

@@ -5,13 +5,14 @@ export type ManagePageFormDataType = {
 	'Page': {
 		_id?: string;
 		title: string;
+		folderHref: string;
 		description: string;
 		templatesIds?: string[];
 	};
 	'Templates': {
 		_id?: string;
 		title: string;
-		templateType: typeof templateOptions[number] | '',
+		type: typeof templateOptions[number] | '',
 		description: string;
 		assetsIds?: string[];
 	};
@@ -19,11 +20,18 @@ export type ManagePageFormDataType = {
 		_id?: string;
 		assetKey: string;
 		assetFile: File | '';
+		assetDataUrl: '';
+		assetDimensions: [number, number] | [];
+		assetPreviewType: '';
 		thumbnailKey: string;
 		thumbnailFile: File | '';
+		thumbnailDataUrl: '';
+		thumbnailDimensions: [number, number] | [];
+		thumbnailPreviewType: '';
 		blurString: string;
 		title: string;
 		description: string;
+		richDescription: string;
 		type: typeof assetTypes[number] | '';
 	}
 }
@@ -49,22 +57,30 @@ export const dataInitialValue: ManagePageFormDataType = {
 	'Page': {
 		title: '',
 		description: '',
+		folderHref: '',
 		templatesIds: []
 	},
 	'Templates' :  {
 		title: '',
-		templateType: '',
+		type: '',
 		description: '',
 		assetsIds: []
 	},
 	'Assets' : {
 		assetKey: '',
 		assetFile: '',
+		assetDataUrl: '',
+		assetDimensions: [],
+		assetPreviewType: '',
 		thumbnailKey: '',
 		thumbnailFile: '',
+		thumbnailDataUrl: '',
+		thumbnailDimensions: [],
+		thumbnailPreviewType: '',
 		blurString: '',
 		title: '',
 		description: '',
+		richDescription: '',
 		type: ''
 	}
 }
@@ -72,7 +88,13 @@ export const dataInitialValue: ManagePageFormDataType = {
 export const ManagePageFormContext = createContext<ManagePageFormContextType>({
 	data: dataInitialValue,
 	setData: () => {},
-	formSelected: { formTitle: 'Page', prevFormTitle: '', formIndex: 0, update: '' },
+	formSelected: {
+			formTitle: 'Page',
+			prevFormTitle: '',
+			editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': '' },
+			formIndex: 0,
+			update: ''
+		},
 	setFormSelected: () => {},
 	topLevelModal: false,
 	setTopLevelModal: () => {}

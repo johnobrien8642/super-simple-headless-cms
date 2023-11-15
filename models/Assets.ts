@@ -7,13 +7,27 @@ const AssetsSchema = new Schema({
 		type: String,
 		file: true,
 		formTitle: 'Asset File',
-		dataFormKey: 'assetFile'
+		dataFormKey: 'assetFile',
+		dataPreviewUrl: 'assetDataUrl',
+		dimensionsKey: 'assetDimensions',
+		previewTypeKey: 'assetPreviewType'
+	},
+	assetDimensions: {
+		type: [Number, Number],
+		hide: true
 	},
 	thumbnailKey: {
 		type: String,
 		file: true,
 		formTitle: 'Thumbnail File',
-		dataFormKey: 'thumbnailFile'
+		dataFormKey: 'thumbnailFile',
+		dataPreviewUrl: 'thumbnailDataUrl',
+		dimensionsKey: 'thumbnailDimensions',
+		previewTypeKey: 'thumbnailPreviewType'
+	},
+	thumbnailDimensions: {
+		type: [Number, Number],
+		hide: true
 	},
 	blurString: {
 		type: Buffer,
@@ -24,7 +38,13 @@ const AssetsSchema = new Schema({
 	},
 	description: {
 		type: String,
-		textbox: true
+		textbox: true,
+		formTitle: 'Regular Text'
+	},
+	richDescription: {
+		type: String,
+		richText: true,
+		formTitle: 'Rich Text'
 	},
 	extLink: {
 		type: String,

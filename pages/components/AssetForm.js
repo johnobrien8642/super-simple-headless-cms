@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react'
 import axios from 'axios';
 import mongoose from 'mongoose';
-import FormFields from './FormFields';
+import FormFields, { resetData } from './FormFields';
 import { useManagePageForm } from '../contexts/useManagePageForm';
 import { cloneDeep } from 'lodash';
 
@@ -26,7 +26,7 @@ const AssetForm = ({}) => {
 	const router = useRouter()
 	const { title: uTitle, description: uDescription, price: uPrice, link: uLink, update, _id } = router.query;
 	const [templateFormData, setTemplateFormData] = useState({});
-	const [fieldArr, setFieldArr] = useState(null);
+	const [fieldArr, setFieldArr] = useState([]);
 	let [success, setSuccess] = useState(false);
 	let [error, setError] = useState([]);
 	let [loading, setLoading] = useState(false);
@@ -66,20 +66,26 @@ const AssetForm = ({}) => {
 		alt: 'post image'
 	};
 
+	const resetObj = {
+		assetKey: '',
+		assetFile: '',
+		assetDataUrl: '',
+		assetDimensions: [],
+		thumbnailKey: '',
+		thumbnailFile: '',
+		thumbnailDataUrl: '',
+		thumbnailDimensions: [],
+		title: '',
+		description: '',
+		type: ''
+	}
+
 	useEffect(() => {
 		if (success && id) {
 			router.push(`/posts/${id}`)
 		}
 	}, [success, id]);
 
-	function reset() {
-		setFile('');
-		fileInputRef.current.value = ''
-		setTitle('');
-		setDescription('');
-		setPrice('');
-		setError('');
-	}
 	if (formTitle === 'Assets') {
 		return (
 			<div className="form container">
@@ -93,11 +99,29 @@ const AssetForm = ({}) => {
 						let fieldObj;
 						let fieldTitle;
 						let file;
+						let oldKey;
 						for (let i = 0; i < fieldArr.length; i++) {
 							fieldTitle = fieldArr[i][0];
 							fieldObj = fieldArr[i][1];
 							file = data[formTitle][fieldObj.options.dataFormKey];
 							if (!file) continue;
+							if (formSelected.update && data[formTitle][fieldTitle]) {
+								const res = await fetch(`/api/handle_s3_url`, {
+									method: 'DELETE',
+									headers: {
+										Accept: 'application/json',
+										'Content-Type': 'application/json'
+									},
+									body: JSON.stringify({
+										keysToDelete: [data[formTitle][fieldTitle]]
+									})
+								});
+								if (!res.ok) {
+									const data = await res2.json();
+									console.log(data);
+									console.log('S3 Delete Failed, object keys:', keysToDelete);
+								}
+							}
 							const res = await fetch(`/api/handle_s3_url`, {
 								method: 'POST',
 								headers: {
@@ -120,7 +144,7 @@ const AssetForm = ({}) => {
 									},
 								});
 							} catch (err) {
-								console.log('Axios Error:', err.response)
+								console.log('Axios Error:', err)
 							}
 						}
 						const res2 = await fetch(`/api/handle_asset`, {
@@ -141,15 +165,7 @@ const AssetForm = ({}) => {
 							setData(prev => {
 								const newData = cloneDeep(prev);
 								newData['Templates'].assetsIds.push(savedAssetId)
-								newData['Assets'] = {
-									assetKey: '',
-									assetFile: '',
-									thumbnailKey: '',
-									thumbnailFile: '',
-									title: '',
-									description: '',
-									type: ''
-								}
+								newData['Assets'] = resetObj;
 								if (saveType === 'Save') {
 									setFormSelected(prev => {
 										return {
@@ -205,12 +221,17 @@ const AssetForm = ({}) => {
 							mt='.2rem'
 							mr={3}
 							onClick={() => {
+								setData(prev => {
+									const newData = cloneDeep(prev);
+									newData['Assets'] = resetObj;
+									return newData;
+								})
 								setFormSelected(prev => {
 									const newData = cloneDeep(prev);
 									newData.formTitle = 'Templates';
 									newData.prevFormTitle = 'Assets';
-									newData.update = 'Templates';
-									newData.editItemTraceObj['Assets'] = ''
+									newData.update = newData.editItemTraceObj['Templates'] ? 'Templates' : '';
+									newData.editItemTraceObj['Assets'] = '';
 									return newData;
 								})
 							}}
