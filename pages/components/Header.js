@@ -25,7 +25,7 @@ const Header = ({ pages, pageSelected, setPageSelected }) => {
 	}
 
 	return (
-		<nav className="navbar navbar-expand-lg navbar-light bg-light">
+		<nav className="navbar navbar-expand-lg">
 			<button
 				className="navbar-brand"
 				onClick={(e) => {
@@ -55,7 +55,7 @@ const Header = ({ pages, pageSelected, setPageSelected }) => {
 				id="navbarNav"
 				className={`${
 					openNav ? 'active ' : 'collapse '
-				}navbar-collapse bg-light`}
+				}navbar-collapse`}
 				tabIndex={-1}
 				ref={dropdownRef}
 				onBlur={(e) => {
@@ -67,21 +67,23 @@ const Header = ({ pages, pageSelected, setPageSelected }) => {
 				<ul className="navbar-nav">
 					{
 						pages?.map(obj => {
-							return <li
-								className={`nav-item`}
-								onClick={() => {
-									setPageSelected(obj.title);
-								}}
-							>
-								<Link href={obj.folderHref} className="nav-link" passHref>
+							if (obj.folderHref !== '/') {
+								return <li
+									key={obj._id}
+									className={`nav-item`}
+									onClick={() => {
+										setPageSelected(obj);
+									}}
+								>
 									<Text
-										fontWeight={(pageSelected || router.asPath) === obj.folderHref ? '600' : '400'}
-										fontColor={(pageSelected || router.asPath) === obj.folderHref ? 'black' : ''}
+										fontWeight={(obj.pageSelected || router.asPath) === obj.folderHref ? '600' : '400'}
 									>
-										{obj.title}
+										<Link href={obj.folderHref} className="nav-link" passHref>
+												{obj.title}
+										</Link>
 									</Text>
-								</Link>
-							</li>
+								</li>
+							}
 						})
 					}
 					<li>{handleLoggedIn()}</li>

@@ -9,7 +9,7 @@ module.exports = {
       },
     ],
   },
-	sassOptions: {
+ 	sassOptions: {
 		includePaths: [path.join(__dirname, 'styles')]
 	}
 };

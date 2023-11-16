@@ -27,6 +27,16 @@ const TemplatesSchema = new Schema({
 		],
 		formTitle: 'Assets',
 	},
+	videoId: {
+		type: [
+			{
+				type: mongoose.Types.ObjectId,
+				ref: 'Assets'
+			}
+		],
+		formTitle: 'Exterior Asset To Link To',
+		singleChoice: true
+	},
 	schemaName: {
 		type: String,
 		default: 'Templates',

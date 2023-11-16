@@ -164,7 +164,9 @@ const AssetForm = ({}) => {
 							const { savedAssetId } = data;
 							setData(prev => {
 								const newData = cloneDeep(prev);
-								newData['Templates'].assetsIds.push(savedAssetId)
+								if (!formSelected.update) {
+									newData['Templates'].assetsIds.push(savedAssetId)
+								}
 								newData['Assets'] = resetObj;
 								if (saveType === 'Save') {
 									setFormSelected(prev => {

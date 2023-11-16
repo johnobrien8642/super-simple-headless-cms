@@ -7,7 +7,6 @@ import { useManagePageForm } from '../contexts/useManagePageForm';
 import { templateOptions, assetTypes } from '../../template_options';
 import { cloneDeep } from 'lodash';
 import dynamic from 'next/dynamic';
-import b64toBlob from 'b64-to-blob';
 
 const FormFields = ({ fieldArr, dataKey }) => {
 	const { data, setData, formSelected } = useManagePageForm();
@@ -25,7 +24,12 @@ const FormFields = ({ fieldArr, dataKey }) => {
 			})
 		}
 		if (obj.instance === 'Array') {
-			return <ListField title={title} obj={obj} />
+			return <ListField
+				title={title}
+				obj={obj}
+				singleChoice={obj.options?.singleChoice}
+				formTitleProp={formTitle}
+			/>
 		} else if (obj.instance === 'String' && obj.options.textbox) {
 			return <Textarea
 				value={resolvedValue}

@@ -22,7 +22,18 @@ import { remove, cloneDeep } from 'lodash';
 import { useDrag, useDrop } from 'react-dnd';
 import move from 'lodash-move';
 
-const ListFieldItem = ({ item, type, chosen, title, index, noForm, setItems, setChosenItems, setAvailableItems }) => {
+const ListFieldItem = ({
+	item,
+	type,
+	chosen,
+	title,
+	index,
+	noForm,
+	setItems,
+	setChosenItems,
+	setAvailableItems,
+	singleChoice
+}) => {
 	const { data, setData, formSelected, setFormSelected, setTopLevelModal } = useManagePageForm();
 	const { formTitle } = formSelected;
 	const [openModal, setOpenModal] = useState(false);
@@ -60,6 +71,7 @@ const ListFieldItem = ({ item, type, chosen, title, index, noForm, setItems, set
 	function handleListFieldItemContent() {
 		return (
 			<>
+				<Text {...styleProps}>{item?.folderHref}</Text>
 				<Text {...styleProps}>{truncate(item?.title, { length: 20 })}</Text>
 				<Text {...styleProps}>{truncate(item?.description, { length: 20 })}</Text>
 				<Text
@@ -134,9 +146,13 @@ const ListFieldItem = ({ item, type, chosen, title, index, noForm, setItems, set
 								onClick={() => {
 									setData(prev => {
 										const newData = cloneDeep(prev);
-										remove(newData[formTitle]?.[title], (id) => {
-											return id === item._id
-										});
+										if (singleChoice) {
+											newData[formTitle][title] = [];
+										} else {
+											remove(newData[formTitle]?.[title], (id) => {
+												return id === item._id
+											});
+										}
 										return newData;
 									})
 								}}
@@ -150,7 +166,11 @@ const ListFieldItem = ({ item, type, chosen, title, index, noForm, setItems, set
 								onClick={() => {
 									setData(prev => {
 										const newData = cloneDeep(prev);
-										newData[formTitle]?.[title].push(item._id);
+										if (singleChoice) {
+											newData[formTitle][title] = [item._id];
+										} else {
+											newData[formTitle]?.[title].push(item._id);
+										}
 										return newData;
 									})
 								}}
@@ -179,7 +199,7 @@ const ListFieldItem = ({ item, type, chosen, title, index, noForm, setItems, set
 						icon={<EditIcon />}
 						mr='.3rem'
 					/>
-					{<IconButton
+					{formTitle !== 'Page' && <IconButton
 						onClick={async () => {
 							let itemRef = { ...item };
 							delete itemRef._id;
@@ -200,13 +220,13 @@ const ListFieldItem = ({ item, type, chosen, title, index, noForm, setItems, set
 							if (chosen === 'true') {
 								setChosenItems(prev => {
 									const newData = cloneDeep(prev);
-									newData.splice(index, 0, savedNewItem)
+									newData.splice(index, 0, savedNewItem);
 									return newData;
 								})
 							} else {
 								setAvailableItems(prev => {
 									const newData = cloneDeep(prev);
-									newData.splice(index, 0, savedNewItem)
+									newData.splice(index, 0, savedNewItem);
 									return newData;
 								})
 							}

@@ -15,6 +15,7 @@ export type ManagePageFormDataType = {
 		type: typeof templateOptions[number] | '',
 		description: string;
 		assetsIds?: string[];
+		videoId: string[];
 	};
 	'Assets': {
 		_id?: string;
@@ -64,7 +65,8 @@ export const dataInitialValue: ManagePageFormDataType = {
 		title: '',
 		type: '',
 		description: '',
-		assetsIds: []
+		assetsIds: [],
+		videoId: []
 	},
 	'Assets' : {
 		assetKey: '',

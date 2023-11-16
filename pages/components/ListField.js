@@ -11,22 +11,32 @@ import {
 	ModalBody,
 	ModalFooter,
 	Spinner,
-	Flex
+	Flex,
+	ButtonGroup
 } from '@chakra-ui/react'
 import FormFields from './FormFields';
 import { useManagePageForm } from '../contexts/useManagePageForm';
 import { capitalize, cloneDeep, sortBy } from 'lodash';
 import { useDrop, useDragDropManager, useDragLayer } from 'react-dnd';
+import { assetTypes, templateOptions } from '../../template_options';
 
-const ListField = ({ obj, title }) => {
+const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 	const [availableItems, setAvailableItems] = useState([]);
 	const [chosenItems, setChosenItems] = useState([]);
+	const [itemFilter, setItemFilter] = useState('');
+	const [itemFilterArr, setItemFilterArr] = useState([]);
 	const [open, setOpen] = useState(false);
-	const [itemIndex, setItemIndex] = useState(null);
+	const [itemIndex, setItemIndex] = useState();
 	const [loading, setLoading] = useState(false);
 	const { formSelected, setFormSelected, data,  setData } = useManagePageForm();
 	const { formTitle } = formSelected;
 	const dragDropMgr = useDragDropManager();
+
+	useEffect(() => {
+		const itemFilterArr = formTitle === 'Page' ? templateOptions : assetTypes;
+		setItemFilterArr(itemFilterArr)
+		setItemFilter(itemFilterArr[0])
+	}, [formTitle])
 
 	useEffect(() => {
 		handleGetList();
@@ -39,8 +49,9 @@ const ListField = ({ obj, title }) => {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					schema: obj.caster.options.ref,
-					nestedItemIds: data?.[formTitle]?.[title] ?? []
+					schema: obj.caster?.options?.ref ?? obj.options?.ref,
+					nestedItemIds: data?.[formTitle]?.[title] ?? [],
+					itemType: itemFilter
 				})
 			})
 			const resData = await res.json();
@@ -48,7 +59,7 @@ const ListField = ({ obj, title }) => {
 			setAvailableItems(availableItems);
 			setChosenItems(chosenItems);
 		}
-	}, [data, formTitle])
+	}, [data, formTitle, itemFilter]);
 
 	return (
 		<Flex
@@ -57,7 +68,7 @@ const ListField = ({ obj, title }) => {
 			<Box
 				outline='black solid .1rem'
 				borderRadius='.2rem'
-				height='300px'
+				height={singleChoice ? '100px' : '300px'}
 				overflow='auto'
 				my='1rem'
 				padding='.5rem'
@@ -73,6 +84,7 @@ const ListField = ({ obj, title }) => {
 							index={index}
 							setChosenItems={setChosenItems}
 							chosenItems={chosenItems}
+							singleChoice={singleChoice}
 						/>
 					})
 				}
@@ -92,8 +104,23 @@ const ListField = ({ obj, title }) => {
 					})
 				}}
 			>
-				Create New {obj.caster.options.ref}
+				Create New {obj.caster?.options?.ref ?? obj.options?.ref}
 			</Button>
+			<ButtonGroup gap='1' mt='1rem'>
+				{
+					itemFilterArr.map(str => {
+						return <Button
+							key={str}
+							variant={str === itemFilter ? 'ghost' : 'outline'}
+							onClick={() => {
+								setItemFilter(str)
+							}}
+						>
+							{str}
+						</Button>
+					})
+				}
+			</ButtonGroup>
 			<Box
 				outline='black solid .1rem'
 				borderRadius='.2rem'
@@ -111,6 +138,7 @@ const ListField = ({ obj, title }) => {
 							chosen='false'
 							type={formTitle}
 							setAvailableItems={setAvailableItems}
+							singleChoice={singleChoice}
 						/>
 					})
 				}

@@ -38,3 +38,11 @@ body {
 	position: relative;
 	z-index: 1;
 }
+
+nav:not(.admin) * {
+	color: white;
+}
+
+nav:not(.admin), body:not(.admin) {
+	background: black !important;
+}

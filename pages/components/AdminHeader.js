@@ -17,6 +17,12 @@ const AdminHeader = () => {
 		}
 	}, [])
 
+	useEffect(() => {
+		if (window) {
+			document.body.classList.add('admin')
+		}
+	}, [])
+
 	function handleLoggedIn() {
 		if (loggedIn) {
 			return Logout(router);
@@ -24,7 +30,7 @@ const AdminHeader = () => {
 	}
 
 	return (
-		<nav className="navbar navbar-expand-lg navbar-light bg-light">
+		<nav className="navbar navbar-expand-lg navbar-light bg-light admin">
 			<button
 				className="navbar-toggler"
 				type="button"

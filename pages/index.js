@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
-import Image from 'next/image';
 import Header from './components/Header';
 import keys from '../config/keys';
 import connectDb from '../lib/mongodb';
 import Admin from '../models/Admin';
 import PageManager from '../models/PageManager';
-import Logout from './components/Logout';
-import SubscribeForm from './components/Subscribe_Form';
 import jwt from 'jsonwebtoken';
-import { Text, UnorderedList, ListItem, Grid } from '@chakra-ui/react'
 import TemplateMap from './util/TemplateMap';
 import { useRouter } from 'next/router';
 import { useParams } from 'next/navigation';
@@ -44,14 +39,6 @@ export default function Home({ loggedIn, pageManager }) {
 
 	return (
 		<>
-			<Head>
-				<title>John E. O'Brien</title>
-				<meta
-					name="description"
-					content={pageSelected?.description}
-				/>
-				<link rel="canonical" href={keys.url} />
-			</Head>
 			<Header
 				pages={pPageManager[0].pageIds}
 				pageSelected={pageSelected}

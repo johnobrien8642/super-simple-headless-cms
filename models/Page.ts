@@ -3,8 +3,7 @@ const Schema = mongoose.Schema;
 
 const PageSchema = new Schema({
 	title: {
-		type: String,
-		required: true,
+		type: String
 	},
 	folderHref: {
 		type: String,
