@@ -13,7 +13,8 @@ import {
 	ModalContent,
 	ModalBody,
 	ModalFooter,
-	Button
+	Button,
+	Tooltip
 } from '@chakra-ui/react';
 import { truncate } from 'lodash';
 import { useManagePageForm } from '../contexts/useManagePageForm';
@@ -72,22 +73,32 @@ const ListFieldItem = ({
 		return (
 			<>
 				<Text {...styleProps}>{item?.folderHref}</Text>
-				<Text {...styleProps}>{truncate(item?.title, { length: 20 })}</Text>
-				<Text {...styleProps}>{truncate(item?.description, { length: 20 })}</Text>
-				<Text
-					{...styleProps}
-					whiteSpace='nowrap'
-					overflow='hidden'
-					textOverflow='ellipsis'
-					maxWidth='10rem'
-					display='block'
-					sx={{
-						'p': {
-							marginBottom: '0'
-						}
-					}}
-					dangerouslySetInnerHTML={{ __html: item?.richDescription }}
-				/>
+				<Text {...styleProps}>{truncate(item?.title, { length: 50 })}</Text>
+				<Tooltip
+					label={item?.description}
+					openDelay={500}
+				>
+					<Text {...styleProps}>{truncate(item?.description, { length: 20 })}</Text>
+				</Tooltip>
+				<Tooltip
+					label={item?.richDescription}
+					openDelay={500}
+				>
+					<Text
+						{...styleProps}
+						whiteSpace='nowrap'
+						overflow='hidden'
+						textOverflow='ellipsis'
+						maxWidth='10rem'
+						display='block'
+						sx={{
+							'p': {
+								marginBottom: '0'
+							}
+						}}
+						dangerouslySetInnerHTML={{ __html: item?.richDescription }}
+					/>
+				</Tooltip>
 				<Text {...styleProps}>{item?.type}</Text>
 				{
 					item?.assetKey && item?.type === 'Image' &&
@@ -203,7 +214,7 @@ const ListFieldItem = ({
 						onClick={async () => {
 							let itemRef = { ...item };
 							delete itemRef._id;
-							const res = await fetch('/api/handle_duplicate_item',
+							const res3 = await fetch('/api/handle_duplicate_item',
 							{
 								method: 'POST',
 								headers: {
@@ -215,12 +226,12 @@ const ListFieldItem = ({
 									schema: item.schemaName
 								})
 							})
-							const data = await res.json();
-							const { savedNewItem } = data;
+							const data2 = await res3.json();
+							const { savedNewItem } = data2;
 							if (chosen === 'true') {
-								setChosenItems(prev => {
+								setData(prev => {
 									const newData = cloneDeep(prev);
-									newData.splice(index, 0, savedNewItem);
+									newData[formTitle][title] = [...data[formTitle][title], savedNewItem._id];
 									return newData;
 								})
 							} else {
@@ -281,32 +292,17 @@ const ListFieldItem = ({
 											const data = await res.json();
 											const { schemaPaths } = data;
 											const entries = Object.entries(schemaPaths);
-											let title;
+											let entryTitle;
 											let obj;
-											let keysToDelete = [];
+											let keysToDelete = {};
 											for (let i = 0; i < entries.length; i++) {
-												title = entries[i][0];
+												entryTitle = entries[i][0];
 												obj = entries[i][1];
 												if (obj.options.file) {
-													if (item[title]) {
-														keysToDelete.push(item[title])
+													if (item[entryTitle]) {
+														keysToDelete[entryTitle] = item[entryTitle]
 													}
 												}
-											}
-											const res2 = await fetch(`/api/handle_s3_url`, {
-												method: 'DELETE',
-												headers: {
-													Accept: 'application/json',
-													'Content-Type': 'application/json'
-												},
-												body: JSON.stringify({
-													keysToDelete
-												})
-											});
-											if (!res2.ok) {
-												const data = await res2.json()
-												console.log(data)
-												console.log('S3 Delete Failed, object keys:', keysToDelete)
 											}
 											const res3 = await fetch(`/api/handle_delete_item`, {
 												method: 'DELETE',
@@ -315,9 +311,13 @@ const ListFieldItem = ({
 													'Content-Type': 'application/json'
 												},
 												body: JSON.stringify({
-													item
+													item,
+													formTitle,
+													title,
+													keysToDelete
 												})
 											});
+											const data3 = await res3.json();
 											setData(prev => {
 												const newData = cloneDeep(prev);
 													if (newData[formTitle]?.[title]) {

@@ -94,7 +94,7 @@ const PageForm = ({}) => {
 						setLoading(false)
 						if (res2.ok) {
 							const data = await res2.json()
-							if (formSelected.update) {
+							if (formSelected.update === 'Page') {
 								setFormSelected(prev => {
 									const newData = cloneDeep(prev);
 									newData.formTitle = 'Page';

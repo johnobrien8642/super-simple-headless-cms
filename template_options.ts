@@ -1,6 +1,10 @@
 export const templateOptions = [
 	'Image Grid',
-	'Image Triptych'
+	'Image Triptych',
+	'Video Player',
+	'Book Cover CTA',
+	'Text Block',
+	'About'
 ] as const;
 
 export const assetTypes = [
@@ -8,4 +12,10 @@ export const assetTypes = [
 	'Video',
 	'Text',
 	'PDF'
+] as const;
+
+export const textAlignOptions = [
+	'left',
+	'center',
+	'right'
 ] as const;

@@ -13,7 +13,7 @@ export default async (req, res) => {
 		} = req.body
 
 		try {
-			const newItem = new models[schema]({ ...item });
+			const newItem = new models[schema]({ ...item, isDuplicate: true });
 			newItem._id = new mongoose.Types.ObjectId();
 			const savedNewItem = await newItem.save();
 			return res.status(200).json({ success: true, savedNewItem: savedNewItem });

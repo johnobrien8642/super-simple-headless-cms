@@ -18,6 +18,10 @@ const TemplatesSchema = new Schema({
 		type: String,
 		textbox: true
 	},
+	extLink: {
+		type: String,
+		formTitle: 'External Link'
+	},
 	assetsIds: {
 		type: [
 			{
@@ -40,6 +44,11 @@ const TemplatesSchema = new Schema({
 	schemaName: {
 		type: String,
 		default: 'Templates',
+		hide: true
+	},
+	isDuplicate: {
+		type: Boolean,
+		default: false,
 		hide: true
 	},
 	updatedAt: {

@@ -9,7 +9,7 @@ export default async (req, res) => {
 			update,
 			itemToEditId
 		} = req.body
-		console.log(update)
+
 		let template;
 		if (update !== 'Templates') {
 			template = new Templates({

@@ -164,7 +164,7 @@ const AssetForm = ({}) => {
 							const { savedAssetId } = data;
 							setData(prev => {
 								const newData = cloneDeep(prev);
-								if (!formSelected.update) {
+								if (!formSelected.editItemTraceObj['Assets']) {
 									newData['Templates'].assetsIds.push(savedAssetId)
 								}
 								newData['Assets'] = resetObj;
@@ -179,10 +179,10 @@ const AssetForm = ({}) => {
 								}
 								return newData;
 							})
-							if (formSelected.update) {
+							if (formSelected.update === 'Assets') {
 								setFormSelected(prev => {
 									const newData = cloneDeep(prev);
-									newData.update = '';
+									newData.update = newData.editItemTraceObj['Templates'] ? 'Templates' : '';
 									newData.editItemTraceObj['Assets'] = '';
 									return newData;
 								})

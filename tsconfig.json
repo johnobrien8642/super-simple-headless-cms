@@ -31,7 +31,7 @@
       ".next/types/**/*.ts",
       "/home/johnobrien/personal-site/.next/types/**/*.ts",
       "lib/dbConnect.ts",
-      "pages/index.js",
+      "pages/[[...slug]].js",
       "pages/[..slug]/index.js",
       "pages/components/*.tsx",
       "pages/components/*.ts",

@@ -99,7 +99,7 @@ const TemplateForm = ({}) => {
 							const { templateId } = resData;
 							setData(prev => {
 								const newData = cloneDeep(prev);
-								if (!formSelected.update) {
+								if (!formSelected.editItemTraceObj['Templates']) {
 									newData['Page'].templatesIds.push(templateId);
 								}
 								newData['Templates'] = resetObj;
@@ -115,10 +115,10 @@ const TemplateForm = ({}) => {
 								setSaveType('');
 								return newData;
 							})
-							if (formSelected.update) {
+							if (formSelected.update === 'Templates') {
 								setFormSelected(prev => {
 									const newData = cloneDeep(prev);
-									newData.update = '';
+									newData.update = newData.editItemTraceObj['Page'] ? 'Page' : '';
 									editItemTraceObj['Templates'] = '';
 									return newData;
 								})

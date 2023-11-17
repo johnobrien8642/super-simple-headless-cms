@@ -1,13 +1,8 @@
 import React, { useState } from 'react'
 import {
 	Box,
-	Card,
-	CardHeader,
-	CardBody,
-	CardFooter,
 	Heading,
 	Text,
-	Flex,
 	Modal,
 	ModalOverlay,
 	ModalContent,
@@ -24,8 +19,9 @@ import 'react-slideshow-image/dist/styles.css'
 import Image from 'next/image';
 import Link from 'next/link';
 import { CiVideoOn } from "react-icons/ci";
+import Masonry, {ResponsiveMasonry} from "react-responsive-masonry";
 
-const ImageTriptych = ({ template }) => {
+const ImageGrid = ({ template }) => {
 	const [imageModalOpen, setImageModalOpen] = useState(false);
 	const [imageIndex, setImageIndex] = useState(0);
 	const desktop = useBreakpointValue(
@@ -39,6 +35,7 @@ const ImageTriptych = ({ template }) => {
 		return <Box
 			className='slide-container'
 			width='100%'
+			py='2rem'
 			display={displayObj}
 			sx={{
 				'.chakra-icon': {
@@ -57,6 +54,7 @@ const ImageTriptych = ({ template }) => {
 				slidesToShow={1}
 				duration={100}
 				transitionDuration={500}
+				variabl
 				prevArrow={
 					<ChevronLeftIcon fontSize='5rem !important' left='-5rem !important' color='white' />
 				}
@@ -68,26 +66,28 @@ const ImageTriptych = ({ template }) => {
 					template.assetsIds.map(obj => {
 						return <Box
 							key={obj._id}
-							m='1rem'
+							width='100%'
+							height='700px'
+							my='auto'
+							sx={{
+								':hover': {
+									cursor: 'pointer'
+								},
+								img: {
+									width: '100%',
+									height: '100%',
+									objectFit: 'contain'
+								}
+							}}
+							alignContent='center'
+							objectFit='contain'
 						>
-							<Box
-								width='100%'
-								sx={{
-									':hover': {
-										cursor: 'pointer'
-									}
-								}}
-							>
-								<Image
-									alt={obj.title || 'alt text'}
-									width={obj.assetDimensions[0]}
-									height={obj.assetDimensions[1]}
-									src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + obj.assetKey}
-								/>
-							</Box>
-							<Heading as='h5'>{obj?.title}</Heading>
-							<Text as='h5'>{obj?.description}</Text>
-							<Text as='span' my='1rem' dangerouslySetInnerHTML={{ __html: obj?.richDescription }}></Text>
+							<Image
+								alt={obj.title || 'alt text'}
+								width={obj.assetDimensions[0]}
+								height={obj.assetDimensions[1]}
+								src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + obj.assetKey}
+							/>
 						</Box>
 					})
 				}
@@ -97,65 +97,20 @@ const ImageTriptych = ({ template }) => {
 
 	return (
 		<Box
-			className='image-triptych'
+			className='image-grid'
 			width={{ base: '100%', md: '90%' }}
 			mx='auto'
 			key={template._id}
 		>
-			<Flex
-				flexDir='column'
-				px='1rem'
+			<ResponsiveMasonry
+				columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
 			>
-				{template.title &&
-					<Heading as='h3'>
-						{template.title}
-					</Heading>
-				}
-				{template.description &&
-					<Text fontSize='2rem'>
-						{template.description}
-					</Text>
-				}
-				{
-					template.videoId.length &&
-						<Link
-							href={{
-								pathname: '/video',
-								query: { _id: template.videoId[0].assetKey }
-							}}
-						>
-							<Text
-								display='inline-flex'
-								alignItems='center'
-								py='.4rem'
-								as='span'
-								sx={{
-									':hover': {
-										color: 'lightgray'
-									}
-								}}
-							>
-								Click to View Original Movie <Box ml='.2rem'><CiVideoOn fontSize='1.4rem' /></Box>
-							</Text>
-						</Link>
-				}
-			</Flex>
-			{
-				!desktop &&
-					<Flex>
-						<DragHandleIcon ml='auto' mr='1rem' />
-					</Flex>
-			}
-			{handleSlider(template, { base: 'block', md: 'none' })}
-			<Flex>
-				{
-					template.assetsIds.map((obj, index) => {
-						return <Box
-							key={obj._id}
-							m='1rem'
-							display={{ base: 'none', md: 'block' }}
-						>
-							<Box
+				<Masonry>
+					{
+						template.assetsIds.map((obj, index) => {
+							return <Box
+								key={obj._id}
+								display={{ base: 'none', md: 'block' }}
 								width='100%'
 								transition='transform .2s'
 								sx={{
@@ -176,13 +131,10 @@ const ImageTriptych = ({ template }) => {
 									}}
 								/>
 							</Box>
-							<Heading as='h5'>{obj?.title}</Heading>
-							<Text as='h5'>{obj?.description}</Text>
-							<Text as='span' my='1rem' dangerouslySetInnerHTML={{ __html: obj?.richDescription }}></Text>
-						</Box>
-					})
-				}
-			</Flex>
+						})
+					}
+				</Masonry>
+			</ResponsiveMasonry>
 			<Modal
 				isOpen={imageModalOpen}
 				onClose={() => {
@@ -193,6 +145,7 @@ const ImageTriptych = ({ template }) => {
 				<ModalOverlay />
 				<ModalContent
 					maxW='1200px'
+					my='auto'
 					backgroundColor='black'
 					borderColor='transparent'
 				>
@@ -206,6 +159,7 @@ const ImageTriptych = ({ template }) => {
 					</ModalBody>
 					<ModalFooter>
 						<Button
+
 							mr={3}
 							onClick={() => {
 								setImageModalOpen(false)
@@ -221,4 +175,4 @@ const ImageTriptych = ({ template }) => {
 	)
 }
 
-export default ImageTriptych;
+export default ImageGrid;

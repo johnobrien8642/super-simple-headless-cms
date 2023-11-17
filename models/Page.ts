@@ -10,6 +10,11 @@ const PageSchema = new Schema({
 		required: true,
 		hide: true
 	},
+	showInNavigation: {
+		type: Boolean,
+		default: true,
+		formTitle: 'Show in Navigation'
+	},
 	description: {
 		type: String,
 		textbox: true

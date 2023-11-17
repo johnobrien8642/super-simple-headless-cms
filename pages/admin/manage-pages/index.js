@@ -25,6 +25,8 @@ import { ManagePageFormProvider, dataInitialValue } from '../../contexts/useMana
 import ListField from '../../components/ListField.js';
 import ListFieldItem from '../../components/ListFieldItem.js';
 import Head from 'next/head';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 
 const ManagePages = ({ admin }) => {

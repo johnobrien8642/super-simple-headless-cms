@@ -12,7 +12,8 @@ import {
 	ModalFooter,
 	Spinner,
 	Flex,
-	ButtonGroup
+	ButtonGroup,
+	Input
 } from '@chakra-ui/react'
 import FormFields from './FormFields';
 import { useManagePageForm } from '../contexts/useManagePageForm';
@@ -25,6 +26,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 	const [chosenItems, setChosenItems] = useState([]);
 	const [itemFilter, setItemFilter] = useState('');
 	const [itemFilterArr, setItemFilterArr] = useState([]);
+	const [textFilter, setTextFilter] = useState('');
 	const [open, setOpen] = useState(false);
 	const [itemIndex, setItemIndex] = useState();
 	const [loading, setLoading] = useState(false);
@@ -68,7 +70,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 			<Box
 				outline='black solid .1rem'
 				borderRadius='.2rem'
-				height={singleChoice ? '100px' : '300px'}
+				height={singleChoice ? '100px' : '600px'}
 				overflow='auto'
 				my='1rem'
 				padding='.5rem'
@@ -122,25 +124,44 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 				}
 			</ButtonGroup>
 			<Box
+				pt='1rem'
+			>
+				<Input
+					value={textFilter}
+					width='35%'
+					placeholder={`Search ${obj.caster?.options?.ref ?? obj.options?.ref}`}
+					onInput={e => {
+						setTextFilter(e.target.value)
+					}}
+				/>
+			</Box>
+			<Box
 				outline='black solid .1rem'
 				borderRadius='.2rem'
-				height='300px'
+				height='600px'
 				overflow='auto'
 				my='1rem'
 				padding='.5rem'
 			>
 				{
-					availableItems?.map(item => {
-						return <ListFieldItem
-							key={item._id}
-							item={item}
-							title={title}
-							chosen='false'
-							type={formTitle}
-							setAvailableItems={setAvailableItems}
-							singleChoice={singleChoice}
-						/>
-					})
+					availableItems
+						?.filter(item => {
+							const regexp = new RegExp(textFilter, 'i')
+							return item.title.match(regexp) ||
+								item.description.match(regexp) ||
+								item.richDescription.match(regexp)
+						})
+						?.map(item => {
+							return <ListFieldItem
+								key={item._id}
+								item={item}
+								title={title}
+								chosen='false'
+								type={formTitle}
+								setAvailableItems={setAvailableItems}
+								singleChoice={singleChoice}
+							/>
+						})
 				}
 				{
 					!availableItems?.length && 'No items to choose, but this works'

@@ -8,6 +8,7 @@ export type ManagePageFormDataType = {
 		folderHref: string;
 		description: string;
 		templatesIds?: string[];
+		showInNavigation: boolean;
 	};
 	'Templates': {
 		_id?: string;
@@ -59,7 +60,8 @@ export const dataInitialValue: ManagePageFormDataType = {
 		title: '',
 		description: '',
 		folderHref: '',
-		templatesIds: []
+		templatesIds: [],
+		showInNavigation: true
 	},
 	'Templates' :  {
 		title: '',

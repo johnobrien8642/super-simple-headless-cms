@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { assetTypes } from '../template_options';
+import { assetTypes, textAlignOptions } from '../template_options';
 const Schema = mongoose.Schema;
 
 const AssetsSchema = new Schema({
@@ -10,7 +10,8 @@ const AssetsSchema = new Schema({
 		dataFormKey: 'assetFile',
 		dataPreviewUrl: 'assetDataUrl',
 		dimensionsKey: 'assetDimensions',
-		previewTypeKey: 'assetPreviewType'
+		previewTypeKey: 'assetPreviewType',
+		index: true
 	},
 	assetDimensions: {
 		type: [Number, Number],
@@ -23,7 +24,8 @@ const AssetsSchema = new Schema({
 		dataFormKey: 'thumbnailFile',
 		dataPreviewUrl: 'thumbnailDataUrl',
 		dimensionsKey: 'thumbnailDimensions',
-		previewTypeKey: 'thumbnailPreviewType'
+		previewTypeKey: 'thumbnailPreviewType',
+		index: true
 	},
 	thumbnailDimensions: {
 		type: [Number, Number],
@@ -40,6 +42,13 @@ const AssetsSchema = new Schema({
 		type: String,
 		textbox: true,
 		formTitle: 'Regular Text'
+	},
+	textAlign: {
+		type: String,
+		enum: textAlignOptions,
+		select: true,
+		enumKey: 'textAlignOptions',
+		formTitle: 'Rich Text and Title Align'
 	},
 	richDescription: {
 		type: String,
@@ -60,6 +69,11 @@ const AssetsSchema = new Schema({
 	schemaName: {
 		type: String,
 		default: 'Assets',
+		hide: true
+	},
+	isDuplicate: {
+		type: Boolean,
+		default: false,
 		hide: true
 	},
 	createdAt: {
