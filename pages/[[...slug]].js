@@ -48,6 +48,7 @@ export default function Home({ loggedIn, pageManager, page }) {
 					content={pageSelected?.description}
 				/>
 				<link rel="canonical" href={keys.url} />
+				<link rel="icon" type="image/x-icon" href="/icons8-venn-diagram-96.png" />
 			</Head>
 			<Header
 				pages={pPageManager[0].pageIds}
