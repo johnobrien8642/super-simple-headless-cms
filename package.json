@@ -55,7 +55,8 @@
 				"typescript": "^5.0.4"
 		},
 		"peerDependencies": {
-				"postcss": "^8.4.21"
+				"postcss": "^8.4.21",
+				"sharp": ">=0.32.6"
 		},
 		"devDependencies": {
 				"@types/jsonwebtoken": "^9.0.1",
