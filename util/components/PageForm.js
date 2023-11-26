@@ -71,7 +71,7 @@ const PageForm = ({}) => {
 	if (formTitle === 'Page') {
 		return (
 			<div className="form container">
-				<Text as='h2'>New Page</Text>
+				<Text as='h2'>{editItemTraceObj['Page'] ? 'Update Page' : 'New Page'}</Text>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
@@ -113,7 +113,7 @@ const PageForm = ({}) => {
 					}}
 				>
 					<FormFields fieldArr={fieldArr} dataKey='Templates' />
-					<Button type='submit'>Save</Button>
+					<Button type='submit'>{editItemTraceObj['Page'] ? 'Update' : 'Save'}</Button>
 				</form>
 			</div>
 		);

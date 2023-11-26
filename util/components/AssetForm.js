@@ -89,7 +89,7 @@ const AssetForm = ({}) => {
 	if (formTitle === 'Assets') {
 		return (
 			<div className="form container">
-				<Text as='h2'>New Asset</Text>
+				<Text as='h2'>{editItemTraceObj['Assets'] ? 'Update Asset' : 'New Asset'}</Text>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
@@ -203,21 +203,22 @@ const AssetForm = ({}) => {
 					>
 						<Button
 							type='submit'
+							mr='1rem'
 							onClick={() => {
 								setSaveType('Save')
 							}}
 						>
-							Save
+							{editItemTraceObj['Assets'] ? 'Update' : 'Save'}
 						</Button>
-						<Button
-							mx='1rem'
+						{!editItemTraceObj['Assets'] && <Button
+							mr='1rem'
 							type='submit'
 							onClick={() => {
 								setSaveType('Save and New')
 							}}
 						>
 							Save and New
-						</Button>
+						</Button>}
 						<Button
 							colorScheme='blue'
 							mt='.2rem'

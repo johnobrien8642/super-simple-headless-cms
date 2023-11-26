@@ -76,7 +76,7 @@ const TemplateForm = ({}) => {
 	if (formTitle === 'Templates') {
 		return (
 			<div className="form container">
-				<Text as='h2'>New Template</Text>
+				<Text as='h2'>{editItemTraceObj['Templates'] ? 'Update Template' : 'New Template'}</Text>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
@@ -134,21 +134,22 @@ const TemplateForm = ({}) => {
 					<Flex>
 						<Button
 							type='submit'
+							mr='1rem'
 							onClick={() => {
 								setSaveType('Save')
 							}}
 						>
-							Save
+							{editItemTraceObj['Templates'] ? 'Update' : 'Save'}
 						</Button>
-						<Button
-							mx='1rem'
+						{!editItemTraceObj['Templates'] && <Button
+							mr='1rem'
 							type='submit'
 							onClick={() => {
 								setSaveType('Save and New')
 							}}
 						>
 							Save and New
-						</Button>
+						</Button>}
 						<Button
 							colorScheme='blue'
 							mr={3}

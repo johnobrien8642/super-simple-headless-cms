@@ -163,7 +163,7 @@ const ManagePages = ({ admin }) => {
 									});
 								}}
 							>
-								Close New Page Form
+								{formSelected.editItemTraceObj['Page'] ? 'Close Update Page Form' : 'Close New Page Form'}
 							</Button>
 						</ModalFooter>
 					</ModalContent>
