@@ -14,8 +14,8 @@ import Link from 'next/link';
 const About = ({ template }) => {
 	const asset = template.assetsIds[0];
 	return <Box
-		py='8rem'
-		width='70%'
+		py={{ base: '2rem', lg: '8rem'}}
+		width={{ base: '90%', lg: '75%'}}
 		m='auto'
 		borderTop='1px solid white'
 	>
@@ -23,8 +23,12 @@ const About = ({ template }) => {
 			gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr'}}
 			gap={1}
 		>
-			<Box>
-				<Heading mb='2rem'>{asset.description}</Heading>
+			<Box
+				pl={{ base: '0', lg: '2rem' }}
+				order={{ base: '1', lg: '0'}}
+				textAlign={{ base: 'center', lg: 'left'}}
+			>
+				<Heading mb={{ base: '0', lg: '2rem'}}>{asset.description}</Heading>
 				<Text
 					as='span'
 					display='inline-block'
@@ -38,6 +42,8 @@ const About = ({ template }) => {
 				overflow='hidden'
 				m='auto'
 				w='60%'
+				order={{ base: '0', lg: '1'}}
+				my={{ base: '2rem' }}
 			>
 				<Image
 					objectFit='contain'
