@@ -23,12 +23,6 @@ const AdminHeader = () => {
 		}
 	}, [])
 
-	function handleLoggedIn() {
-		if (loggedIn) {
-			return Logout(router);
-		}
-	}
-
 	return (
 		<nav className="navbar navbar-expand-lg navbar-light bg-light admin">
 			<button
@@ -67,13 +61,13 @@ const AdminHeader = () => {
 					>
 						<Link className='nav-link' href={'/admin/manage-pages'}>Manage Pages</Link>
 					</li>
-					<li
+					{/* <li
 						className={`nav-item${
 							pathname.match('/admin/manage-assets') ? ' active' : ''
 						}`}
 					>
 						<Link className='nav-link' href={'/admin/manage-assets'}>Manage Assets</Link>
-					</li>
+					</li> */}
 					<li
 						className={`nav-item${
 							pathname.match('/auth/repl') ? ' active' : ''
@@ -81,7 +75,7 @@ const AdminHeader = () => {
 					>
 						<Link className='nav-link' href={'/auth/repl'}>Repl</Link>
 					</li>
-					<li>{handleLoggedIn()}</li>
+					{loggedIn && <li><Logout /></li>}
 					<li><Text display={loggedIn ? 'inline-block': 'none'} as='h5' color='gray' m='auto'><Link href='/admin'>Admin Mode</Link></Text></li>
 				</ul>
 			</div>

@@ -12,7 +12,6 @@ import AdminHeader from '../components/AdminHeader';
 
 
 const AdminPage = ({ data }) => {
-
 	if (data) {
 		return (
 			<>
@@ -39,10 +38,10 @@ export async function getServerSideProps(context) {
 		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY);
 	}
 	const authenticated = await Admin.findById(decoded?.id);
-
 	return {
 		props: {
-			data: !!authenticated
+			data: !!authenticated,
+			admin: !!authenticated
 		}
 	};
 }

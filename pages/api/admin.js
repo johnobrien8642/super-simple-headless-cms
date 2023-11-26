@@ -1,10 +1,11 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import dbConnect from '../../lib/mongodb.js';
-import Admin from '../../models/Admin';
+import Admin from '../../models/Admin'
 
 export default async (req, res) => {
-	const { body, method } = req;
 	await dbConnect();
+	const { body, method } = req;
 
 	if (method === 'POST') {
 		try {
@@ -12,10 +13,11 @@ export default async (req, res) => {
 				username: body.username,
 				password: await bcrypt.hash(body.password, 10)
 			});
-
-			res.status(200).json({ success: true, data: admin });
+			const token = jwt.sign({ id: admin._id }, process.env.NEXT_PUBLIC_SECRET_KEY);
+			return res.status(200).json({ success: true, data: { admin, token } });
 		} catch (err) {
-			res.status(400).json({ success: false });
+			console.log(err)
+			return res.status(400).json({ success: false });
 		}
 	}
 };

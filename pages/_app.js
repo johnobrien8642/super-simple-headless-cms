@@ -42,10 +42,11 @@ export default function MyApp({ Component, pageProps }) {
 	useEffect(() => {
 		if (pageProps?.admin) {
 			document.body.classList.add('admin')
+		} else {
+			document.body.classList.remove('admin')
 		}
-	}, [])
+	}, [pageProps])
 	const theme = extendTheme(themeObj)
-
 	return (
 		<ChakraProvider theme={theme}>
 			<DndProvider backend={HTML5Backend}>

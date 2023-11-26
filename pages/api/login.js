@@ -21,7 +21,7 @@ export default async (req, res) => {
 
 	if (admin && authenticated) {
 		const token = jwt.sign({ id: admin._id }, process.env.NEXT_PUBLIC_SECRET_KEY);
-		res.status(200).json({ token: token });
+		res.status(200).json({ data: { token } });
 	} else {
 		res.status(401).json({ error: 'Username or password incorrect' });
 	}

@@ -24,18 +24,18 @@ const adminSchema = new Schema({
 			type: String,
 			required: true
 		},
-		email: {
-			type: String,
-			required: true
-		},
+		// email: {
+		// 	type: String,
+		// 	required: true
+		// },
 		password: {
 			type: String,
 			required: true
 		},
-		superAdmin: {
-			type: Boolean,
-			required: true
-		}
+		// superAdmin: {
+		// 	type: Boolean,
+		// 	required: true
+		// }
 	}
 );
 
@@ -104,6 +104,6 @@ adminSchema.static('updateAdminPassword', async function updateAdminPassword(adm
 	}
 })
 
-const Admin = mongoose.models.Admin || mongoose.model<AdminType, AdminModel>('Admin', adminSchema, 'demo-admins');
+const Admin = mongoose.models.Admin || mongoose.model<AdminType, AdminModel>('Admin', adminSchema, 'admins');
 
 export default Admin

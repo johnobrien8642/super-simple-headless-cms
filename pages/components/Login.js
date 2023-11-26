@@ -14,11 +14,11 @@ const Login = () => {
 			<Center
 				flexDirection={'column'}
 			>
-				<h1>Login</h1>
+				<h1>{process.env.NEXT_PUBLIC_SUPER_ACTIVE === 'true' ? 'Login' : 'Create Admin'}</h1>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
-						const res = await fetch(`/api/login`, {
+						const res = await fetch(process.env.NEXT_PUBLIC_SUPER_ACTIVE === 'true' ? `/api/login` : `/api/admin`, {
 							method: 'POST',
 							headers: {
 								Accept: 'application/json',
@@ -26,14 +26,14 @@ const Login = () => {
 							},
 							body: JSON.stringify({
 								username: username,
-								password: password
+								password: password,
 							})
 						});
-						const data = await res.json();
+						const { data } = await res.json();
 						if (data.token) {
 							Cookies.set('token', data.token);
 							window.localStorage.setItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR, 'true');
-							router.push('/posts/create_post');
+							router.push('/admin/manage-pages');
 						} else {
 							setError(data.error);
 						}
@@ -53,7 +53,7 @@ const Login = () => {
 							setPassword(e.target.value);
 						}}
 					/>
-					<button>Login</button>
+					<button>{process.env.NEXT_PUBLIC_SUPER_ACTIVE === 'true' ? 'Login' : 'Create'}</button>
 					<p>{error}</p>
 				</form>
 			</Center>
