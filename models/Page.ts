@@ -1,6 +1,17 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
+const metaDropdownSchema = new Schema({
+	metaTitle: {
+		type: String,
+		formTitle: 'Meta Title'
+	},
+	metaDescription: {
+		type: String,
+		formTitle: 'Meta Description'
+	}
+})
+
 const PageSchema = new Schema({
 	title: {
 		type: String
@@ -27,6 +38,10 @@ const PageSchema = new Schema({
 			}
 		],
 		formTitle: 'Templates',
+	},
+	meta: {
+		type: metaDropdownSchema,
+		collapseTitle: 'Meta Info'
 	},
 	schemaName: {
 		type: String,

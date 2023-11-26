@@ -1,19 +1,34 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { Input, Box, Text, Textarea, Select, FormControl, FormLabel, Switch, Button } from '@chakra-ui/react'
+import {
+	Input,
+	Box,
+	Text,
+	Textarea,
+	Select,
+	FormControl,
+	FormLabel,
+	Switch,
+	Button,
+	Accordion,
+	AccordionItem,
+	AccordionButton,
+	AccordionPanel,
+	AccordionIcon
+} from '@chakra-ui/react'
 import { capitalize } from 'lodash';
 import ListField from './ListField';
 const Editor = dynamic(() => import('./Editor'), { ssr: false });
 import { useManagePageForm } from '../contexts/useManagePageForm';
 import { templateOptions, assetTypes, textAlignOptions } from '../../template_options';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, get } from 'lodash';
 
 const FormFields = ({ fieldArr, dataKey }) => {
 	const { data, setData, formSelected } = useManagePageForm();
 	const { formTitle } = formSelected;
-	function resolveInput(title, obj, index) {
-		const resolvedValue = data[formTitle]?.[title] || '';
+	function resolveInput(title, obj) {
+		const resolvedValue = get(data[formTitle], title, '');
 		const resolveValue = (e) => {
 			setData(prev => {
 				const newData = cloneDeep(prev);
@@ -162,13 +177,36 @@ const FormFields = ({ fieldArr, dataKey }) => {
 	return (
 		<>
 			{
-				fieldArr?.map((sub, index) => {
-					const title = sub[0];
+				fieldArr?.map(sub => {
+					const titleLevel1 = sub[0];
 					const obj = sub[1];
-					if (!obj.options.hide && !title.match('_id') && !title.match('__v')) {
-						return <FormControl my='1rem' key={title} isRequired={obj.isRequired}>
-							<FormLabel htmlFor={title}>{capitalize(obj.options.formTitle ?? title)}</FormLabel>
-							{resolveInput(title, obj, index)}
+					if (obj.options.collapseTitle) {
+						return <Accordion allowToggle mb='1rem'>
+							<AccordionItem>
+								<AccordionButton>
+									{obj.options.collapseTitle}
+									<AccordionIcon />
+								</AccordionButton>
+								<AccordionPanel>
+									{
+										Object.entries(obj.options.type.paths).map(sub => {
+											const titleLevel2 = sub[0];
+											const obj = sub[1];
+											if (!obj.options.hide && !titleLevel2.match('_id') && !titleLevel2.match('__v')) {
+												return <FormControl my='1rem' height='fit-content' key={titleLevel2} isRequired={obj.isRequired}>
+													<FormLabel htmlFor={titleLevel2}>{capitalize(obj.options.formTitle ?? titleLevel2)}</FormLabel>
+													{resolveInput(`${titleLevel1}.${titleLevel2}`, obj)}
+												</FormControl>
+											}
+										})
+									}
+								</AccordionPanel>
+							</AccordionItem>
+						</Accordion>
+					} else if (!obj.options.hide && !titleLevel1.match('_id') && !titleLevel1.match('__v')) {
+						return <FormControl my='1rem' key={titleLevel1} isRequired={obj.isRequired}>
+							<FormLabel htmlFor={titleLevel1}>{capitalize(obj.options.formTitle ?? titleLevel1)}</FormLabel>
+							{resolveInput(titleLevel1, obj)}
 						</FormControl>
 					}
 				})

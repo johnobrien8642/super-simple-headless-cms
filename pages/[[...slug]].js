@@ -42,12 +42,12 @@ export default function Home({ loggedIn, pageManager, page }) {
 	return (
 		<>
 			<Head>
-				<title>John E. O'Brien</title>
+				<title>{pPage?.meta?.metaTitle}</title>
 				<meta
 					name="description"
-					content={pageSelected?.description}
+					content={pPage?.meta?.metaDescription}
 				/>
-				<link rel="canonical" href={keys.url} />
+				<link rel="canonical" href='https://www.johneobrien.com' />
 				<link rel="icon" type="image/x-icon" href="/icons8-venn-diagram-96.png" />
 			</Head>
 			<Header
