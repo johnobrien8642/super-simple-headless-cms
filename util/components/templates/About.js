@@ -15,13 +15,13 @@ const About = ({ template }) => {
 	const asset = template.assetsIds[0];
 	return <Box
 		py='8rem'
-		width='80%'
+		width='70%'
 		m='auto'
 		borderTop='1px solid white'
 	>
 		<Grid
 			gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr'}}
-			gap={10}
+			gap={1}
 		>
 			<Box>
 				<Heading mb='2rem'>{asset.description}</Heading>
@@ -29,12 +29,15 @@ const About = ({ template }) => {
 					as='span'
 					display='inline-block'
 					mt='2rem'
+					lineHeight='2rem'
 					dangerouslySetInnerHTML={{ __html: asset.richDescription }}
 				/>
 			</Box>
 			<Box
 				borderRadius='42%'
 				overflow='hidden'
+				m='auto'
+				w='60%'
 			>
 				<Image
 					objectFit='contain'

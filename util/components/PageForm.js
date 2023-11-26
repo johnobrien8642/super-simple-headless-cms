@@ -67,7 +67,7 @@ const PageForm = ({}) => {
 		// setPrice('');
 		// setError('');
 	}
-	console.log(data)
+
 	if (formTitle === 'Page') {
 		return (
 			<div className="form container">
