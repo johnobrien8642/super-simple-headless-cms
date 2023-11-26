@@ -1,5 +1,5 @@
 import React from 'react';
-import TemplateMap from '../util/TemplateMap';
+import TemplateMap from '../TemplateMap';
 import { useSearchParams } from 'next/navigation';
 
 const Templates = ({ page }) => {

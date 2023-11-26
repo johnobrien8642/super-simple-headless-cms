@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import Logout from '../components/Logout';
+import Logout from './Logout';
 import { useRouter } from 'next/router';
 import { useParams } from 'next/navigation';
 import { Text } from '@chakra-ui/react'

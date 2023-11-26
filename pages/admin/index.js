@@ -1,14 +1,14 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import Login from '../components/Login';
-import Logout from '../components/Logout';
-import NewAdmin from '../components/New_Admin';
+import Login from '../../util/components/Login';
+import Logout from '../../util/components/Logout';
+import NewAdmin from '../../util/components/New_Admin';
 import connectDb from '../../lib/mongodb';
 import Admin from '../../models/Admin';
 import jwt from 'jsonwebtoken';
 import { Text } from '@chakra-ui/react'
-import AdminHeader from '../components/AdminHeader';
+import AdminHeader from '../../util/components/AdminHeader';
 
 
 const AdminPage = ({ data }) => {

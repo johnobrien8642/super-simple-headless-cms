@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, Box, Heading } from '@chakra-ui/react';
 
 const TextBlock = ({ template }) => {
-	console.log(template)
 	return (
 		<Box
 			width='90%'

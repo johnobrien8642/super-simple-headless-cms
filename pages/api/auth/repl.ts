@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { errorToJSON } from 'next/dist/server/render'
+import { serializeError } from 'serialize-error';
 import models from '../../../lib/index'
 import dbConnect from '../../../lib/mongodb'
-
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const { codeString, admin } = JSON.parse(req.body)
@@ -14,6 +13,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		resultString = result ? result.toString() : 'Nothing returned from runRepl()'
 		return res.status(200).json({ resultString })
 	} catch(err) {
-		return res.status(500).json({ resultString: errorToJSON(err as Error).message })
+		return res.status(500).json({ resultString: serializeError(err as Error) })
 	}
 }

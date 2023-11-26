@@ -1,7 +1,7 @@
-import Sub from '../../models/Sub';
+import Sub from '../models/Sub';
 import Link from 'next/link'
 import jwt from 'jsonwebtoken';
-import connectDb from '../../lib/mongodb';
+import connectDb from '../lib/mongodb';
 import mongoose from 'mongoose';
 import { Text } from '@chakra-ui/react'
 

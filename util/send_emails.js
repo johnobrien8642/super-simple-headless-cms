@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import Admin from '../../models/Admin';
+import Admin from '../models/Admin';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import jwt from 'jsonwebtoken';
-import connectDb from '../../lib/mongodb';
+import connectDb from '../lib/mongodb';
 import { Input, Textarea, Button, Text } from '@chakra-ui/react'
 
 const SendEmails = ({ data }) => {

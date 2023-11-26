@@ -3,17 +3,14 @@ import Image from 'next/image';
 import { Input, Box, Text, Textarea, Select, FormControl, FormLabel, Switch, Button } from '@chakra-ui/react'
 import { capitalize } from 'lodash';
 import ListField from './ListField';
+import Editor from './Editor';
 import { useManagePageForm } from '../contexts/useManagePageForm';
 import { templateOptions, assetTypes, textAlignOptions } from '../../template_options';
 import { cloneDeep } from 'lodash';
-import dynamic from 'next/dynamic';
 
 const FormFields = ({ fieldArr, dataKey }) => {
 	const { data, setData, formSelected } = useManagePageForm();
 	const { formTitle } = formSelected;
-	const CKEditor = useMemo(() => {
-		return dynamic(() => import('./Editor'), { ssr: false });
-	}, [])
 	function resolveInput(title, obj, index) {
 		const resolvedValue = data[formTitle]?.[title] || '';
 		const resolveValue = (e) => {
@@ -42,7 +39,7 @@ const FormFields = ({ fieldArr, dataKey }) => {
 				onChange={e => resolveValue(e)}
 			/>
 		} else if (obj.instance === 'String' && obj.options.richText) {
-				return <CKEditor
+				return <Editor
 					data={data[formTitle][title]}
 					setData={setData}
 					formTitle={formTitle}

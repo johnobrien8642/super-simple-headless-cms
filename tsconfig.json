@@ -33,10 +33,10 @@
       "lib/dbConnect.ts",
       "pages/[[...slug]].js",
       "pages/[..slug]/index.js",
-      "pages/components/*.tsx",
-      "pages/components/*.ts",
-      "pages/components/*.js",
-      "pages/components/templates/*.js",
+      "util/components/*.tsx",
+      "util/components/*.ts",
+      "util/components/*.js",
+      "util/components/templates/*.js",
     ],
     "exclude": [
       "node_modules"

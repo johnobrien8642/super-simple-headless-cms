@@ -1,9 +1,11 @@
 import React from "react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { cloneDeep } from "lodash";
-
-
+import dynamic from 'next/dynamic';
+const ClassicEditor = dynamic(() => import("@ckeditor/ckeditor5-build-classic"), { ssr: false })
+const CKEditor = dynamic(() =>
+	import("@ckeditor/ckeditor5-build-classic").then(mod => mod.CKEditor),
+	{ ssr: false }
+)
 
 const Editor = ({
 	data,
