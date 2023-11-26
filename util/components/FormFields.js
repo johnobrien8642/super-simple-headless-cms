@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { Input, Box, Text, Textarea, Select, FormControl, FormLabel, Switch, Button } from '@chakra-ui/react'
 import { capitalize } from 'lodash';
 import ListField from './ListField';
-import Editor from './Editor';
+const Editor = dynamic(() => import('./Editor'), { ssr: false });
 import { useManagePageForm } from '../contexts/useManagePageForm';
 import { templateOptions, assetTypes, textAlignOptions } from '../../template_options';
 import { cloneDeep } from 'lodash';
