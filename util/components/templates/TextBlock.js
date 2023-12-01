@@ -11,7 +11,7 @@ const TextBlock = ({ template }) => {
 			{
 				template.assetsIds.map(obj => {
 					let resolveMargin;
-					if (obj.textAlign === 'left') {
+					if (obj.textAlign === 'left' || !obj.textAlign) {
 						resolveMargin = '0 auto 0 0'
 					} else if (obj.textAlign === 'center') {
 						resolveMargin = '0 auto'
