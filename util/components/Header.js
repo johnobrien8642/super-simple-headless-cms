@@ -15,7 +15,6 @@ const Header = ({ pages }) => {
 	const params = useParams();
 	const pathname = router.pathname;
 
-
 	useEffect(() => {
 		if(window.localStorage.getItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR)) {
 			setLoggedIn(true)
@@ -28,7 +27,7 @@ const Header = ({ pages }) => {
 		}
 	}
 
-	if (params.slug?.includes('video')) {
+	if (params?.slug?.includes('video')) {
 		return <></>
 	} else {
 		return (
