@@ -27,6 +27,7 @@ const MyImage = ({ image, height, setPhotoHook, setOpenModalHook }) => {
 		}}
 		alignContent='center'
 		objectFit='contain'
+		aspectRatio={{ md: '1 / .7' }}
 		onClick={() => {
 			if (desktop) {
 				if (setPhotoHook) {
