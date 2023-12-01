@@ -1,10 +1,19 @@
-import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
-import Logout from './Logout';
+import React, { useState, useRef, useEffect } from "react";
+import {
+	Flex,
+	Button,
+	HStack,
+	chakra,
+	Text,
+	Box,
+	useDisclosure,
+	useBreakpointValue
+} from '@chakra-ui/react';
+import Link from 'next/link'
 import { useRouter } from 'next/router';
 import { useParams } from 'next/navigation';
-import { Text } from '@chakra-ui/react'
-import { kebabCase } from 'lodash';
+import Logout from './Logout';
+import MobileHeader from "./MobileHeader";
 import { HamburgerIcon } from '@chakra-ui/icons';
 
 const Header = ({ pages }) => {
@@ -14,6 +23,12 @@ const Header = ({ pages }) => {
 	const router = useRouter();
 	const params = useParams();
 	const pathname = router.pathname;
+	const desktop = useBreakpointValue(
+		{
+			base: false,
+			md: true
+		}
+	)
 
 	useEffect(() => {
 		if(window.localStorage.getItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR)) {
@@ -27,93 +42,75 @@ const Header = ({ pages }) => {
 		}
 	}
 
-	if (params?.slug?.includes('video')) {
-		return <></>
-	} else {
-		return (
-			<nav className="navbar navbar-expand-lg">
-				<button
-					className="navbar-brand"
+	return (
+		<chakra.header id="header">
+			<Flex
+				w="100%"
+				px="6"
+				py='1rem'
+				align="center"
+				// justify="space-between"
+			>
+				<Button
+					variant='link'
+					mr={desktop ? '2rem' : '0'}
+					sx={{
+						':hover': {
+							textDecoration: 'none'
+						}
+					}}
 					onClick={(e) => {
 						e.preventDefault();
 						router.push('/');
 					}}
 				>
-					<Text as='h2' sx={{ ':hover': { cursor: 'pointer' } }} fontWeight='400'>John Edward O'Brien</Text>
-				</button>
+					<Text
+						as='h2'
+						sx={{ ':hover': { cursor: 'pointer' } }}
+						fontWeight='400'
+						fontSize='min(7vw, 2rem)'
+					>
+						John Edward O'Brien
+					</Text>
+				</Button>
 
-				<button
-					className="navbar-toggler"
-					type="button"
-					data-toggle="collapse"
-					data-target="#navbarNav"
-					aria-controls="navbarNav"
-					aria-expanded="false"
-					aria-label="Toggle navigation"
-					onClick={() => {
-						setOpenNav(!openNav);
-					}}
-				>
-					<HamburgerIcon sx={{ svg: { color: 'white' } }} />
-				</button>
+				<MobileHeader
+					pages={pages}
+				/>
 
-				<div
-					id="navbarNav"
-					className={`${
-						openNav ? 'active ' : 'collapse '
-					}navbar-collapse`}
-					tabIndex={-1}
-					ref={dropdownRef}
-					onBlur={(e) => {
-						if (!e.relatedTarget) {
-							setOpenNav(false);
-						}
-					}}
+				<HStack
+					display={desktop ? 'flex' : 'none'}
+					as="nav"
+					spacing='1.5rem'
 				>
-					<ul className="navbar-nav">
-						{
-							pages?.map(obj => {
-								if (obj.folderHref !== '/' && obj.showInNavigation) {
-									return <li
-										key={obj._id}
-										className={`nav-item`}
-										onClick={() => {
-											router.push(`${obj.folderHref}`)
-											setOpenNav(false);
-										}}
-									>
-										<Text
-											fontWeight={(obj.pageSelected || router.asPath) === obj.folderHref ? '800' : '200'}
-											fontSize={(obj.pageSelected || router.asPath) === obj.folderHref ? '1.8rem !important' : '1.5rem'}
-											color='white !important'
-											sx={{
-												':focus': {
-													color: 'white !important'
-												},
-												'a:hover': {
-													color: 'lightgray'
-												}
-											}}
-										>
-											<Link
-												href={obj.folderHref}
-												className="nav-link"
-												passHref
-											>
-													{obj.title}
-											</Link>
-										</Text>
-									</li>
-								}
-							})
+					{pages.map((obj, i) => {
+						if (obj.folderHref !== '/' && obj.showInNavigation) {
+							return <Text
+								fontWeight={(obj.pageSelected || router.asPath) === obj.folderHref ? '800' : '200'}
+								fontSize={(obj.pageSelected || router.asPath) === obj.folderHref ? '1.8rem !important' : '1.5rem'}
+								sx={{
+									'a:hover': {
+										color: 'lightgray'
+									}
+								}}
+							>
+								<Link
+									key={i}
+									href={obj.folderHref}
+									passHref
+								>
+									{obj.title}
+								</Link>
+							</Text>
 						}
-						<li>{handleLoggedIn()}</li>
-						<li><Text display={loggedIn ? 'inline-block': 'none'} as='h5' color='gray' m='auto'><Link href='/admin'>Admin Mode</Link></Text></li>
-					</ul>
-				</div>
-			</nav>
-		);
-	}
-};
+					})}
+					<Box>
+						{handleLoggedIn()}
+					</Box>
+				</HStack>
+			</Flex>
+		</chakra.header>
+	);
+}
 
 export default Header;
