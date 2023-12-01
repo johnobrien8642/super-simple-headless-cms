@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 
 const TemplatesSchema = new Schema({
 	title: {
-		type: String
+		type: String,
+		templates: {
+			'Image Triptych': 1
+		}
 	},
 	type: {
 		type: String,
@@ -16,16 +19,25 @@ const TemplatesSchema = new Schema({
 	},
 	description: {
 		type: String,
-		textbox: true
+		textbox: true,
+		templates: {
+			'Image Triptych': 1
+		}
 	},
 	richDescription: {
 		type: String,
 		richText: true,
-		formTitle: 'Rich Text'
+		formTitle: 'Rich Text',
+		templates: {
+
+		}
 	},
 	extLink: {
 		type: String,
-		formTitle: 'External Link'
+		formTitle: 'External Link',
+		templates: {
+
+		}
 	},
 	assetsIds: {
 		type: [
@@ -34,7 +46,7 @@ const TemplatesSchema = new Schema({
 				ref: 'Assets'
 			}
 		],
-		formTitle: 'Assets',
+		formTitle: 'Assets'
 	},
 	videoId: {
 		type: [
@@ -44,7 +56,10 @@ const TemplatesSchema = new Schema({
 			}
 		],
 		formTitle: 'Exterior Asset To Link To',
-		singleChoice: true
+		singleChoice: true,
+		templates: {
+			'Image Triptych': 1
+		}
 	},
 	schemaName: {
 		type: String,

@@ -4,6 +4,7 @@ export const templateOptions = [
 	'Photo List',
 	'Video Player',
 	'Book Cover CTA',
+	'Headline Only CTA',
 	'Text Block',
 	'About'
 ] as const;

@@ -25,8 +25,12 @@ import { templateOptions, assetTypes, textAlignOptions } from '../../template_op
 import { cloneDeep, get, set } from 'lodash';
 
 const FormFields = ({ fieldArr, dataKey }) => {
+	const [fields, setFields] = useState(fieldArr);
 	const { data, setData, formSelected } = useManagePageForm();
 	const { formTitle } = formSelected;
+	useEffect(() => {
+		setFields(fieldArr)
+	}, [fieldArr])
 	function resolveInput(title, obj) {
 		const resolvedValue = get(data[formTitle], title, '');
 		const resolveValue = (e) => {
@@ -35,6 +39,9 @@ const FormFields = ({ fieldArr, dataKey }) => {
 				set(newData[formTitle], title, innerResolveValue(e.target.value))
 				return newData;
 			})
+			if (formTitle === 'Templates' && title === 'type') {
+				setFields([...fields])
+			}
 			function innerResolveValue(val) {
 				if (val === 'true') return false;
 				if (val === 'false') return true;
@@ -177,15 +184,18 @@ const FormFields = ({ fieldArr, dataKey }) => {
 	return (
 		<>
 			{
-				fieldArr?.map(sub => {
+				fields?.map(sub => {
 					const titleLevel1 = sub[0];
 					const obj = sub[1];
+					const inUse = obj.options?.templates?.[data['Templates'].type];
 					if (obj.options.collapseTitle) {
 						return <Accordion allowToggle mb='1rem' key={titleLevel1 + obj.options}>
 							<AccordionItem>
-								<AccordionButton>
+								<AccordionButton
+									backgroundColor={inUse && formTitle !== 'Page' ? 'var(--chakra-colors-blue-100)' : ''}
+								>
 									{obj.options.collapseTitle}
-									<AccordionIcon />
+								<AccordionIcon />
 								</AccordionButton>
 								<AccordionPanel>
 									{
@@ -205,7 +215,12 @@ const FormFields = ({ fieldArr, dataKey }) => {
 						</Accordion>
 					} else if (!obj.options.hide && !titleLevel1.match('_id') && !titleLevel1.match('__v')) {
 						return <FormControl my='1rem' key={titleLevel1} isRequired={obj.isRequired}>
-							<FormLabel htmlFor={titleLevel1}>{capitalize(obj.options.formTitle ?? titleLevel1)}</FormLabel>
+							<FormLabel
+								htmlFor={titleLevel1}
+								backgroundColor={inUse ? 'var(--chakra-colors-blue-100)' : ''}
+							>
+								{capitalize(obj.options.formTitle ?? titleLevel1)}
+							</FormLabel>
 							{resolveInput(titleLevel1, obj)}
 						</FormControl>
 					}

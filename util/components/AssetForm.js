@@ -90,6 +90,7 @@ const AssetForm = ({}) => {
 		return (
 			<div className="form container">
 				<Text as='h2'>{editItemTraceObj['Assets'] ? 'Update Asset' : 'New Asset'}</Text>
+				<Text as='h2'>{`(${data['Templates'].type})`}</Text>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();

@@ -11,7 +11,14 @@ const AssetsSchema = new Schema({
 		dataPreviewUrl: 'assetDataUrl',
 		dimensionsKey: 'assetDimensions',
 		previewTypeKey: 'assetPreviewType',
-		index: true
+		index: true,
+		templates: {
+			'Image Grid': 1,
+			'Image Triptych': 1,
+			'Photo List': 1,
+			'Book Cover CTA': 1,
+			'About': 1
+		}
 	},
 	assetDimensions: {
 		type: [Number, Number],
@@ -25,7 +32,10 @@ const AssetsSchema = new Schema({
 		dataPreviewUrl: 'thumbnailDataUrl',
 		dimensionsKey: 'thumbnailDimensions',
 		previewTypeKey: 'thumbnailPreviewType',
-		index: true
+		index: true,
+		templates: {
+
+		}
 	},
 	thumbnailDimensions: {
 		type: [Number, Number],
@@ -36,12 +46,25 @@ const AssetsSchema = new Schema({
 		hide: true
 	},
 	title: {
-		type: String
+		type: String,
+		templates: {
+			'Image Grid': 1,
+			'Image Triptych': 1,
+			'Photo List': 1,
+			'Book Cover CTA': 1,
+			'Headline Only CTA': 1,
+			'Text Block': 1
+		}
 	},
 	description: {
 		type: String,
 		textbox: true,
-		formTitle: 'Regular Text'
+		formTitle: 'Regular Text',
+		templates: {
+			'Image Triptych': 1,
+			'Book Cover CTA': 1,
+			'About': 1
+		}
 	},
 	textAlign: {
 		type: String,
@@ -49,16 +72,32 @@ const AssetsSchema = new Schema({
 		select: true,
 		enumKey: 'textAlignOptions',
 		formTitle: 'Rich Text and Title Align',
-		defaultValue: 'left'
+		defaultValue: 'left',
+		templates: {
+			'Text Block': 1
+		}
 	},
 	richDescription: {
 		type: String,
 		richText: true,
-		formTitle: 'Rich Text'
+		formTitle: 'Rich Text',
+		templates: {
+			'Image Grid': 1,
+			'Image Triptych': 1,
+			'Photo List': 1,
+			'Book Cover CTA': 1,
+			'Text Block': 1,
+			'About': 1
+		}
 	},
 	extLink: {
 		type: String,
-		formTitle: 'External Link'
+		formTitle: 'External Link',
+		templates: {
+			'Image Grid': 1,
+			'Photo List': 1,
+			'Book Cover CTA': 1
+		}
 	},
 	type: {
 		type: String,
