@@ -104,7 +104,6 @@ const ImageGrid = ({ template }) => {
 					<ModalCloseButton />
 					<ModalBody
 						px={{ md: '5rem' }}
-						maxH='1100px'
 					>
 						<ImageSlider
 							images={images}
