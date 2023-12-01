@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ListFieldItem from './ListFieldItem';
 import {
 	Box,
@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import FormFields from './FormFields';
 import { useManagePageForm } from '../contexts/useManagePageForm';
-import { capitalize, cloneDeep, sortBy } from 'lodash';
+import { capitalize, cloneDeep, sortBy, get } from 'lodash';
 import { useDrop, useDragDropManager, useDragLayer } from 'react-dnd';
 import { assetTypes, templateOptions } from '../../template_options';
 
@@ -26,6 +26,8 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 	const [chosenItems, setChosenItems] = useState([]);
 	const [itemFilter, setItemFilter] = useState('');
 	const [itemFilterArr, setItemFilterArr] = useState([]);
+	const [rerun, setRerun] = useState(0);
+	const lastArrLen = useRef(false);
 	const [textFilter, setTextFilter] = useState('');
 	const [open, setOpen] = useState(false);
 	const [itemIndex, setItemIndex] = useState();
@@ -61,7 +63,15 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 			setAvailableItems(availableItems);
 			setChosenItems(chosenItems);
 		}
-	}, [data, formTitle, itemFilter]);
+	}, [rerun, formTitle, itemFilter]);
+
+	useEffect(() => {
+		const arrLen = get(data[formTitle], title)?.length
+		if (arrLen !== lastArrLen.current) {
+			setRerun(rerun + 1);
+			lastArrLen.current = arrLen;
+		}
+	}, [data])
 
 	return (
 		<Flex
