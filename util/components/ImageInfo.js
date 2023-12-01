@@ -2,13 +2,16 @@ import React from 'react';
 import {
 	Heading,
 	Button,
-	Text
+	Text,
+	Box
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
 const ImageInfo = ({ image }) => {
 	return (
-		<>
+		<Box
+			px={{ base: '1rem' }}
+		>
 			<Heading my={{ base: '1rem', md: '2rem' }}>{image.title}</Heading>
 			{
 				image.extLink &&
@@ -34,7 +37,7 @@ const ImageInfo = ({ image }) => {
 				display='inline-block'
 				dangerouslySetInnerHTML={{ __html: image.richDescription }}
 			/>
-		</>
+		</Box>
 	)
 }
 

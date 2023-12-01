@@ -48,7 +48,7 @@ const ImageGrid = ({ template }) => {
 	return (
 		<Box
 			className='image-grid'
-			width={{ base: '100%', md: '90%' }}
+			width={{ base: '100%', md: '75%' }}
 			mx='auto'
 			key={template._id}
 		>
@@ -60,7 +60,6 @@ const ImageGrid = ({ template }) => {
 						images.map((obj, index) => {
 							return <Box
 								key={obj._id}
-								display={{ base: 'none', md: 'block' }}
 								width='100%'
 								transition='transform .2s'
 								sx={{
@@ -101,12 +100,12 @@ const ImageGrid = ({ template }) => {
 				>
 					<ModalCloseButton/>
 					<ModalBody
-						px='5rem'
+						px={{ md: '5rem' }}
 					>
 						<ImageSlider
 							images={images}
 							startingIndex={imageIndex}
-							padding='5rem 3rem'
+							padding={{ base: '2rem 0', md: '5rem 3rem'}}
 						/>
 					</ModalBody>
 					<ModalFooter>
