@@ -4,7 +4,7 @@ import {
 	useBreakpointValue
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import Image from 'next/image';
+import MyImage from './Image'
 import ImageInfo from './ImageInfo';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
@@ -51,32 +51,10 @@ const ImageSlider = ({ images, height, padding, startingIndex }) => {
 			>
 				{
 					images.map(obj => {
-						return <Box
-							key={obj._id}
-							width='100%'
-							height={height}
-							my='auto'
-							sx={{
-								':hover': {
-									cursor: 'pointer'
-								},
-								img: {
-									width: '100%',
-									height: '100%',
-									objectFit: 'contain'
-								}
-							}}
-							alignContent='center'
-							objectFit='contain'
-						>
-							<Image
-								alt={obj.title || 'alt text'}
-								width={obj.assetDimensions[0]}
-								height={obj.assetDimensions[1]}
-								src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + obj.assetKey}
-							/>
+						return <>
+							<MyImage image={obj} />
 							<ImageInfo image={obj} />
-						</Box>
+						</>
 					})
 				}
 			</Slide>

@@ -99,7 +99,7 @@ const ImageGrid = ({ template }) => {
 					backgroundColor='black'
 					borderColor='transparent'
 				>
-					<ModalCloseButton/>
+					<ModalCloseButton />
 					<ModalBody
 						px={{ md: '5rem' }}
 					>
