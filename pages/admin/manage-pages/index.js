@@ -85,7 +85,7 @@ const ManagePages = ({ admin }) => {
 				setTopLevelModal={setTopLevelModal}
 				topLevelModal={topLevelModal}
 			>
-				<AdminHeader />
+				<AdminHeader title='Manage Pages' />
 				<Button
 					onClick={() => {
 						setTopLevelModal(true);

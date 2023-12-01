@@ -12,7 +12,8 @@ import {
 	ModalFooter,
 	Spinner,
 	Text,
-	Flex
+	Flex,
+	Heading
 } from '@chakra-ui/react'
 import axios from 'axios';
 import mongoose from 'mongoose';
@@ -76,7 +77,7 @@ const TemplateForm = ({}) => {
 	if (formTitle === 'Templates') {
 		return (
 			<div className="form container">
-				<Text as='h2'>{editItemTraceObj['Templates'] ? 'Update Template' : 'New Template'}</Text>
+				<Heading>{editItemTraceObj['Templates'] ? 'Update Template' : 'New Template'}</Heading>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();

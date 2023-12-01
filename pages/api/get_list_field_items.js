@@ -2,7 +2,6 @@ import models from '../../lib/index';
 
 export default async (req, res) => {
 	const { schema, nestedItemIds, itemType } = req.body;
-	console.log(nestedItemIds)
 	const availableItems = await models[schema].find({ _id: { $nin: nestedItemIds ?? [] }, type: itemType })
 	const chosenItems = await models[schema].find({ _id: { $in: nestedItemIds ?? [] } })
 	if (availableItems && chosenItems) {

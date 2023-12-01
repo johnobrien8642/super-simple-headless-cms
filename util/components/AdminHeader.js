@@ -1,15 +1,34 @@
-import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
-import Logout from '../components/Logout';
+import React, { useState, useRef, useEffect } from "react";
+import {
+	Flex,
+	HStack,
+	chakra,
+	Text,
+	Box,
+	Button,
+	useDisclosure,
+	useBreakpointValue
+} from '@chakra-ui/react';
+import Link from 'next/link'
 import { useRouter } from 'next/router';
-import { Text } from '@chakra-ui/react'
+import { useParams } from 'next/navigation';
+import Logout from './Logout';
+import MobileHeader from "./MobileHeader";
+import { HamburgerIcon } from '@chakra-ui/icons';
 
-const AdminHeader = () => {
-	let [openNav, setOpenNav] = useState('');
-	let [loggedIn, setLoggedIn] = useState(false)
+const AdminHeader = ({ title }) => {
+	const [openNav, setOpenNav] = useState('');
+	const [loggedIn, setLoggedIn] = useState(false)
 	const dropdownRef = useRef(null);
 	const router = useRouter();
+	const params = useParams();
 	const pathname = router.pathname;
+	const desktop = useBreakpointValue(
+		{
+			base: false,
+			md: true
+		}
+	)
 
 	useEffect(() => {
 		if(window.localStorage.getItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR)) {
@@ -17,70 +36,68 @@ const AdminHeader = () => {
 		}
 	}, [])
 
-	useEffect(() => {
-		if (window) {
-			document.body.classList.add('admin')
+	function handleLoggedIn() {
+		if (loggedIn) {
+			return Logout({ router });
 		}
-	}, [])
+	}
 
 	return (
-		<nav className="navbar navbar-expand-lg navbar-light bg-light admin">
-			<button
-				className="navbar-toggler"
-				type="button"
-				data-toggle="collapse"
-				data-target="#navbarNav"
-				aria-controls="navbarNav"
-				aria-expanded="false"
-				aria-label="Toggle navigation"
-				onClick={() => {
-					setOpenNav(!openNav);
-				}}
+		<chakra.header id="header">
+			<Flex
+				w="100%"
+				px="6"
+				py='1rem'
+				align="center"
+				// justify="space-between"
 			>
-				<span className="navbar-toggler-icon"></span>
-			</button>
+				<Button
+					variant='link'
+					mr={desktop ? '2rem' : '0'}
+					sx={{
+						':hover': {
+							textDecoration: 'none'
+						}
+					}}
+					onClick={(e) => {
+						e.preventDefault();
+						router.push('/');
+					}}
+				>
+					<Text
+						as='h2'
+						sx={{ ':hover': { cursor: 'pointer' } }}
+						fontWeight='400'
+						fontSize='min(7vw, 2rem)'
+					>
+						{title}
+					</Text>
+				</Button>
 
-			<div
-				id="navbarNav"
-				className={`${
-					openNav ? 'active ' : 'collapse '
-				}navbar-collapse bg-light`}
-				tabIndex={-1}
-				ref={dropdownRef}
-				onBlur={(e) => {
-					if (!e.relatedTarget) {
-						setOpenNav(false);
-					}
-				}}
-			>
-				<ul className="navbar-nav">
-					<li
-						className={`nav-item${
-							pathname.match('/admin/manage-pages') ? ' active' : ''
-						}`}
+				<HStack
+					as="nav"
+					spacing='1.5rem'
+				>
+					<Text
+						sx={{
+							'a:hover': {
+								color: 'lightgray'
+							}
+						}}
 					>
-						<Link className='nav-link' href={'/admin/manage-pages'}>Manage Pages</Link>
-					</li>
-					{/* <li
-						className={`nav-item${
-							pathname.match('/admin/manage-assets') ? ' active' : ''
-						}`}
-					>
-						<Link className='nav-link' href={'/admin/manage-assets'}>Manage Assets</Link>
-					</li> */}
-					<li
-						className={`nav-item${
-							pathname.match('/auth/repl') ? ' active' : ''
-						}`}
-					>
-						<Link className='nav-link' href={'/auth/repl'}>Repl</Link>
-					</li>
-					{loggedIn && <li><Logout /></li>}
-					<li><Text display={loggedIn ? 'inline-block': 'none'} as='h5' color='gray' m='auto'><Link href='/admin'>Admin Mode</Link></Text></li>
-				</ul>
-			</div>
-		</nav>
+						<Link
+							href={'/auth/repl'}
+						>
+							Repl
+						</Link>
+					</Text>
+					<Box>
+						{handleLoggedIn()}
+					</Box>
+				</HStack>
+			</Flex>
+		</chakra.header>
 	);
-};
+}
 
 export default AdminHeader;

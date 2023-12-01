@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import {
 	Button,
 	Spinner,
-	Text
+	Text,
+	Heading
 } from '@chakra-ui/react'
 import axios from 'axios';
 import mongoose from 'mongoose';
@@ -71,7 +72,7 @@ const PageForm = ({}) => {
 	if (formTitle === 'Page') {
 		return (
 			<div className="form container">
-				<Text as='h2'>{editItemTraceObj['Page'] ? 'Update Page' : 'New Page'}</Text>
+				<Heading>{editItemTraceObj['Page'] ? 'Update Page' : 'New Page'}</Heading>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();

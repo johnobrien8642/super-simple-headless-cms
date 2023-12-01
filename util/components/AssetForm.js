@@ -14,7 +14,8 @@ import {
 	Text,
 	Flex,
 	FormControl,
-	FormLabel
+	FormLabel,
+	Heading
 } from '@chakra-ui/react'
 import axios from 'axios';
 import mongoose from 'mongoose';
@@ -89,8 +90,8 @@ const AssetForm = ({}) => {
 	if (formTitle === 'Assets') {
 		return (
 			<div className="form container">
-				<Text as='h2'>{editItemTraceObj['Assets'] ? 'Update Asset' : 'New Asset'}</Text>
-				<Text as='h2'>{`(${data['Templates'].type})`}</Text>
+				<Heading>{editItemTraceObj['Assets'] ? 'Update Asset' : 'New Asset'}</Heading>
+				<Heading>{`(${data['Templates'].type})`}</Heading>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
