@@ -41,6 +41,7 @@ const ImageFocus = ({ assets, imageIndexNum, setImageIndexHook, setOpenModalHook
 			<ModalCloseButton/>
 			<ModalBody
 				p='5rem 3rem'
+				maxH='1100px'
 			>
 				{
 					assets?.length > 1 &&

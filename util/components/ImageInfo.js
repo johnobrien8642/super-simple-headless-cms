@@ -39,6 +39,7 @@ const ImageInfo = ({ image }) => {
 			}
 			<Text
 				as='span'
+				overflow='auto'
 				display='inline-block'
 				dangerouslySetInnerHTML={{ __html: image.richDescription }}
 			/>

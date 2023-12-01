@@ -39,7 +39,7 @@ const Header = ({ pages }) => {
 						router.push('/');
 					}}
 				>
-					<Text as='h2' fontWeight='400'>John Edward O'Brien</Text>
+					<Text as='h2' sx={{ ':hover': { cursor: 'pointer' } }} fontWeight='400'>John Edward O'Brien</Text>
 				</button>
 
 				<button
