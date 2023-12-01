@@ -14,7 +14,8 @@ const ImageInfo = ({ image }) => {
 			flexDir='column'
 			gap={{ base: '.3rem', md: '1rem' }}
 			my={{ base: '.3rem', md: '1rem' }}
-			px={{ base: '1rem', md: '1rem' }}
+			px={{ base: '1rem', md: '2rem' }}
+			maxW={{ base: '95%', md: '82%' }}
 		>
 			<Heading>{image.title}</Heading>
 			{
@@ -37,7 +38,6 @@ const ImageInfo = ({ image }) => {
 			}
 			<Text
 				as='span'
-				maxW={{ base: '95%', md: '82%' }}
 				display='inline-block'
 				dangerouslySetInnerHTML={{ __html: image.richDescription }}
 			/>
