@@ -17,7 +17,7 @@ export async function init(models: string[]) {
 	}
 	let fieldArray;
 	let path;
-	let obj;
+	let obj: { [key: string]: any };
 	for (let i = 0; i < models.length; i++) {
 		try {
 			const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get_model_schema`,
@@ -36,18 +36,18 @@ export async function init(models: string[]) {
 			fieldArray = Object.entries(schemaPaths)
 			for (let i2 = 0; i2 < fieldArray.length; i2++) {
 				path = fieldArray[i2][0];
-				obj = fieldArray[i2][1];
+				obj = fieldArray[i2][1] as { [key: string]: any };
 				if (path !== '_id' && path !== '__v' && path !== 'updatedAt' && path !== 'createdAt') {
 					ManagePageFormDataTypeObj[models[i]][path] = resolveObj(obj, 'type');
 					initialValueObj[models[i]][path] = resolveObj(obj, 'initVal')
 				}
 
 			}
-			function resolveObj(obj, type) {
+			function resolveObj(obj: { [key: string]: any }, type: string) {
 				const instance = obj.instance;
 				if (instance === 'String') {
 					if (obj.enumValues?.length) {
-						return type === 'type' ? `[${obj.enumValues.map(val => `"${val}"`)}] | ''` : '';
+						return type === 'type' ? `[${obj.enumValues.map((val: any) => `"${val}"`)}] | ''` : '';
 					} else {
 						return type === 'type' ? 'string' : '';
 					}
@@ -57,7 +57,7 @@ export async function init(models: string[]) {
 					if (obj.caster.instance === 'ObjectId') {
 						return type === 'type' ? 'string[] | []' : [];
 					} else if (obj.caster.instance === 'Number') {
-						return type === 'type' ? obj.options.type.map(t => 'number') : [];
+						return type === 'type' ? obj.options.type.map((t: any) => 'number') : [];
 					}
 				} else if (instance === 'Number') {
 					return type === 'type' ? 'number' : 0;
