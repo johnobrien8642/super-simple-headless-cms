@@ -33,7 +33,7 @@ const PhotoList = ({ template }) => {
 		m='5rem auto'
 	>
 		{
-			template.assetsIds.map(asset => {
+			template.assetsIds.map((asset, index) => {
 				return <Grid
 					key={asset._id}
 					gridTemplateColumns={{ base: '100%', lg: '50% 1fr'}}
@@ -45,7 +45,7 @@ const PhotoList = ({ template }) => {
 					borderTop='1px solid white'
 					alignItems='center'
 				>
-					<MyImage image={asset} setPhotoHook={setImage} setOpenModalHook={setOpenModal} />
+					<MyImage image={asset} setPhotoHook={setImage} setOpenModalHook={setOpenModal} priority={index < 2} />
 					<ImageInfo image={asset} />
 				</Grid>
 			})
