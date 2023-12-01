@@ -18,5 +18,6 @@ export const assetTypes = [
 export const textAlignOptions = [
 	'left',
 	'center',
-	'right'
+	'right',
+	''
 ] as const;

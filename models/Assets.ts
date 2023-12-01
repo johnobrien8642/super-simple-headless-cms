@@ -48,7 +48,8 @@ const AssetsSchema = new Schema({
 		enum: textAlignOptions,
 		select: true,
 		enumKey: 'textAlignOptions',
-		formTitle: 'Rich Text and Title Align'
+		formTitle: 'Rich Text and Title Align',
+		defaultValue: 'left'
 	},
 	richDescription: {
 		type: String,
