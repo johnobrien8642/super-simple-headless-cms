@@ -1,6 +1,8 @@
+import connectDb from '../../lib/mongodb.js';
 import Templates from '../../models/Templates';
 
 export default async (req, res) => {
+	await connectDb();
 	try {
 		const items = await Templates.find({ type: 'Photo List' }).populate('assetsIds');
 		let allImages = [];
