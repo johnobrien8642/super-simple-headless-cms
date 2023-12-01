@@ -23,6 +23,7 @@ const ImageInfo = ({ image }) => {
 					<Link
 						href={image.extLink ?? ''}
 						passHref={true}
+						target='_blank'
 					>
 						<Button
 							variant='outline'
