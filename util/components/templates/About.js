@@ -14,14 +14,15 @@ import Link from 'next/link';
 const About = ({ template }) => {
 	const asset = template.assetsIds[0];
 	return <Box
-		py={{ base: '2rem', lg: '8rem'}}
+		py={{ base: '1rem', lg: '4.2rem'}}
 		width={{ base: '90%', lg: '75%'}}
-		m='auto'
+		m={{ base: '2rem auto', lg: '5rem auto'}}
 		borderTop='1px solid white'
 	>
 		<Grid
-			gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr'}}
-			gap={1}
+			gridTemplateColumns={{ base: '1fr', lg: '1fr .5fr'}}
+			gap='5rem'
+			p='1rem'
 		>
 			<Box
 				pl={{ base: '0', lg: '2rem' }}
@@ -41,9 +42,10 @@ const About = ({ template }) => {
 				borderRadius='42%'
 				overflow='hidden'
 				m='auto'
-				w='60%'
+				w='100%'
+				minWidth='320px'
 				order={{ base: '0', lg: '1'}}
-				my={{ base: '2rem' }}
+				mt={{ base: '2rem' }}
 			>
 				<Image
 					objectFit='contain'

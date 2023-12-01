@@ -15,10 +15,6 @@
 #navbarNav {
 	outline: none;
 	background-color: black;
-
-	a {
-		font-size: 1.4rem;
-	}
 }
 
 .main-page {
@@ -175,8 +171,18 @@
 		}
 	}
 
+	.nav-item:focus {
+		color: var(--chakra-colors-gray-300) !important;
+	}
+
 	.nav-item.active a {
 		color: var(--chakra-colors-gray-300) !important;
+	}
+
+	.nav-link {
+		&:focus {
+			color: white !important
+		}
 	}
 
  	h5 {

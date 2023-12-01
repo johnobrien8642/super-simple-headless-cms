@@ -39,7 +39,7 @@ const Header = ({ pages }) => {
 						router.push('/');
 					}}
 				>
-					<Text as='h3'>John Edward O'Brien</Text>
+					<Text as='h2' fontWeight='400'>John Edward O'Brien</Text>
 				</button>
 
 				<button
@@ -82,14 +82,23 @@ const Header = ({ pages }) => {
 										}}
 									>
 										<Text
-											fontWeight={(obj.pageSelected || router.asPath) === obj.folderHref ? '600' : '400'}
+											fontWeight={(obj.pageSelected || router.asPath) === obj.folderHref ? '800' : '200'}
+											fontSize={(obj.pageSelected || router.asPath) === obj.folderHref ? '1.8rem !important' : '1.5rem'}
+											color='white !important'
 											sx={{
+												':focus': {
+													color: 'white !important'
+												},
 												'a:hover': {
 													color: 'lightgray'
 												}
 											}}
 										>
-											<Link href={obj.folderHref} className="nav-link" passHref>
+											<Link
+												href={obj.folderHref}
+												className="nav-link"
+												passHref
+											>
 													{obj.title}
 											</Link>
 										</Text>
