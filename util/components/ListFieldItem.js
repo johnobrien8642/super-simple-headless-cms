@@ -53,6 +53,11 @@ const ListFieldItem = ({
 					return move(newData, item.index, index);
 				})
 			} else {
+				setChosenItems(prev => {
+					const newData = cloneDeep(prev);
+					newData = move(newData, item.index, index);
+					return newData;
+				})
 				setData(prev => {
 					const newData = cloneDeep(prev);
 					newData[formTitle][title] = move(newData[formTitle][title], item.index, index);
