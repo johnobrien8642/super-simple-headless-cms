@@ -10,13 +10,17 @@ import Link from 'next/link';
 const ImageInfo = ({ image }) => {
 	return (
 		<Box
-			px={{ base: '1rem' }}
+			display='flex'
+			flexDir='column'
+			justifyContent='space-between'
+			gap={{ base: '.3rem', md: '1rem' }}
+			my={{ base: '.3rem', md: '1rem' }}
+			px={{ base: '1rem', md: '1rem' }}
 		>
-			<Heading my={{ base: '1rem', md: '2rem' }}>{image.title}</Heading>
+			<Heading>{image.title}</Heading>
 			{
 				image.extLink &&
 					<Link
-						my='1rem'
 						href={image.extLink ?? ''}
 						passHref={true}
 					>
