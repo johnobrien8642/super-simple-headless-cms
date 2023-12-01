@@ -43,9 +43,10 @@ const About = ({ template }) => {
 				overflow='hidden'
 				m='auto'
 				w='100%'
-				minWidth='320px'
+				minWidth='300px'
+				maxWidth='400px'
 				order={{ base: '0', lg: '1'}}
-				mt={{ base: '2rem' }}
+				// mt={{ base: '2rem' }}
 			>
 				<Image
 					objectFit='contain'
