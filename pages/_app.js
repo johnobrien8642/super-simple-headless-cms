@@ -49,7 +49,6 @@ export default function MyApp({ Component, pageProps }) {
 		}
 	}, [pageProps])
 	const theme = extendTheme(themeObj)
-	console.log(theme)
 	return (
 		<ChakraProvider theme={theme}>
 			<DndProvider backend={HTML5Backend}>
