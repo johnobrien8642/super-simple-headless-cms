@@ -4,9 +4,10 @@ import { Text, Box, Heading } from '@chakra-ui/react';
 const TextBlock = ({ template }) => {
 	return (
 		<Box
-			width='90%'
+			width={{ base: '90%', md: '75%' }}
 			m='auto'
 			py='5rem'
+			fontSize='1.2rem'
 		>
 			{
 				template.assetsIds.map(obj => {
@@ -19,7 +20,7 @@ const TextBlock = ({ template }) => {
 						resolveMargin = '0 0 0 auto'
 					}
 					return <Box
-						width={{ base: '90%', lg: '75%' }}
+						width='82%'
 						m={resolveMargin}
 						py='1rem'
 					>

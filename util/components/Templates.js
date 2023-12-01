@@ -1,4 +1,5 @@
 import React from 'react';
+import { Center } from '@chakra-ui/react';
 import TemplateMap from '../TemplateMap';
 import { useSearchParams } from 'next/navigation';
 
@@ -12,9 +13,13 @@ const Templates = ({ page }) => {
 	})
 
 	return (
-		<>
+		<Center
+			maxW='2000px'
+			m='0 auto'
+			flexDir='column'
+		>
 			{mappedComps}
-		</>
+		</Center>
 	)
 }
 []
