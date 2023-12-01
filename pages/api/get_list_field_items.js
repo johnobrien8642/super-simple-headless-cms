@@ -9,7 +9,9 @@ export default async (req, res) => {
 		let item;
 		for (let i = 0; i < chosenItems.length; i++) {
 			item = chosenItems[i];
-			orderedChosenItems.splice(nestedItemIds.indexOf(item._id.toString()), 1, item);
+			orderedChosenItems
+				.splice(nestedItemIds.indexOf(item._id.toString()), 1, item)
+				.filter(item  => item !== null);
 		}
 		return res.status(200).json({ availableItems, chosenItems: orderedChosenItems });
 	} else {
