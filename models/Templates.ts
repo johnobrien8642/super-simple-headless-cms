@@ -18,6 +18,11 @@ const TemplatesSchema = new Schema({
 		type: String,
 		textbox: true
 	},
+	richDescription: {
+		type: String,
+		richText: true,
+		formTitle: 'Rich Text'
+	},
 	extLink: {
 		type: String,
 		formTitle: 'External Link'

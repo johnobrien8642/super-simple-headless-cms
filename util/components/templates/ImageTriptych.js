@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
 import {
 	Box,
-	Card,
-	CardHeader,
-	CardBody,
-	CardFooter,
 	Heading,
 	Text,
 	Flex,
@@ -18,7 +14,7 @@ import {
 	Button,
 	useBreakpointValue
 } from '@chakra-ui/react';
-import { ChevronLeftIcon, ChevronRightIcon, DragHandleIcon } from '@chakra-ui/icons';
+import { DragHandleIcon } from '@chakra-ui/icons';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import Image from 'next/image';

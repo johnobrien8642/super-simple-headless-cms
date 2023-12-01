@@ -1,6 +1,7 @@
 export const templateOptions = [
 	'Image Grid',
 	'Image Triptych',
+	'Photo List',
 	'Video Player',
 	'Book Cover CTA',
 	'Text Block',

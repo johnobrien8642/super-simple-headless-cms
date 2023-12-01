@@ -1,48 +1,20 @@
 import React, { useContext, createContext } from "react";
-import { templateOptions, assetTypes } from "../../template_options";
+import { init } from "./util/context_util";
 
-export type ManagePageFormDataType = {
-	'Page': {
-		_id?: string;
-		title: string;
-		folderHref: string;
-		description: string;
-		templatesIds?: string[];
-		showInNavigation: boolean;
-		meta: {
-			metaTitle: string;
-			metaDescription: string;
-		}
-	};
-	'Templates': {
-		_id?: string;
-		title: string;
-		type: typeof templateOptions[number] | '',
-		description: string;
-		assetsIds?: string[];
-		videoId: string[];
-	};
-	'Assets': {
-		_id?: string;
-		assetKey: string;
-		assetFile: File | '';
-		assetDataUrl: '';
-		assetDimensions: [number, number] | [];
-		assetPreviewType: '';
-		thumbnailKey: string;
-		thumbnailFile: File | '';
-		thumbnailDataUrl: '';
-		thumbnailDimensions: [number, number] | [];
-		thumbnailPreviewType: '';
-		blurString: string;
-		title: string;
-		description: string;
-		richDescription: string;
-		type: typeof assetTypes[number] | '';
-	}
-}
+// top level await works, use for dynamic creation of
+// context file
+const models = ['Page', 'Templates', 'Assets']
+const {
+	ManagePageFormDataTypeObj,
+	initialValueObj,
+	AllModelNamesTypeStr,
+	editItemTraceObjType,
+	editItemTraceObjInitObj,
+} = await init(models)
 
-export type AllModelNames = 'Page' | 'Templates' | 'Assets' | '';
+export type ManagePageFormDataType = typeof ManagePageFormDataTypeObj;
+
+export type AllModelNames = typeof AllModelNamesTypeStr;
 
 export type ManagePageFormContextType = {
 	data: ManagePageFormDataType,
@@ -51,7 +23,7 @@ export type ManagePageFormContextType = {
 		formTitle: AllModelNames;
 		prevFormTitle: AllModelNames;
 		formIndex: number;
-		editItemTraceObj: { 'Page': string; 'Templates': string; 'Assets': string; };
+		editItemTraceObj: typeof editItemTraceObjType;
 		update: AllModelNames;
 	};
 	setFormSelected: () => void;
@@ -59,43 +31,7 @@ export type ManagePageFormContextType = {
 	setTopLevelModal: () => void;
 };
 
-export const dataInitialValue: ManagePageFormDataType = {
-	'Page': {
-		title: '',
-		description: '',
-		folderHref: '',
-		templatesIds: [],
-		showInNavigation: true,
-		meta: {
-			metaTitle: '',
-			metaDescription: ''
-		}
-	},
-	'Templates' :  {
-		title: '',
-		type: '',
-		description: '',
-		assetsIds: [],
-		videoId: []
-	},
-	'Assets' : {
-		assetKey: '',
-		assetFile: '',
-		assetDataUrl: '',
-		assetDimensions: [],
-		assetPreviewType: '',
-		thumbnailKey: '',
-		thumbnailFile: '',
-		thumbnailDataUrl: '',
-		thumbnailDimensions: [],
-		thumbnailPreviewType: '',
-		blurString: '',
-		title: '',
-		description: '',
-		richDescription: '',
-		type: ''
-	}
-}
+export const dataInitialValue: ManagePageFormDataType = initialValueObj;
 
 export const ManagePageFormContext = createContext<ManagePageFormContextType>({
 	data: dataInitialValue,
@@ -103,7 +39,7 @@ export const ManagePageFormContext = createContext<ManagePageFormContextType>({
 	formSelected: {
 			formTitle: 'Page',
 			prevFormTitle: '',
-			editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': '' },
+			editItemTraceObj: editItemTraceObjInitObj,
 			formIndex: 0,
 			update: ''
 		},

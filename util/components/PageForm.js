@@ -112,7 +112,7 @@ const PageForm = ({}) => {
 						}
 					}}
 				>
-					<FormFields fieldArr={fieldArr} dataKey='Templates' />
+					<FormFields fieldArr={fieldArr} />
 					<Button type='submit'>{editItemTraceObj['Page'] ? 'Update' : 'Save'}</Button>
 				</form>
 			</div>

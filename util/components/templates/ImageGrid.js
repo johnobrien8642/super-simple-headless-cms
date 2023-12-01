@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
 	Box,
-	Heading,
-	Text,
 	Modal,
 	ModalOverlay,
 	ModalContent,
@@ -13,17 +11,16 @@ import {
 	Button,
 	useBreakpointValue
 } from '@chakra-ui/react';
-import { ChevronLeftIcon, ChevronRightIcon, DragHandleIcon } from '@chakra-ui/icons';
-import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import Image from 'next/image';
-import Link from 'next/link';
-import { CiVideoOn } from "react-icons/ci";
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry";
+import ImageSlider from '../ImageSlider';
+
 
 const ImageGrid = ({ template }) => {
 	const [imageModalOpen, setImageModalOpen] = useState(false);
 	const [imageIndex, setImageIndex] = useState(0);
+	const [images, setImages] = useState([]);
 	const desktop = useBreakpointValue(
 		{
 			base: false,
@@ -31,69 +28,22 @@ const ImageGrid = ({ template }) => {
 		}
 	)
 
-	function handleSlider(template, displayObj, index) {
-		return <Box
-			className='slide-container'
-			width='100%'
-			py='2rem'
-			display={displayObj}
-			sx={{
-				'.chakra-icon': {
-					fontSize: '2rem'
-				},
-				'.disabled': {
-					display: 'none'
+	useEffect(() => {
+		handleGetList();
+		async function handleGetList() {
+			const res = await fetch('/api/get_all_photo_list_assets',
+			{
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
 				}
-			}}
-		>
-			<Slide
-				defaultIndex={index}
-				arrows={desktop}
-				autoplay={false}
-				infinite={false}
-				slidesToShow={1}
-				duration={100}
-				transitionDuration={500}
-				variabl
-				prevArrow={
-					<ChevronLeftIcon fontSize='5rem !important' left='-5rem !important' color='white' />
-				}
-				nextArrow={
-					<ChevronRightIcon fontSize='5rem !important' right='-5rem !important' color='white' />
-				}
-			>
-				{
-					template.assetsIds.map(obj => {
-						return <Box
-							key={obj._id}
-							width='100%'
-							height='700px'
-							my='auto'
-							sx={{
-								':hover': {
-									cursor: 'pointer'
-								},
-								img: {
-									width: '100%',
-									height: '100%',
-									objectFit: 'contain'
-								}
-							}}
-							alignContent='center'
-							objectFit='contain'
-						>
-							<Image
-								alt={obj.title || 'alt text'}
-								width={obj.assetDimensions[0]}
-								height={obj.assetDimensions[1]}
-								src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + obj.assetKey}
-							/>
-						</Box>
-					})
-				}
-			</Slide>
-		</Box>
-	}
+			})
+			const resData = await res.json();
+			const { allImages } = resData;
+			setImages(allImages);
+		}
+	}, [])
 
 	return (
 		<Box
@@ -107,7 +57,7 @@ const ImageGrid = ({ template }) => {
 			>
 				<Masonry>
 					{
-						template.assetsIds.map((obj, index) => {
+						images.map((obj, index) => {
 							return <Box
 								key={obj._id}
 								display={{ base: 'none', md: 'block' }}
@@ -153,9 +103,11 @@ const ImageGrid = ({ template }) => {
 					<ModalBody
 						px='5rem'
 					>
-						{
-							handleSlider(template, {}, imageIndex)
-						}
+						<ImageSlider
+							images={images}
+							startingIndex={imageIndex}
+							padding='5rem 3rem'
+						/>
 					</ModalBody>
 					<ModalFooter>
 						<Button

@@ -181,7 +181,7 @@ const FormFields = ({ fieldArr, dataKey }) => {
 					const titleLevel1 = sub[0];
 					const obj = sub[1];
 					if (obj.options.collapseTitle) {
-						return <Accordion allowToggle mb='1rem'>
+						return <Accordion allowToggle mb='1rem' key={titleLevel1 + obj.options}>
 							<AccordionItem>
 								<AccordionButton>
 									{obj.options.collapseTitle}
