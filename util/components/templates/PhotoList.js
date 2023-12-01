@@ -14,6 +14,7 @@ import Link from 'next/link';
 import ImageSlider from '../ImageSlider';
 import MyImage from '../Image';
 import ImageFocus from '../ImageFocus';
+import ImageInfo from '../ImageInfo';
 
 const PhotoList = ({ template }) => {
 	const [image, setImage] = useState({});
@@ -36,43 +37,16 @@ const PhotoList = ({ template }) => {
 				return <Grid
 					key={asset._id}
 					gridTemplateColumns={{ base: '100%', lg: '50% 1fr'}}
-					gap={{ base: '0', md: '5%' }}
+					gap={{ base: '0', md: '2%' }}
 					width='100%'
 					my={{ base: '1rem', md: '2rem' }}
 					pt={{ base: '1rem', md: '2rem' }}
+					px={{ base: '.5rem', md: '2rem' }}
 					borderTop='1px solid white'
+					alignItems='center'
 				>
 					<MyImage image={asset} setPhotoHook={setImage} setOpenModalHook={setOpenModal} />
-					<Box
-						py={{ base: '0', md: '3rem' }}
-						my={{ base: '.5rem', md: '0' }}
-					>
-						<Heading mb={{ base: '1rem', md: '2rem' }}>{asset.title}</Heading>
-						{
-							asset.extLink &&
-								<Link
-									my='1rem'
-									href={asset.extLink ?? ''}
-									passHref={true}
-								>
-									<Button
-										variant='outline'
-										sx={{
-											':hover': {
-												backgroundColor: '#535353'
-											}
-										}}
-									>
-										Buy it now
-									</Button>
-								</Link>
-						}
-						<Text
-							as='span'
-							display='inline-block'
-							dangerouslySetInnerHTML={{ __html: asset.richDescription }}
-						/>
-					</Box>
+					<ImageInfo image={asset} />
 				</Grid>
 			})
 		}

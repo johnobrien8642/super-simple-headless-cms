@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, useBreakpointValue } from '@chakra-ui/react';
 import Image from 'next/image';
 
-const MyImage = ({ image, height, setPhotoHook, setOpenModalHook }) => {
+const MyImage = ({ image, height, setPhotoHook, setOpenModalHook, padding }) => {
 	const desktop = useBreakpointValue(
 		{
 			base: false,
@@ -13,6 +13,7 @@ const MyImage = ({ image, height, setPhotoHook, setOpenModalHook }) => {
 	return <Box
 		key={image._id}
 		width='100%'
+		padding={padding}
 		height={height}
 		my='auto'
 		sx={{
