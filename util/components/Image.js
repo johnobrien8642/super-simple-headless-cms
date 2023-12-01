@@ -13,9 +13,10 @@ const MyImage = ({ image, height, setPhotoHook, setOpenModalHook, padding, prior
 	return <Box
 		key={image._id}
 		width='100%'
+		maxW='825px'
 		padding={padding}
 		height={height}
-		my='auto'
+		m='auto'
 		sx={{
 			':hover': {
 				cursor: 'pointer'
@@ -28,7 +29,7 @@ const MyImage = ({ image, height, setPhotoHook, setOpenModalHook, padding, prior
 		}}
 		alignContent='center'
 		objectFit='contain'
-		aspectRatio={{ md: '1 / .7' }}
+		aspectRatio={{ base: '1 / .7', md: '1 / .7' }}
 		onClick={() => {
 			if (desktop) {
 				if (setPhotoHook) {
