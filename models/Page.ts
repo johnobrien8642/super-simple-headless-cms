@@ -46,17 +46,20 @@ const PageSchema = new Schema({
 	schemaName: {
 		type: String,
 		default: 'Page',
-		hide: true
+		hide: true,
+		internal: true
 	},
 	updatedAt: {
 		type: Date,
 		default: Date.now,
-		hide: true
+		hide: true,
+		internal: true
 	},
 	createdAt: {
 		type: Date,
 		default: Date.now,
-		hide: true
+		hide: true,
+		internal: true
 	}
 });
 

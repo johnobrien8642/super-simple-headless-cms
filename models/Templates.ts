@@ -49,22 +49,26 @@ const TemplatesSchema = new Schema({
 	schemaName: {
 		type: String,
 		default: 'Templates',
-		hide: true
+		hide: true,
+		internal: true
 	},
 	isDuplicate: {
 		type: Boolean,
 		default: false,
-		hide: true
+		hide: true,
+		internal: true
 	},
 	updatedAt: {
 		type: Date,
 		default: Date.now,
-		hide: true
+		hide: true,
+		internal: true
 	},
 	createdAt: {
 		type: Date,
 		default: Date.now,
-		hide: true
+		hide: true,
+		internal: true
 	}
 });
 

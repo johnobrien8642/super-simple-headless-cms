@@ -37,7 +37,11 @@ export async function init(models: string[]) {
 			for (let i2 = 0; i2 < fieldArray.length; i2++) {
 				path = fieldArray[i2][0];
 				obj = fieldArray[i2][1] as { [key: string]: any };
-				if (path !== '_id' && path !== '__v' && path !== 'updatedAt' && path !== 'createdAt') {
+				if (
+					!obj.options?.internal &&
+					path !== '_id' &&
+					path !== '__v'
+				) {
 					ManagePageFormDataTypeObj[models[i]][path] = resolveObj(obj, 'type');
 					initialValueObj[models[i]][path] = resolveObj(obj, 'initVal')
 				}
