@@ -54,7 +54,7 @@ const ListFieldItem = ({
 				})
 			} else {
 				setChosenItems(prev => {
-					const newData = cloneDeep(prev);
+					let newData = cloneDeep(prev);
 					newData = move(newData, item.index, index);
 					return newData;
 				})
