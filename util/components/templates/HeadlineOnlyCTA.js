@@ -7,15 +7,15 @@ const HeadlineOnlyCTA = ({ template }) => {
 		<Box
 			width={{ base: '90%', md: '75%' }}
 			m='auto'
-			py='5rem'
+			py={{ base: '1rem', md: '3.2rem' }}
 			fontSize='1.2rem'
 		>
 			<Heading
-				py='2rem'
+				py={{ base: '1rem', md: '2rem' }}
 				textAlign='center'
 				borderTop='1px solid white'
 				borderBottom='1px solid white'
-				my='5rem'
+				my={{ base: '1rem', md: '5rem' }}
 				fontSize='min(5rem, 14vw)'
 				whiteSpace='pre-wrap'
 				wordBreak='break-word'

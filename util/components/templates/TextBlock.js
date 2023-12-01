@@ -6,7 +6,7 @@ const TextBlock = ({ template }) => {
 		<Box
 			width={{ base: '90%', md: '75%' }}
 			m='auto'
-			py='5rem'
+			mb={{ base: '2rem', md: '5rem' }}
 			fontSize='1.2rem'
 		>
 			{
@@ -22,7 +22,6 @@ const TextBlock = ({ template }) => {
 					return <Box
 						width='82%'
 						m={resolveMargin}
-						py='1rem'
 					>
 						{obj.title && <Heading
 							pb='1rem'
