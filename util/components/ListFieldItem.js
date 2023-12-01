@@ -155,6 +155,22 @@ const ListFieldItem = ({
 						chosen && chosen === 'true' &&
 							<IconButton
 								onClick={() => {
+									setAvailableItems(prev => {
+										const newData = cloneDeep(prev);
+										newData.push(item);
+										return newData;
+									})
+									setChosenItems(prev => {
+										let newData = cloneDeep(prev);
+										if (singleChoice) {
+											newData = [item];
+										} else {
+											remove(newData, (arrItem) => {
+												return arrItem._id === item._id
+											});
+										}
+										return newData;
+									})
 									setData(prev => {
 										const newData = cloneDeep(prev);
 										if (singleChoice) {
@@ -175,6 +191,22 @@ const ListFieldItem = ({
 						chosen && chosen === 'false' &&
 							<IconButton
 								onClick={() => {
+									setChosenItems(prev => {
+										const newData = cloneDeep(prev);
+										newData.push(item);
+										return newData;
+									})
+									setAvailableItems(prev => {
+										let newData = cloneDeep(prev);
+										if (singleChoice) {
+											newData = [item];
+										} else {
+											remove(newData, (arrItem) => {
+												return arrItem._id === item._id
+											});
+										}
+										return newData;
+									})
 									setData(prev => {
 										const newData = cloneDeep(prev);
 										if (singleChoice) {
@@ -326,6 +358,11 @@ const ListFieldItem = ({
 														.filter(str => str !== item._id);
 													}
 												return newData;
+											})
+											setAvailableItems(prev => {
+												const newData = cloneDeep(prev);
+												if (newData.length === 1) return [];
+												return newData.filter(obj => obj._id !== item._id);
 											})
 											if (noForm) {
 												setItems(prev => {

@@ -27,7 +27,6 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 	const [itemFilter, setItemFilter] = useState('');
 	const [itemFilterArr, setItemFilterArr] = useState([]);
 	const [rerun, setRerun] = useState(0);
-	const lastArrLen = useRef(false);
 	const [textFilter, setTextFilter] = useState('');
 	const [open, setOpen] = useState(false);
 	const [itemIndex, setItemIndex] = useState();
@@ -40,7 +39,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 		const itemFilterArr = formTitle === 'Page' ? templateOptions : assetTypes;
 		setItemFilterArr(itemFilterArr)
 		setItemFilter(itemFilterArr[0])
-	}, [formTitle])
+	}, [])
 
 	useEffect(() => {
 		handleGetList();
@@ -63,15 +62,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 			setAvailableItems(availableItems);
 			setChosenItems(chosenItems);
 		}
-	}, [rerun, formTitle, itemFilter]);
-
-	useEffect(() => {
-		const arrLen = get(data[formTitle], title)?.length
-		if (arrLen !== lastArrLen.current) {
-			setRerun(rerun + 1);
-			lastArrLen.current = arrLen;
-		}
-	}, [data])
+	}, [itemFilter]);
 
 	return (
 		<Flex
@@ -95,6 +86,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 							type={formTitle}
 							index={index}
 							setChosenItems={setChosenItems}
+							setAvailableItems={setAvailableItems}
 							chosenItems={chosenItems}
 							singleChoice={singleChoice}
 						/>
@@ -169,6 +161,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 								chosen='false'
 								type={formTitle}
 								setAvailableItems={setAvailableItems}
+								setChosenItems={setChosenItems}
 								singleChoice={singleChoice}
 							/>
 						})
