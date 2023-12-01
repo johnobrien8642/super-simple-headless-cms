@@ -22,7 +22,7 @@ import ListField from './ListField';
 const Editor = dynamic(() => import('./Editor'), { ssr: false });
 import { useManagePageForm } from '../contexts/useManagePageForm';
 import { templateOptions, assetTypes, textAlignOptions } from '../../template_options';
-import { cloneDeep, get } from 'lodash';
+import { cloneDeep, get, set } from 'lodash';
 
 const FormFields = ({ fieldArr, dataKey }) => {
 	const { data, setData, formSelected } = useManagePageForm();
@@ -32,7 +32,7 @@ const FormFields = ({ fieldArr, dataKey }) => {
 		const resolveValue = (e) => {
 			setData(prev => {
 				const newData = cloneDeep(prev);
-				newData[formTitle][title] = innerResolveValue(e.target.value);
+				set(newData[formTitle], title, innerResolveValue(e.target.value))
 				return newData;
 			})
 			function innerResolveValue(val) {
