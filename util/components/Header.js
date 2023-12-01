@@ -79,6 +79,7 @@ const Header = ({ pages }) => {
 										className={`nav-item`}
 										onClick={() => {
 											router.push(`${obj.folderHref}`)
+											setOpenNav(false);
 										}}
 									>
 										<Text
