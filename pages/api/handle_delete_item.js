@@ -30,7 +30,6 @@ export default async (req, res) => {
 				let keysToDeleteArr = Object.values(keysToDelete);
 				for (let i = 0; i < keysToDeleteArr.length; i++) {
 					key = keysToDeleteArr[i];
-					console.log(key)
 					if (!key) continue;
 					try {
 						await s3.deleteObject({ Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME, Key: key }, function (err, data) {
