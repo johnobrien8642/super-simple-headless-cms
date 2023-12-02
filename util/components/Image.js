@@ -42,6 +42,7 @@ const MyImage = ({ image, height, setPhotoHook, setOpenModalHook, padding, prior
 	>
 		<Image
 			priority={priority}
+			sizes='(min-width: 500px) 33vw, (min-width: 1200px) 66vw, 100vw'
 			alt={image.title || 'alt text'}
 			width={image.assetDimensions[0]}
 			height={image.assetDimensions[1]}

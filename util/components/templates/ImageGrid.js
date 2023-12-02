@@ -73,6 +73,7 @@ const ImageGrid = ({ template }) => {
 							>
 								<Image
 									priority={index < 5}
+									sizes='(min-width: 500px) 33vw, (min-width: 1200px) 66vw, 100vw'
 									alt={obj.title || 'alt text'}
 									width={obj.assetDimensions[0]}
 									height={obj.assetDimensions[1]}

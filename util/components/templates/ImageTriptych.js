@@ -76,6 +76,7 @@ const ImageTriptych = ({ template }) => {
 							>
 								<Image
 									alt={obj.title || 'alt text'}
+									sizes='(min-width: 500px) 33vw, (min-width: 1200px) 66vw, 100vw'
 									width={obj.assetDimensions[0]}
 									height={obj.assetDimensions[1]}
 									src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + obj.assetKey}
@@ -163,6 +164,7 @@ const ImageTriptych = ({ template }) => {
 							>
 								<Image
 									alt={obj.title || 'alt text'}
+									sizes='(min-width: 500px) 33vw, (min-width: 700px) 66vw, (min-width: 1200px) 100vw'
 									width={obj.assetDimensions[0]}
 									height={obj.assetDimensions[1]}
 									src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + obj.assetKey}
