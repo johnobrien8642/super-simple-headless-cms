@@ -33,7 +33,7 @@ const PageSchema = new Schema({
 	templatesIds: {
 		type: [
 			{
-				type: mongoose.Types.ObjectId,
+				type: mongoose.Schema.Types.ObjectId,
 				ref: 'Templates'
 			}
 		],
@@ -64,6 +64,6 @@ const PageSchema = new Schema({
 });
 
 const Page =
-	mongoose.models.Page || mongoose.model('Page', PageSchema, 'pages');
+	mongoose.models?.Page || mongoose.model('Page', PageSchema, 'pages');
 
 export default Page;

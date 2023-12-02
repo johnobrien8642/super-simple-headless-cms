@@ -127,6 +127,6 @@ const AssetsSchema = new Schema({
 });
 
 const Assets =
-	mongoose.models.Assets || mongoose.model('Assets', AssetsSchema, 'assets');
+	mongoose.models?.Assets || mongoose.model('Assets', AssetsSchema, 'assets');
 
 export default Assets;

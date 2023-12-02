@@ -42,7 +42,7 @@ const TemplatesSchema = new Schema({
 	assetsIds: {
 		type: [
 			{
-				type: mongoose.Types.ObjectId,
+				type: mongoose.Schema.Types.ObjectId,
 				ref: 'Assets'
 			}
 		],
@@ -51,7 +51,7 @@ const TemplatesSchema = new Schema({
 	videoId: {
 		type: [
 			{
-				type: mongoose.Types.ObjectId,
+				type: mongoose.Schema.Types.ObjectId,
 				ref: 'Assets'
 			}
 		],
@@ -88,6 +88,6 @@ const TemplatesSchema = new Schema({
 });
 
 const Templates =
-	mongoose.models.Templates || mongoose.model('Templates', TemplatesSchema, 'templates');
+	mongoose.models?.Templates || mongoose.model('Templates', TemplatesSchema, 'templates');
 
 export default Templates;
