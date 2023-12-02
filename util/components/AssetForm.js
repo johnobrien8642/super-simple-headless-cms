@@ -138,6 +138,7 @@ const AssetForm = ({}) => {
 							const data1 = await res.json()
 							const { url, key } = data1;
 							dataRef[fieldTitle] = key
+							console.log(file.type)
 							try {
 								await axios.put(url, file, {
 									headers: {
