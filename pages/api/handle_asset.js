@@ -19,7 +19,7 @@ export default async (req, res) => {
 		} = req.body
 
 		try {
-			const src = process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data.assetKey + '?q=1'
+			const src = process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data.assetKey + '?q=15'
 			const buffer = await fetch(src).then(async (res) =>
 				Buffer.from(await res.arrayBuffer())
 			);
