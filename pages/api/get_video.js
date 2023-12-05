@@ -1,5 +1,12 @@
 import connectDb from '../../lib/mongodb.js';
 import Assets from '../../models/Assets';
+export const config = {
+	api: {
+		bodyParser: {
+			sizeLimit: '50mb',
+		},
+	},
+}
 
 export default async (req, res) => {
 	await connectDb();

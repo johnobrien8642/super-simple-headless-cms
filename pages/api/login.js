@@ -2,6 +2,13 @@ import bcrypt from 'bcryptjs';
 import dbConnect from '../../lib/mongodb.js';
 import Admin from '../../models/Admin';
 import jwt from 'jsonwebtoken';
+export const config = {
+	api: {
+		bodyParser: {
+			sizeLimit: '50mb',
+		},
+	},
+}
 
 export default async (req, res) => {
 	await dbConnect();

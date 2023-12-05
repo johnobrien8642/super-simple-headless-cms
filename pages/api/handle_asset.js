@@ -1,7 +1,13 @@
 import connectDb from '../../lib/mongodb.js';
 import Assets from '../../models/Assets';
 import { getPlaiceholder } from 'plaiceholder';
-
+export const config = {
+	api: {
+		bodyParser: {
+			sizeLimit: '50mb',
+		},
+	},
+}
 export default async (req, res) => {
 	await connectDb();
 

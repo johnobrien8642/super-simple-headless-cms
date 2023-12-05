@@ -1,6 +1,11 @@
 const path = require('path');
 
 module.exports = {
+  api: {
+    bodyParser: {
+      sizeLimit: '50mb'
+    }
+  },
 	images: {
     remotePatterns: [
       {

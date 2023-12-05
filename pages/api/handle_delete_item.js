@@ -1,5 +1,12 @@
 import models from '../../lib/index';
 import aws from 'aws-sdk'
+export const config = {
+	api: {
+		bodyParser: {
+			sizeLimit: '50mb',
+		},
+	},
+}
 
 export default async (req, res) => {
 	const { item, formTitle, title, keysToDelete } = req.body;

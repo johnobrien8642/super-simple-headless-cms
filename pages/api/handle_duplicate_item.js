@@ -1,6 +1,13 @@
 import connectDb from '../../lib/mongodb.js';
 import models from '../../lib/index'
 import mongoose from 'mongoose';
+export const config = {
+	api: {
+		bodyParser: {
+			sizeLimit: '50mb',
+		},
+	},
+}
 
 export default async (req, res) => {
 	await connectDb();

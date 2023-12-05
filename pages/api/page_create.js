@@ -1,6 +1,13 @@
 import connectDb from '../../lib/mongodb.js';
 import Page from '../../models/Page';
 import PageManager from '../../models/PageManager';
+export const config = {
+	api: {
+		bodyParser: {
+			sizeLimit: '50mb',
+		},
+	},
+}
 
 export default async (req, res) => {
 	await connectDb();

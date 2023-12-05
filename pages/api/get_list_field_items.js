@@ -1,4 +1,12 @@
+
 import models from '../../lib/index';
+export const config = {
+	api: {
+		bodyParser: {
+			sizeLimit: '50mb',
+		},
+	},
+}
 
 export default async (req, res) => {
 	const { schema, nestedItemIds, itemType } = req.body;

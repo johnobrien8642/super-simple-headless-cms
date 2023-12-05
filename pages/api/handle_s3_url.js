@@ -1,6 +1,13 @@
 import connectDb from '../../lib/mongodb.js';
 import { getPlaiceholder } from 'plaiceholder';
 import aws from 'aws-sdk'
+export const config = {
+	api: {
+		bodyParser: {
+			sizeLimit: '50mb',
+		},
+	},
+}
 
 export default async (req, res) => {
 	await connectDb();
