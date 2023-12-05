@@ -44,19 +44,18 @@ const ImageGrid = ({ template }) => {
 			setImages(allImages);
 		}
 	}, [])
-
 	return (
 		<Box
-			className='image-grid'
-			width={{ base: '100%', md: '75%' }}
-			mx='auto'
-			mt={{ base: '1rem', md: '2rem' }}
-			mb={{ base: '5rem', md: '12rem' }}
-			key={template._id}
+		className='image-grid'
+		width={{ base: '100%', md: '75%' }}
+		mx='auto'
+		mt={{ base: '1rem', md: '2rem' }}
+		mb={{ base: '5rem', md: '12rem' }}
+		key={template._id}
 		>
 			<ResponsiveMasonry
 				columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
-			>
+				>
 				<Masonry>
 					{
 						images.map((obj, index) => {
@@ -82,6 +81,8 @@ const ImageGrid = ({ template }) => {
 										setImageModalOpen(true)
 										setImageIndex(index)
 									}}
+									blurDataURL={obj?.blurString?.toString()}
+									placeholder={obj?.blurString ? 'blur' : 'empty'}
 								/>
 							</Box>
 						})

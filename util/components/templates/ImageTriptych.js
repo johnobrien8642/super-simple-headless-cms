@@ -80,6 +80,8 @@ const ImageTriptych = ({ template }) => {
 									width={obj.assetDimensions[0]}
 									height={obj.assetDimensions[1]}
 									src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + obj.assetKey}
+									blurDataURL={obj?.blurString?.toString()}
+									placeholder={obj?.blurString ? 'blur' : 'empty'}
 								/>
 							</Box>
 							<Heading as='h5'>{obj?.title}</Heading>
@@ -172,6 +174,8 @@ const ImageTriptych = ({ template }) => {
 										setImageModalOpen(true)
 										setImageIndex(index)
 									}}
+									blurDataURL={obj?.blurString?.toString()}
+									placeholder={obj?.blurString ? 'blur' : 'empty'}
 								/>
 							</Box>
 							<Heading as='h5'>{obj?.title}</Heading>
