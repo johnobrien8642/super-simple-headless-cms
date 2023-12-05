@@ -81,7 +81,7 @@ const ImageGrid = ({ template }) => {
 										setImageModalOpen(true)
 										setImageIndex(index)
 									}}
-									blurDataURL={Buffer.from(obj?.blurString).toString()}
+									blurDataURL={obj?.blurString ? Buffer.from(obj?.blurString).toString() : ''}
 									placeholder='blur'
 								/>
 							</Box>

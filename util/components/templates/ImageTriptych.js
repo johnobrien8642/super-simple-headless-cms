@@ -80,7 +80,7 @@ const ImageTriptych = ({ template }) => {
 									width={obj.assetDimensions[0]}
 									height={obj.assetDimensions[1]}
 									src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + obj.assetKey}
-									blurDataURL={obj?.blurString?.toString()}
+									blurDataURL={obj?.blurString ? Buffer.from(obj?.blurString).toString() : ''}
 									placeholder='blur'
 								/>
 							</Box>
