@@ -19,11 +19,12 @@ export default async (req, res) => {
 		} = req.body
 
 		try {
-			const src = process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data.assetKey + '?q=15'
+			const src = process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data.assetKey
+			console.log(src)
 			const buffer = await fetch(src).then(async (res) =>
 				Buffer.from(await res.arrayBuffer())
 			);
-			const { base64 } = await getPlaiceholder(buffer);
+			const { base64 } = await getPlaiceholder(buffer, { size: 29 });
 			let asset;
 			if (update !== 'Assets') {
 				asset = new Assets({
