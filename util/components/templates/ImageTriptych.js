@@ -81,7 +81,7 @@ const ImageTriptych = ({ template }) => {
 									height={obj.assetDimensions[1]}
 									src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + obj.assetKey}
 									blurDataURL={obj?.blurString?.toString()}
-									placeholder={obj?.blurString ? 'blur' : 'empty'}
+									placeholder='blur'
 								/>
 							</Box>
 							<Heading as='h5'>{obj?.title}</Heading>
