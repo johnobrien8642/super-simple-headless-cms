@@ -12,19 +12,21 @@ import {
 	ModalBody,
 	ModalFooter,
 	Flex,
+	Box,
+	Spinner
 } from '@chakra-ui/react'
 import AdminHeader from '../../../util/components/AdminHeader.js';
 import PageForm from '../../../util/components/PageForm.js';
 import TemplateForm from '../../../util/components/TemplateForm.js';
 import AssetForm from '../../../util/components/AssetForm.js';
 import { useRouter } from 'next/router';
-import { ManagePageFormProvider, dataInitialValue } from '../../../util/contexts/useManagePageForm.tsx';
+import { ManagePageFormProvider, dataInitialValue, editItemTraceObjInitObj } from '../../../util/contexts/useManagePageForm.tsx';
 import ListFieldItem from '../../../util/components/ListFieldItem.js';
 import Head from 'next/head';
 
 const ManagePages = ({ admin }) => {
 	const [topLevelModal, setTopLevelModal] = useState(false);
-	const [formSelected, setFormSelected] = useState({ formTitle: 'Page', formIndex: 0, editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': '' }, update: false });
+	const [formSelected, setFormSelected] = useState({ formTitle: 'Page', formIndex: 0, editItemTraceObj: editItemTraceObjInitObj, update: false, loading: false });
 	const [data, setData] = useState(dataInitialValue);
 	const [items, setItems] = useState([]);
 	const [renderCount, setRenderCount] = useState(0);
@@ -116,17 +118,19 @@ const ManagePages = ({ admin }) => {
 				<Modal
 					isOpen={topLevelModal}
 					onClose={() => {
-						setTopLevelModal(false);
-						setData(dataInitialValue);
-						setFormSelected(prev => {
-							return {
-								...prev,
-								formTitle: 'Page',
-								prevFormTitle: '',
-								editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
-								update: ''
-							}
-						});
+						if (!formSelected.loading) {
+							setTopLevelModal(false);
+							setData(dataInitialValue);
+							setFormSelected(prev => {
+								return {
+									...prev,
+									formTitle: 'Page',
+									prevFormTitle: '',
+									editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
+									update: ''
+								}
+							});
+						}
 					}}
 				>
 					<ModalOverlay />

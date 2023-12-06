@@ -1,24 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import ListFieldItem from './ListFieldItem';
 import {
 	Box,
 	Button,
-	Modal,
-	ModalHeader,
-	ModalCloseButton,
-	ModalOverlay,
-	ModalContent,
-	ModalBody,
-	ModalFooter,
-	Spinner,
 	Flex,
 	ButtonGroup,
 	Input
 } from '@chakra-ui/react'
-import FormFields from './FormFields';
 import { useManagePageForm } from '../contexts/useManagePageForm';
-import { capitalize, cloneDeep, sortBy, get } from 'lodash';
-import { useDrop, useDragDropManager, useDragLayer } from 'react-dnd';
+import { useDragDropManager } from 'react-dnd';
 import { assetTypes, templateOptions } from '../../template_options';
 
 const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
@@ -26,14 +16,9 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 	const [chosenItems, setChosenItems] = useState([]);
 	const [itemFilter, setItemFilter] = useState('');
 	const [itemFilterArr, setItemFilterArr] = useState([]);
-	const [rerun, setRerun] = useState(0);
 	const [textFilter, setTextFilter] = useState('');
-	const [open, setOpen] = useState(false);
-	const [itemIndex, setItemIndex] = useState();
-	const [loading, setLoading] = useState(false);
-	const { formSelected, setFormSelected, data,  setData } = useManagePageForm();
+	const { formSelected, setFormSelected, data } = useManagePageForm();
 	const { formTitle } = formSelected;
-	const dragDropMgr = useDragDropManager();
 
 	useEffect(() => {
 		const itemFilterArr = formTitle === 'Page' ? templateOptions : assetTypes;
@@ -44,19 +29,13 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 	useEffect(() => {
 		handleGetList();
 		async function handleGetList() {
-			const res = await fetch('/api/get_list_field_items',
-			{
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					schema: obj.caster?.options?.ref ?? obj.options?.ref,
-					nestedItemIds: data?.[formTitle]?.[title] ?? [],
-					itemType: itemFilter
-				})
-			})
+			const paramsObj = {
+				schema: obj.caster?.options?.ref ?? obj.options?.ref,
+				nestedItemIds: data?.[formTitle]?.[title] ?? '',
+				itemType: itemFilter
+			};
+			const params = new URLSearchParams(paramsObj);
+			const res = await fetch(`/api/get_list_field_items?${params}`)
 			const resData = await res.json();
 			const { availableItems, chosenItems } = resData;
 			setAvailableItems(availableItems);
@@ -93,7 +72,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 					})
 				}
 				{
-					!chosenItems?.length && 'No items to choose, but this works'
+					!chosenItems?.length && 'No items chosen'
 				}
 			</Box>
 			<Button
@@ -167,7 +146,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 						})
 				}
 				{
-					!availableItems?.length && 'No items to choose, but this works'
+					!availableItems?.length && 'No items to choose'
 				}
 			</Box>
 		</Flex>

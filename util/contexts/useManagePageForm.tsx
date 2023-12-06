@@ -4,7 +4,7 @@ import { init } from "./util/context_util";
 // top level await works, use for dynamic creation of
 // context file
 const models = ['Page', 'Templates', 'Assets']
-const {
+export const {
 	ManagePageFormDataTypeObj,
 	initialValueObj,
 	AllModelNamesTypeStr,
@@ -25,6 +25,7 @@ export type ManagePageFormContextType = {
 		formIndex: number;
 		editItemTraceObj: typeof editItemTraceObjType;
 		update: AllModelNames;
+		loading: boolean;
 	};
 	setFormSelected: () => void;
 	topLevelModal: boolean;
@@ -41,7 +42,8 @@ export const ManagePageFormContext = createContext<ManagePageFormContextType>({
 			prevFormTitle: '',
 			editItemTraceObj: editItemTraceObjInitObj,
 			formIndex: 0,
-			update: ''
+			update: '',
+			loading: false
 		},
 	setFormSelected: () => {},
 	topLevelModal: false,

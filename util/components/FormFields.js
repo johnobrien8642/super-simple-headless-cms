@@ -15,7 +15,8 @@ import {
 	AccordionItem,
 	AccordionButton,
 	AccordionPanel,
-	AccordionIcon
+	AccordionIcon,
+	Skeleton
 } from '@chakra-ui/react'
 import { capitalize } from 'lodash';
 import ListField from './ListField';
@@ -74,10 +75,11 @@ const FormFields = ({ fieldArr, dataKey }) => {
 				assetTypes,
 				textAlignOptions
 			}
+			console.log(resolvedValue)
 			return <Select
 				onChange={e => resolveValue(e)}
 				placeholder='Select One'
-				defaultValue={resolvedValue}
+				value={resolvedValue}
 			>
 				{
 					options[obj.options.enumKey].map(str => {
@@ -182,37 +184,45 @@ const FormFields = ({ fieldArr, dataKey }) => {
 	}
 
 	return (
-		<>
+		<Box
+			sx={{
+				'.ck-content': {
+					minHeight: '220px'
+				}
+			}}
+		>
 			{
 				fields?.map(sub => {
 					const titleLevel1 = sub[0];
 					const obj = sub[1];
 					const inUse = obj.options?.templates?.[data['Templates'].type];
 					if (obj.options.collapseTitle) {
-						return <Accordion allowToggle mb='1rem' key={titleLevel1 + obj.options}>
-							<AccordionItem>
-								<AccordionButton
-									backgroundColor={inUse && formTitle !== 'Page' ? 'var(--chakra-colors-blue-100)' : ''}
-								>
-									{obj.options.collapseTitle}
-								<AccordionIcon />
-								</AccordionButton>
-								<AccordionPanel>
-									{
-										Object.entries(obj.options.type.paths).map(sub => {
-											const titleLevel2 = sub[0];
-											const obj = sub[1];
-											if (!obj.options.hide && !titleLevel2.match('_id') && !titleLevel2.match('__v')) {
-												return <FormControl my='1rem' height='fit-content' key={titleLevel2} isRequired={obj.isRequired}>
-													<FormLabel htmlFor={titleLevel2}>{capitalize(obj.options.formTitle ?? titleLevel2)}</FormLabel>
-													{resolveInput(`${titleLevel1}.${titleLevel2}`, obj)}
-												</FormControl>
-											}
-										})
-									}
-								</AccordionPanel>
-							</AccordionItem>
-						</Accordion>
+						return <Skeleton isLoaded={!formSelected.loading} key={titleLevel1 + obj.options}>
+							<Accordion allowToggle mb='1rem'>
+								<AccordionItem>
+									<AccordionButton
+										backgroundColor={inUse && formTitle !== 'Page' ? 'var(--chakra-colors-blue-100)' : ''}
+									>
+										{obj.options.collapseTitle}
+									<AccordionIcon />
+									</AccordionButton>
+									<AccordionPanel>
+										{
+											Object.entries(obj.options.type.paths).map(sub => {
+												const titleLevel2 = sub[0];
+												const obj = sub[1];
+												if (!obj.options.hide && !titleLevel2.match('_id') && !titleLevel2.match('__v')) {
+													return <FormControl my='1rem' height='fit-content' key={titleLevel2} isRequired={obj.isRequired}>
+														<FormLabel htmlFor={titleLevel2}>{capitalize(obj.options.formTitle ?? titleLevel2)}</FormLabel>
+														{resolveInput(`${titleLevel1}.${titleLevel2}`, obj)}
+													</FormControl>
+												}
+											})
+										}
+									</AccordionPanel>
+								</AccordionItem>
+							</Accordion>
+						</Skeleton>
 					} else if (!obj.options.hide && !titleLevel1.match('_id') && !titleLevel1.match('__v')) {
 						return <FormControl my='1rem' key={titleLevel1} isRequired={obj.isRequired}>
 							<FormLabel
@@ -221,12 +231,14 @@ const FormFields = ({ fieldArr, dataKey }) => {
 							>
 								{capitalize(obj.options.formTitle ?? titleLevel1)}
 							</FormLabel>
-							{resolveInput(titleLevel1, obj)}
+							<Skeleton isLoaded={!formSelected.loading}>
+								{resolveInput(titleLevel1, obj)}
+							</Skeleton>
 						</FormControl>
 					}
 				})
 			}
-		</>
+		</Box>
 	)
 }
 

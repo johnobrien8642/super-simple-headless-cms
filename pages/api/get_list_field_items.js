@@ -9,15 +9,16 @@ export const config = {
 }
 
 export default async (req, res) => {
-	const { schema, nestedItemIds, itemType } = req.body;
-	const availableItems = await models[schema].find({ _id: { $nin: nestedItemIds ?? [] }, type: itemType })
-	const chosenItems = await models[schema].find({ _id: { $in: nestedItemIds ?? [] } })
+	const { schema, nestedItemIds, itemType } = req.query;
+	const nestedItemIdsArr = nestedItemIds ? nestedItemIds.split(',') : [];
+	const availableItems = await models[schema].find({ _id: { $nin: nestedItemIdsArr }, type: itemType })
+	const chosenItems = await models[schema].find({ _id: { $in: nestedItemIdsArr } })
 	if (availableItems && chosenItems) {
 		const orderedChosenItems = new Array(chosenItems.length);
 		let item;
 		for (let i = 0; i < chosenItems.length; i++) {
 			item = chosenItems[i];
-			orderedChosenItems.splice(nestedItemIds.indexOf(item._id.toString()), 1, item)
+			orderedChosenItems.splice(nestedItemIdsArr.indexOf(item._id.toString()), 1, item)
 		}
 		return res.status(200).json({ availableItems, chosenItems: orderedChosenItems });
 	} else {

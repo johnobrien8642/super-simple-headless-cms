@@ -34,8 +34,7 @@ export async function getStaticPaths() {
 	const pageManager =
 		await PageManager
 			.find({ title: 'manage-pages' })
-				.lean()
-					.populate('pageIds')
+				.populate('pageIds')
 	const paths = pageManager[0].pageIds.map(obj => {
 		return {
 			params: {
@@ -55,8 +54,8 @@ export async function getStaticProps(context) {
 	const page =
 		await Page
 			.find({ folderHref: context.params?.slug?.[0] ? `/${context.params?.slug[0]}` : '/' })
-				.lean()
-					.populate([{
+				.populate([
+					{
 						path: 'templatesIds',
 						model: 'Templates',
 						populate: [

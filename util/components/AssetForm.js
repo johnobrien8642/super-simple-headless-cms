@@ -1,91 +1,31 @@
-import Image from 'next/image'
-import { useRouter } from 'next/router';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
 	Button,
-	Modal,
-	ModalHeader,
-	ModalCloseButton,
-	ModalOverlay,
-	ModalContent,
-	ModalBody,
-	ModalFooter,
-	Spinner,
 	Text,
 	Flex,
-	FormControl,
-	FormLabel,
 	Heading
 } from '@chakra-ui/react'
 import axios from 'axios';
-import mongoose from 'mongoose';
-import FormFields, { resetData } from './FormFields';
-import { useManagePageForm } from '../contexts/useManagePageForm';
+import FormFields from './FormFields';
+import { initialValueObj, useManagePageForm } from '../contexts/useManagePageForm';
 import { cloneDeep } from 'lodash';
 
 const AssetForm = ({}) => {
-	const router = useRouter()
-	const { title: uTitle, description: uDescription, price: uPrice, link: uLink, update, _id } = router.query;
-	const [templateFormData, setTemplateFormData] = useState({});
 	const [fieldArr, setFieldArr] = useState([]);
-	let [success, setSuccess] = useState(false);
-	let [error, setError] = useState([]);
-	let [loading, setLoading] = useState(false);
-	let [id, setId] = useState(null);
+	let [error, setError] = useState(null);
 	let [saveType, setSaveType] = useState(null);
-	let [openModal, setOpenModal] = useState(false);
-	let fileInputRef = useRef(null);
 	const { formSelected, setFormSelected, data, setData } = useManagePageForm();
 	const { formTitle, editItemTraceObj } = formSelected;
 
 	useEffect(() => {
 		handleModelSchema();
 		async function handleModelSchema() {
-			if (formTitle !== 'Assets') return;
-			const res = await fetch('/api/get_model_schema',
-			{
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					schema: formTitle
-				})
-			})
+			const res = await fetch(`/api/get_model_schema?formTitle=${formTitle}`);
 			const data = await res.json();
 			const { schemaPaths } = data;
 			setFieldArr(Object.entries(schemaPaths))
 		}
-	}, [formTitle])
-
-	const props = {
-		width: '1200',
-		height: '800',
-		className: 'w-100',
-		src: uLink,
-		alt: 'post image'
-	};
-
-	const resetObj = {
-		assetKey: '',
-		assetFile: '',
-		assetDataUrl: '',
-		assetDimensions: [],
-		thumbnailKey: '',
-		thumbnailFile: '',
-		thumbnailDataUrl: '',
-		thumbnailDimensions: [],
-		title: '',
-		description: '',
-		type: ''
-	}
-
-	useEffect(() => {
-		if (success && id) {
-			router.push(`/posts/${id}`)
-		}
-	}, [success, id]);
+	}, [formTitle]);
 
 	if (formTitle === 'Assets') {
 		return (
@@ -95,7 +35,11 @@ const AssetForm = ({}) => {
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
-						setLoading(true);
+						setFormSelected(prev => {
+							const newData = cloneDeep(prev);
+							newData.loading = true;
+							return newData;
+						});
 						let url;
 						let dataRef = data[formTitle];
 						let fieldObj;
@@ -150,7 +94,7 @@ const AssetForm = ({}) => {
 							}
 						}
 						const res2 = await fetch(`/api/handle_asset`, {
-							method: 'POST',
+							method: formSelected.update === 'Assets' ? 'PUT' : 'POST',
 							headers: {
 								Accept: 'application/json',
 								'Content-Type': 'application/json'
@@ -170,15 +114,15 @@ const AssetForm = ({}) => {
 								if (!formSelected.editItemTraceObj['Assets']) {
 									newData['Templates'].assetsIds.push(savedAssetId)
 								}
-								newData['Assets'] = resetObj;
+								newData['Assets'] = initialValueObj['Assets'];
 								if (saveType === 'Save') {
 									setFormSelected(prev => {
-										return {
-											...prev,
-											formTitle: 'Templates',
-											prevFormTitle: 'Assets'
-										}
-									})
+										const newData = cloneDeep(prev);
+										newData.formTitle = 'Templates';
+										newData.prevFormTitle = 'Assets';
+										newData.loading = false;
+										return newData;
+									});
 								}
 								return newData;
 							})
@@ -187,20 +131,32 @@ const AssetForm = ({}) => {
 									const newData = cloneDeep(prev);
 									newData.update = newData.editItemTraceObj['Templates'] ? 'Templates' : '';
 									newData.editItemTraceObj['Assets'] = '';
+									newData.loading = false;
 									return newData;
 								})
 							}
-							setSuccess(true);
 						} else {
 							const data = await res2.json();
 							console.log('Error in AssetForm', data.errorMessage);
+							setFormSelected(prev => {
+								const newData = cloneDeep(prev);
+								newData.loading = false;
+								return newData;
+							});
 							setError(data.errorMessage);
 						}
-						setLoading(false)
 					}}
 				>
 					<FormFields fieldArr={fieldArr} />
-					{loading && <Spinner />}
+					{
+						error &&
+							<Text
+								color='red'
+								my='1rem'
+							>
+								{`Something went wrong: ${error}`}
+							</Text>
+					}
 					<Flex
 						my='1rem'
 					>
@@ -210,6 +166,7 @@ const AssetForm = ({}) => {
 							onClick={() => {
 								setSaveType('Save')
 							}}
+							isDisabled={formSelected.loading}
 						>
 							{editItemTraceObj['Assets'] ? 'Update' : 'Save'}
 						</Button>
@@ -219,6 +176,7 @@ const AssetForm = ({}) => {
 							onClick={() => {
 								setSaveType('Save and New')
 							}}
+							isDisabled={formSelected.loading}
 						>
 							Save and New
 						</Button>}
@@ -241,6 +199,7 @@ const AssetForm = ({}) => {
 									return newData;
 								})
 							}}
+							isDisabled={formSelected.loading}
 						>
 							Go back to Templates
 						</Button>

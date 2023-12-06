@@ -8,9 +8,9 @@ export const config = {
 }
 
 export default async (req, res) => {
-	const { schema } = req.body;
-	if (models[schema]) {
-		return res.status(200).json({ schemaPaths: models[schema].schema.paths });
+	const { formTitle } = req.query;
+	if (models[formTitle]) {
+		return res.status(200).json({ schemaPaths: models[formTitle].schema.paths });
 	} else {
 		return res.status(401).json({ error: 'That wasnt a valid model' });
 	}

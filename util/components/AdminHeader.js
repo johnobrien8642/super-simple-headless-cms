@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Flex,
 	HStack,
@@ -6,23 +6,15 @@ import {
 	Text,
 	Box,
 	Button,
-	useDisclosure,
 	useBreakpointValue
 } from '@chakra-ui/react';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
-import { useParams } from 'next/navigation';
 import Logout from './Logout';
-import MobileHeader from "./MobileHeader";
-import { HamburgerIcon } from '@chakra-ui/icons';
 
 const AdminHeader = ({ title }) => {
-	const [openNav, setOpenNav] = useState('');
 	const [loggedIn, setLoggedIn] = useState(false)
-	const dropdownRef = useRef(null);
 	const router = useRouter();
-	const params = useParams();
-	const pathname = router.pathname;
 	const desktop = useBreakpointValue(
 		{
 			base: false,
@@ -38,7 +30,7 @@ const AdminHeader = ({ title }) => {
 
 	function handleLoggedIn() {
 		if (loggedIn) {
-			return Logout({ router });
+			return <Logout router={router} />;
 		}
 	}
 
@@ -49,7 +41,6 @@ const AdminHeader = ({ title }) => {
 				px="6"
 				py='1rem'
 				align="center"
-				// justify="space-between"
 			>
 				<Button
 					variant='link'

@@ -56,6 +56,13 @@ const AssetsSchema = new Schema({
 			'Text Block': 1
 		}
 	},
+	type: {
+		type: String,
+		enum: assetTypes,
+		required: true,
+		select: true,
+		enumKey: 'assetTypes'
+	},
 	description: {
 		type: String,
 		textbox: true,
@@ -98,13 +105,6 @@ const AssetsSchema = new Schema({
 			'Photo List': 1,
 			'Book Cover CTA': 1
 		}
-	},
-	type: {
-		type: String,
-		enum: assetTypes,
-		required: true,
-		select: true,
-		enumKey: 'assetTypes'
 	},
 	schemaName: {
 		type: String,

@@ -69,6 +69,6 @@ export default async (req, res) => {
 				)
 		res.status(200).json({ itemDelete: deleteRes, updateSchemas });
 	} catch (err) {
-		res.status(500).json({ error: `Handling asset delete failed: ${err.message}` });
+		res.status(500).json({ errorMessage: `Handling asset delete failed: ${err.message}` });
 	}
 };

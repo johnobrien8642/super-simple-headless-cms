@@ -17,6 +17,11 @@ const TemplatesSchema = new Schema({
 		select: true,
 		enumKey: 'templateOptions'
 	},
+	showMobile: {
+		type: Boolean,
+		default: true,
+		formTitle: 'Show in Mobile'
+	},
 	description: {
 		type: String,
 		textbox: true,
