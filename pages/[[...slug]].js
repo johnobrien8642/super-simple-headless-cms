@@ -6,7 +6,7 @@ import connectDb from '../lib/mongodb';
 import PageManager from '../models/PageManager';
 import Page from '../models/Page';
 
-export default function Home({ pageManager, page }) {
+const Home = ({ pageManager, page }) => {
 	const pPage = JSON.parse(page);
 	const pPageManager = JSON.parse(pageManager)
 
@@ -79,3 +79,5 @@ export async function getStaticProps(context) {
 		}
 	};
 }
+
+export default Home;
