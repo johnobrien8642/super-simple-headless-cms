@@ -5,9 +5,6 @@ import { extendTheme } from '@chakra-ui/react';
 import { IBM_Plex_Serif } from 'next/font/google'
 const inter = IBM_Plex_Serif({ subsets: ['latin'], weight: ['400', '500', '600', '700'] })
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
 
 export default function MyApp({ Component, pageProps }) {
 	const [pageSelected, setPageSelected] = useState({})
