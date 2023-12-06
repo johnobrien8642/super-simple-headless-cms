@@ -59,7 +59,7 @@ const ImageGrid = ({ template }) => {
 				<Masonry>
 					{
 						images.map((obj, index) => {
-							console.log(Buffer.from(obj?.blurString).toString())
+							console.log(Buffer.from(obj?.base64String).toString())
 							return <Box
 								key={obj._id}
 								width='100%'
@@ -82,7 +82,7 @@ const ImageGrid = ({ template }) => {
 										setImageModalOpen(true)
 										setImageIndex(index)
 									}}
-									blurDataURL={obj?.blurString ? Buffer.from(obj?.blurString).toString() : ''}
+									blurDataURL={obj?.base64String ? Buffer.from(obj?.base64String).toString() : ''}
 									placeholder='blur'
 								/>
 							</Box>

@@ -24,6 +24,7 @@ const MobileHeader = ({ pages }) => {
 				ref={btnRef}
 				onClick={onOpen}
 				icon={<HamburgerIcon />}
+				alt='Hamburger Icon'
 			/>
 
 			<MobileHeaderDrawers

@@ -17,24 +17,26 @@ export default async (req, res) => {
 		folderHref
 	} = req.body
 	let blurBase64;
-		try {
-			if (data.assetKey) {
-				const src = process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data.assetKey
-				const buffer = await fetch(src).then(async (res) =>
-					Buffer.from(await res.arrayBuffer())
-				);
-				const { base64 } = await getPlaiceholder(buffer, { size: 29 });
-				blurBase64 = base64
-			}
-		} catch (err) {
-			return res.status(500).json({ success: false, errorMessage: `Error trying to create blur: ${err.message}` });
+	try {
+		if (data.assetKey && data.type === 'Image') {
+			const src = process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data.assetKey
+			const buffer = await fetch(src).then(async (res) =>
+				Buffer.from(await res.arrayBuffer())
+			);
+			const { base64 } = await getPlaiceholder(buffer, { size: 29 });
+			blurBase64 = base64
 		}
+	} catch (err) {
+		return res.status(500).json({ success: false, errorMessage: `Error trying to create blur: ${err.message}` });
+	}
 	let asset;
 	if (req.method === 'POST') {
+		console.log(data)
 		asset = new Assets({
 			...data,
-			blurString: blurBase64
+			base64String: data.type === 'PDF' ? data?.assetDataUrl : blurBase64
 		});
+		console.log(asset)
 		try {
 			const savedAsset = await asset.save();
 			if (folderHref) {
@@ -46,12 +48,13 @@ export default async (req, res) => {
 		}
 	} else if (req.method === 'PUT') {
 		try {
+			let updateObj = { ...data, base64String: blurBase64 };
+			if (asset.type === 'PDF' && data.assetDataUrl) {
+				updateObj.base64String = data.assetDataUrl;
+			}
 			asset = await Assets.findOneAndUpdate(
 				{ _id: itemToEditId },
-				{
-					...data,
-					blurString: blurBase64
-				}
+				updateObj
 			)
 			if (folderHref) {
 				await res.revalidate(folderHref);

@@ -26,7 +26,6 @@ const AssetForm = ({}) => {
 			setFieldArr(Object.entries(schemaPaths))
 		}
 	}, [formTitle]);
-
 	if (formTitle === 'Assets') {
 		return (
 			<div className="form container">
@@ -46,52 +45,57 @@ const AssetForm = ({}) => {
 						let fieldTitle;
 						let file;
 						let oldKey;
-						for (let i = 0; i < fieldArr.length; i++) {
-							fieldTitle = fieldArr[i][0];
-							fieldObj = fieldArr[i][1];
-							file = data[formTitle][fieldObj.options.dataFormKey];
-							if (!file) continue;
-							if (formSelected.update && data[formTitle][fieldTitle]) {
+						if (data[formTitle].type === 'Image') {
+							for (let i = 0; i < fieldArr.length; i++) {
+								fieldTitle = fieldArr[i][0];
+								fieldObj = fieldArr[i][1];
+								file = data[formTitle][fieldObj.options.dataFormKey];
+								if (!file) continue;
+								if (formSelected.update && data[formTitle][fieldTitle]) {
+									const res = await fetch(`/api/handle_s3_url`, {
+										method: 'DELETE',
+										headers: {
+											Accept: 'application/json',
+											'Content-Type': 'application/json'
+										},
+										body: JSON.stringify({
+											keysToDelete: [data[formTitle][fieldTitle]]
+										})
+									});
+									if (!res.ok) {
+										const data = await res2.json();
+										console.log(data);
+										console.log('S3 Delete Failed, object keys:', keysToDelete);
+									}
+								}
 								const res = await fetch(`/api/handle_s3_url`, {
-									method: 'DELETE',
+									method: 'POST',
 									headers: {
 										Accept: 'application/json',
 										'Content-Type': 'application/json'
 									},
 									body: JSON.stringify({
-										keysToDelete: [data[formTitle][fieldTitle]]
+										name: file.name,
+										type: file.type
 									})
 								});
-								if (!res.ok) {
-									const data = await res2.json();
-									console.log(data);
-									console.log('S3 Delete Failed, object keys:', keysToDelete);
+								const data1 = await res.json()
+								const { url, key } = data1;
+								dataRef[fieldTitle] = key
+								try {
+									await axios.put(url, file, {
+										headers: {
+											'Content-Type': file.type,
+											'Access-Control-Allow-Origin': '*'
+										},
+									});
+								} catch (err) {
+									console.log('Axios Error:', err)
 								}
 							}
-							const res = await fetch(`/api/handle_s3_url`, {
-								method: 'POST',
-								headers: {
-									Accept: 'application/json',
-									'Content-Type': 'application/json'
-								},
-								body: JSON.stringify({
-									name: file.name,
-									type: file.type
-								})
-							});
-							const data1 = await res.json()
-							const { url, key } = data1;
-							dataRef[fieldTitle] = key
-							try {
-								await axios.put(url, file, {
-									headers: {
-										'Content-Type': file.type,
-										'Access-Control-Allow-Origin': '*'
-									},
-								});
-							} catch (err) {
-								console.log('Axios Error:', err)
-							}
+						}
+						if (dataRef.type !== 'PDF' && dataRef.assetDataUrl) {
+							delete dataRef.assetDataUrl;
 						}
 						const res2 = await fetch(`/api/handle_asset`, {
 							method: formSelected.update === 'Assets' ? 'PUT' : 'POST',

@@ -41,7 +41,7 @@ const AssetsSchema = new Schema({
 		type: [Number, Number],
 		hide: true
 	},
-	blurString: {
+	base64String: {
 		type: Buffer,
 		hide: true
 	},

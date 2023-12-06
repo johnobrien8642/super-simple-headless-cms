@@ -64,6 +64,11 @@ const PageForm = ({}) => {
 									return newData;
 								})
 							}
+							setFormSelected(prev => {
+								const newData = cloneDeep(prev);
+								newData.loading = false;
+								return newData;
+							});
 							setTopLevelModal(false);
 							setData(dataInitialValue)
 						} else {

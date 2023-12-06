@@ -29,17 +29,21 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 	useEffect(() => {
 		handleGetList();
 		async function handleGetList() {
-			const paramsObj = {
-				schema: obj.caster?.options?.ref ?? obj.options?.ref,
-				nestedItemIds: data?.[formTitle]?.[title] ?? '',
-				itemType: itemFilter
-			};
+			const paramsObj = { schema: obj.caster?.options?.ref ?? obj.options?.ref };
+			if (data?.[formTitle]?.[title]) {
+				paramsObj['nestedItemIds'] = data?.[formTitle]?.[title];
+			}
+			if (itemFilter) {
+				paramsObj['itemType'] = itemFilter;
+			}
 			const params = new URLSearchParams(paramsObj);
-			const res = await fetch(`/api/get_list_field_items?${params}`)
-			const resData = await res.json();
-			const { availableItems, chosenItems } = resData;
-			setAvailableItems(availableItems);
-			setChosenItems(chosenItems);
+			if (itemFilter) {
+				const res = await fetch(`/api/get_list_field_items?${params}`);
+				const resData = await res.json();
+				const { availableItems, chosenItems } = resData;
+				setAvailableItems(availableItems);
+				setChosenItems(chosenItems);
+			}
 		}
 	}, [itemFilter]);
 
@@ -89,7 +93,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 			>
 				Create New {obj.caster?.options?.ref ?? obj.options?.ref}
 			</Button>
-			<ButtonGroup gap='1' mt='1rem'>
+			<ButtonGroup gap='1' mt='1rem' flexWrap='wrap'>
 				{
 					itemFilterArr.map(str => {
 						return <Button

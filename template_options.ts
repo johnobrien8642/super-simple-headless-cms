@@ -6,7 +6,8 @@ export const templateOptions = [
 	'Book Cover CTA',
 	'Headline Only CTA',
 	'Text Block',
-	'About'
+	'About',
+	'PDF List'
 ] as const;
 
 export const assetTypes = [

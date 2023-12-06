@@ -75,7 +75,6 @@ const FormFields = ({ fieldArr, dataKey }) => {
 				assetTypes,
 				textAlignOptions
 			}
-			console.log(resolvedValue)
 			return <Select
 				onChange={e => resolveValue(e)}
 				placeholder='Select One'
@@ -148,29 +147,36 @@ const FormFields = ({ fieldArr, dataKey }) => {
 						data[formTitle][title] &&
 							data[formTitle].type === 'Image' &&
 								formSelected.update &&
+									<>
+										<Text>Current Image</Text>
+										<Image
+											width='100'
+											height='100'
+											alt={data[formTitle]?.[title] ?? 'alt'}
+											src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data[formTitle][title]}
+										/>
+									</>
+					}
+					{
+						data[formTitle].type === 'Image' &&
+							data[formTitle][obj.options.dataPreviewUrl] &&
+								<>
+									<Text>Current Image</Text>
 									<Image
 										width='100'
 										height='100'
 										alt={data[formTitle]?.[title] ?? 'alt'}
-										src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data[formTitle][title]}
+										src={data[formTitle][obj.options.dataPreviewUrl]}
+										onLoad={(e) => {
+											setData(prev => {
+												const newData = cloneDeep(prev);
+												newData[formTitle][obj.options.dimensionsKey] =
+													[e.currentTarget.naturalWidth, e.currentTarget.naturalHeight];
+												return newData;
+											})
+										}}
 									/>
-					}
-					{
-						data[formTitle][obj.options.dataPreviewUrl] &&
-							<Image
-								width='100'
-								height='100'
-								alt={data[formTitle]?.[title] ?? 'alt'}
-								src={data[formTitle][obj.options.dataPreviewUrl]}
-								onLoad={(e) => {
-									setData(prev => {
-										const newData = cloneDeep(prev);
-										newData[formTitle][obj.options.dimensionsKey] =
-											[e.currentTarget.naturalWidth, e.currentTarget.naturalHeight];
-										return newData;
-									})
-								}}
-							/>
+								</>
 					}
 				</Box>
 			} else {

@@ -6,6 +6,7 @@ import BookCoverCTA from "./components/templates/BookCoverCTA";
 import HeadlineOnlyCTA from "./components/templates/HeadlineOnlyCTA";
 import TextBlock from "./components/templates/TextBlock";
 import About from "./components/templates/About";
+import PDFList from './components/templates/PDFList';
 
 const TemplateMap = {
 	'Image Grid': ImageGrid,
@@ -15,7 +16,8 @@ const TemplateMap = {
 	'Book Cover CTA': BookCoverCTA,
 	'Text Block': TextBlock,
 	'Headline Only CTA': HeadlineOnlyCTA,
-	'About': About
+	'About': About,
+	'PDF List': PDFList
 }
 
 export default TemplateMap;

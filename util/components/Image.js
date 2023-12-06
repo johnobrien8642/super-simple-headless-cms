@@ -47,7 +47,7 @@ const MyImage = ({ image, height, setPhotoHook, setOpenModalHook, padding, prior
 			width={image.assetDimensions[0]}
 			height={image.assetDimensions[1]}
 			src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + image.assetKey}
-			blurDataURL={image?.blurString ? Buffer.from(image?.blurString).toString() : ''}
+			blurDataURL={image?.base64String ? Buffer.from(image?.base64String).toString() : ''}
 			placeholder='blur'
 		/>
 	</Box>
