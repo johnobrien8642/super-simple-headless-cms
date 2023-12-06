@@ -43,11 +43,11 @@ export default async (req, res) => {
 		} else {
 			try {
 				page = await Page
-					.findOneAndUpdate(
-						{ _id: itemToEditId },
-						{
-							...data
-						}
+				.findOneAndUpdate(
+					{ _id: itemToEditId },
+					{
+						...data
+					}
 					);
 				await res.revalidate(folderHref);
 				return res.status(200).json({ success: true, _id: page._id });

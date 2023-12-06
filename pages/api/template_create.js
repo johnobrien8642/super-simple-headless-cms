@@ -16,8 +16,7 @@ export default async (req, res) => {
 			update,
 			itemToEditId,
 			folderHref
-		} = req.body
-
+		} = req.body;
 		let template;
 		if (update !== 'Templates') {
 			template = new Templates({

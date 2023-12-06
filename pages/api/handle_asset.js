@@ -21,7 +21,6 @@ export default async (req, res) => {
 
 		try {
 			const src = process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data.assetKey
-			console.log(src)
 			const buffer = await fetch(src).then(async (res) =>
 				Buffer.from(await res.arrayBuffer())
 			);
