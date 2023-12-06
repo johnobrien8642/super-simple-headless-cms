@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import connectDb from '../../../lib/mongodb.js';
-import Link from 'next/link';
 import Admin from '../../../models/Admin.ts';
 import jwt from 'jsonwebtoken';
 import {
@@ -12,9 +11,7 @@ import {
 	ModalContent,
 	ModalBody,
 	ModalFooter,
-	Spinner,
 	Flex,
-	Box
 } from '@chakra-ui/react'
 import AdminHeader from '../../../util/components/AdminHeader.js';
 import PageForm from '../../../util/components/PageForm.js';
@@ -22,12 +19,8 @@ import TemplateForm from '../../../util/components/TemplateForm.js';
 import AssetForm from '../../../util/components/AssetForm.js';
 import { useRouter } from 'next/router';
 import { ManagePageFormProvider, dataInitialValue } from '../../../util/contexts/useManagePageForm.tsx';
-import ListField from '../../../util/components/ListField.js';
 import ListFieldItem from '../../../util/components/ListFieldItem.js';
 import Head from 'next/head';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-
 
 const ManagePages = ({ admin }) => {
 	const [topLevelModal, setTopLevelModal] = useState(false);
