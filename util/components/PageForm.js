@@ -89,7 +89,8 @@ const PageForm = ({}) => {
 									...data['Page']
 								},
 								update: formSelected.update,
-								itemToEditId: editItemTraceObj[formTitle]
+								itemToEditId: editItemTraceObj[formTitle],
+								folderHref: data['Page']?.folderHref
 							})
 						});
 						setLoading(false)

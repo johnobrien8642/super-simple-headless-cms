@@ -14,7 +14,8 @@ export default async (req, res) => {
 		const {
 			data,
 			update,
-			itemToEditId
+			itemToEditId,
+			folderHref
 		} = req.body
 
 		let template;
@@ -30,6 +31,9 @@ export default async (req, res) => {
 						...data
 					}
 				);
+				if (folderHref) {
+					await res.revalidate(folderHref);
+				}
 				return res.status(200).json({ success: true, templateId: template._id });
 			} catch (err) {
 				return res.status(500).json({ success: false, errorMessage: err.message });
@@ -38,6 +42,9 @@ export default async (req, res) => {
 
 		try {
 			const savedTemplate = await template.save();
+			if (folderHref) {
+				await res.revalidate(folderHref);
+			}
 			return res.status(200).json({ success: true, templateId: savedTemplate._id });
 		} catch (err) {
 			return res.status(500).json({ success: false, errorMessage: err.message });

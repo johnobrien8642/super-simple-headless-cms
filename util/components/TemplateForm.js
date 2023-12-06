@@ -91,7 +91,8 @@ const TemplateForm = ({}) => {
 							body: JSON.stringify({
 								data: data['Templates'],
 								update: formSelected.update,
-								itemToEditId: editItemTraceObj[formTitle]
+								itemToEditId: editItemTraceObj[formTitle],
+								folderHref: data['Page']?.folderHref
 							})
 						});
 						setLoading(false)

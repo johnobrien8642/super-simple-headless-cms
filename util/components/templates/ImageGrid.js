@@ -46,12 +46,12 @@ const ImageGrid = ({ template }) => {
 	}, [])
 	return (
 		<Box
-		className='image-grid'
-		width={{ base: '100%', md: '75%' }}
-		mx='auto'
-		mt={{ base: '1rem', md: '2rem' }}
-		mb={{ base: '5rem', md: '12rem' }}
-		key={template._id}
+			className='image-grid'
+			width={{ base: '100%', md: '75%' }}
+			mx='auto'
+			mt={{ base: '1rem', md: '2rem' }}
+			mb={{ base: '5rem', md: '12rem' }}
+			key={template._id}
 		>
 			<ResponsiveMasonry
 				columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}

@@ -158,7 +158,8 @@ const AssetForm = ({}) => {
 							body: JSON.stringify({
 								data: dataRef,
 								update: formSelected.update,
-								itemToEditId: editItemTraceObj[formTitle]
+								itemToEditId: editItemTraceObj[formTitle],
+								folderHref: data['Page']?.folderHref
 							})
 						});
 						if (res2.ok) {

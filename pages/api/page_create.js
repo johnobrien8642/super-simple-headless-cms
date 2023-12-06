@@ -16,7 +16,8 @@ export default async (req, res) => {
 		const {
 			data,
 			update,
-			itemToEditId
+			itemToEditId,
+			folderHref
 		} = req.body
 
 		let page;
@@ -31,6 +32,7 @@ export default async (req, res) => {
 					let pageManager = await PageManager.findOne({ title: 'manage-pages' });
 					const savedPage = await page.save();
 					await PageManager.findOneAndUpdate({ _id: pageManager._id }, { pageIds: [...pageManager.pageIds, savedPage._id] });
+					await res.revalidate(folderHref);
 					return res.status(200).json({ success: true, _id: savedPage._id });
 				} catch (err) {
 					return res.status(500).json({ success: false, errorMessage: err.message });
@@ -46,7 +48,8 @@ export default async (req, res) => {
 						{
 							...data
 						}
-					)
+					);
+				await res.revalidate(folderHref);
 				return res.status(200).json({ success: true, _id: page._id });
 			} catch (err) {
 				return res.status(500).json({ success: false, errorMessage: err.message });
