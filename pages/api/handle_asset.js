@@ -31,12 +31,10 @@ export default async (req, res) => {
 	}
 	let asset;
 	if (req.method === 'POST') {
-		console.log(data)
 		asset = new Assets({
 			...data,
 			base64String: data.type === 'PDF' ? data?.assetDataUrl : blurBase64
 		});
-		console.log(asset)
 		try {
 			const savedAsset = await asset.save();
 			if (folderHref) {
@@ -49,7 +47,7 @@ export default async (req, res) => {
 	} else if (req.method === 'PUT') {
 		try {
 			let updateObj = { ...data, base64String: blurBase64 };
-			if (asset.type === 'PDF' && data.assetDataUrl) {
+			if (data.type === 'PDF' && data.assetDataUrl) {
 				updateObj.base64String = data.assetDataUrl;
 			}
 			asset = await Assets.findOneAndUpdate(

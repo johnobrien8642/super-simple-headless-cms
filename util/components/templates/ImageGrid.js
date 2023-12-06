@@ -59,7 +59,6 @@ const ImageGrid = ({ template }) => {
 				<Masonry>
 					{
 						images.map((obj, index) => {
-							console.log(Buffer.from(obj?.base64String).toString())
 							return <Box
 								key={obj._id}
 								width='100%'
