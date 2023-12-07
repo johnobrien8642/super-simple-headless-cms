@@ -1,48 +1,92 @@
-import mongoose from 'mongoose';
+import mongoose, { InferSchemaType } from 'mongoose';
 import { templateOptions } from '../template_options'
+import { OptionsType, templatesEnumValueArr } from './model-types';
 const Schema = mongoose.Schema;
 
-const TemplatesSchema = new Schema({
+const optionsObj: { [key: string]: OptionsType } = {
 	title: {
-		type: String,
 		templates: {
-			'Image Triptych': 1
+			'ImageTriptych': 1
 		}
 	},
 	type: {
-		type: String,
-		enum: templateOptions,
 		required: true,
+		enum: templatesEnumValueArr,
 		formTitle: 'Template Type',
 		select: true,
 		enumKey: 'templateOptions'
 	},
 	showMobile: {
-		type: Boolean,
 		default: true,
 		formTitle: 'Show in Mobile'
 	},
 	description: {
-		type: String,
 		textbox: true,
 		templates: {
-			'Image Triptych': 1
+			'ImageTriptych': 1
 		}
 	},
 	richDescription: {
-		type: String,
 		richText: true,
-		formTitle: 'Rich Text',
+		formTitle: 'Rich Text'
+	},
+	extLink: {
+		formTitle: 'External Link'
+	},
+	assetsIds: {
+		formTitle: 'Assets'
+	},
+	videoId: {
+		formTitle: 'Exterior Asset To Link To',
+		singleChoice: true,
 		templates: {
-
+			'ImageTriptych': 1
 		}
+	},
+	schemaName: {
+		default: 'Templates',
+		hide: true,
+		internal: true
+	},
+	isDuplicate: {
+		default: false,
+		hide: true,
+		internal: true
+	},
+	updatedAt: {
+		hide: true,
+		internal: true
+	},
+	createdAt: {
+		hide: true,
+		internal: true
+	}
+}
+
+const TemplatesSchema = new Schema({
+	title: {
+		type: String,
+		...optionsObj.title
+	},
+	type: {
+		type: String,
+		...optionsObj.type
+	},
+	showMobile: {
+		type: Boolean,
+		...optionsObj.showMobile
+	},
+	description: {
+		type: String,
+		...optionsObj.description
+	},
+	richDescription: {
+		type: String,
+		...optionsObj.richDescription
 	},
 	extLink: {
 		type: String,
-		formTitle: 'External Link',
-		templates: {
-
-		}
+		...optionsObj.extLink
 	},
 	assetsIds: {
 		type: [
@@ -51,7 +95,7 @@ const TemplatesSchema = new Schema({
 				ref: 'Assets'
 			}
 		],
-		formTitle: 'Assets'
+		...optionsObj.assetsIds
 	},
 	videoId: {
 		type: [
@@ -60,37 +104,29 @@ const TemplatesSchema = new Schema({
 				ref: 'Assets'
 			}
 		],
-		formTitle: 'Exterior Asset To Link To',
-		singleChoice: true,
-		templates: {
-			'Image Triptych': 1
-		}
+		...optionsObj.videoId
 	},
 	schemaName: {
 		type: String,
-		default: 'Templates',
-		hide: true,
-		internal: true
+		...optionsObj.schemaName
 	},
 	isDuplicate: {
 		type: Boolean,
-		default: false,
-		hide: true,
-		internal: true
+		...optionsObj.isDuplicate
 	},
 	updatedAt: {
 		type: Date,
 		default: Date.now,
-		hide: true,
-		internal: true
+		...optionsObj.updatedAt
 	},
 	createdAt: {
 		type: Date,
 		default: Date.now,
-		hide: true,
-		internal: true
+		...optionsObj.createdAt
 	}
 });
+
+export type TemplatesType = InferSchemaType<typeof TemplatesSchema>;
 
 const Templates =
 	mongoose.models?.Templates || mongoose.model('Templates', TemplatesSchema, 'templates');

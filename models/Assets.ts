@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { InferSchemaType } from 'mongoose';
 import { assetTypes, textAlignOptions } from '../template_options';
 import { OptionsType, assetsEnumValueArr, textAlignOptionsEnumValueArr } from './model-types';
 const Schema = mongoose.Schema;
@@ -171,6 +171,8 @@ const AssetsSchema = new Schema({
 		...optionsObj.createdAt
 	}
 });
+
+export type AssetsType = InferSchemaType<typeof AssetsSchema>;
 
 const Assets =
 	mongoose.models?.Assets || mongoose.model('Assets', AssetsSchema, 'assets');
