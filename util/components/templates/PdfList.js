@@ -2,7 +2,7 @@ import React from 'react';
 import Assets from '../../../models/Assets';
 import { Box, Button } from '@chakra-ui/react';
 
-const PDFList = ({ template }) => {
+const PdfList = ({ template }) => {
 	return (
 		<>
 			{
@@ -30,4 +30,4 @@ const PDFList = ({ template }) => {
 	)
 }
 
-export default PDFList;
+export default PdfList;

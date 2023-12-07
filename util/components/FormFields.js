@@ -23,7 +23,7 @@ import ListField from './ListField';
 const Editor = dynamic(() => import('./Editor'), { ssr: false });
 import { useManagePageForm } from '../contexts/useManagePageForm';
 import { templateOptions, assetTypes, textAlignOptions } from '../../template_options';
-import { cloneDeep, get, set } from 'lodash';
+import { cloneDeep, get, set, startCase } from 'lodash';
 
 const FormFields = ({ fieldArr, dataKey }) => {
 	const [fields, setFields] = useState(fieldArr);
@@ -81,8 +81,8 @@ const FormFields = ({ fieldArr, dataKey }) => {
 				value={resolvedValue}
 			>
 				{
-					options[obj.options.enumKey].map(str => {
-						return <option key={str} value={str}>{str}</option>
+					obj.options.enum.map(str => {
+						return <option key={str} value={str}>{startCase(str)}</option>
 					})
 				}
 			</Select>

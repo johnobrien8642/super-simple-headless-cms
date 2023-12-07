@@ -1,3 +1,4 @@
+import { TemplatesEnum } from "../models/model-types";
 import ImageGrid from "./components/templates/ImageGrid";
 import ImageTriptych from "./components/templates/ImageTriptych";
 import PhotoList from "./components/templates/PhotoList";
@@ -6,18 +7,18 @@ import BookCoverCTA from "./components/templates/BookCoverCTA";
 import HeadlineOnlyCTA from "./components/templates/HeadlineOnlyCTA";
 import TextBlock from "./components/templates/TextBlock";
 import About from "./components/templates/About";
-import PDFList from './components/templates/PDFList';
+import PdfList from './components/templates/PdfList';
 
-const TemplateMap = {
-	'Image Grid': ImageGrid,
-	'Image Triptych': ImageTriptych,
-	'Photo List': PhotoList,
-	'Video Player': VideoPlayer,
-	'Book Cover CTA': BookCoverCTA,
-	'Text Block': TextBlock,
-	'Headline Only CTA': HeadlineOnlyCTA,
+const TemplateMap: { [key in TemplatesEnum]: any } = {
+	'ImageGrid': ImageGrid,
+	'ImageTriptych': ImageTriptych,
+	'PhotoList': PhotoList,
+	'VideoPlayer': VideoPlayer,
+	'BookCoverCTA': BookCoverCTA,
+	'TextBlock': TextBlock,
+	'HeadlineOnlyCTA': HeadlineOnlyCTA,
 	'About': About,
-	'PDF List': PDFList
+	'PdfList': PdfList
 }
 
 export default TemplateMap;
