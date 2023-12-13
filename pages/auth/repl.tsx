@@ -42,7 +42,7 @@ import { useState } from 'react'
 // type ReplWindowPropType = {
 // 	data: boolean;
 // }
-const ReplWindow = ({ data }) => {
+const ReplWindow = ({}) => {
 	// let [admin, setAdmin] = useState<AdminType | null>(null)
 	// let [result, setResult] = useState('')
 	// let [codeString, setCodeString] = useState('')
