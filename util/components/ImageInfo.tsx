@@ -6,8 +6,9 @@ import {
 	Box
 } from '@chakra-ui/react';
 import Link from 'next/link';
+import { AssetsType } from '../../models/Assets';
 
-const ImageInfo = ({ image }) => {
+const ImageInfo = ({ image }: { image: AssetsType }) => {
 	return (
 		<Box
 			display='flex'
@@ -41,7 +42,7 @@ const ImageInfo = ({ image }) => {
 				as='span'
 				overflow='auto'
 				display='inline-block'
-				dangerouslySetInnerHTML={{ __html: image.richDescription }}
+				dangerouslySetInnerHTML={{ __html: image.richDescription ?? '' }}
 			/>
 		</Box>
 	)

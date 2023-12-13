@@ -6,10 +6,21 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import MyImage from './Image'
 import ImageInfo from './ImageInfo';
+import { AssetsType } from '../../models/Assets';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 
-const ImageSlider = ({ images, height, padding, startingIndex }) => {
+const ImageSlider = ({
+	images,
+	height,
+	padding,
+	startingIndex
+}: {
+	images: AssetsType[];
+	height: number;
+	padding: number;
+	startingIndex: number;
+}) => {
 	const desktop = useBreakpointValue(
 		{
 			base: false,
@@ -41,7 +52,6 @@ const ImageSlider = ({ images, height, padding, startingIndex }) => {
 				slidesToShow={1}
 				duration={100}
 				transitionDuration={500}
-				variabl
 				prevArrow={
 					<ChevronLeftIcon fontSize='5rem !important' left='-5rem !important' color='white' />
 				}

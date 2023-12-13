@@ -7,13 +7,14 @@ import {
 } from '@chakra-ui/react'
 import axios from 'axios';
 import FormFields from './FormFields';
-import { initialValueObj, useManagePageForm } from '../contexts/useManagePageForm';
+import { initialValueObj, useManagePageForm, FormSelectedType, ManagePageFormDataType, dataInitialValue } from '../contexts/useManagePageForm';
+import { OptionsType } from '../../models/model-types';
 import { cloneDeep } from 'lodash';
 
 const AssetForm = ({}) => {
-	const [fieldArr, setFieldArr] = useState([]);
-	let [error, setError] = useState(null);
-	let [saveType, setSaveType] = useState(null);
+	const [fieldArr, setFieldArr] = useState<[string, any][]>([]);
+	let [error, setError] = useState('');
+	let [saveType, setSaveType] = useState('');
 	const { formSelected, setFormSelected, data, setData } = useManagePageForm();
 	const { formTitle, editItemTraceObj } = formSelected;
 
@@ -26,6 +27,7 @@ const AssetForm = ({}) => {
 			setFieldArr(Object.entries(schemaPaths))
 		}
 	}, [formTitle]);
+
 	if (formTitle === 'Assets') {
 		return (
 			<div className="form container">
@@ -34,22 +36,20 @@ const AssetForm = ({}) => {
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
-						setFormSelected(prev => {
+						setFormSelected((prev) => {
 							const newData = cloneDeep(prev);
 							newData.loading = true;
 							return newData;
 						});
-						let url;
-						let dataRef = data[formTitle];
-						let fieldObj;
-						let fieldTitle;
+						let dataRef: ManagePageFormDataType = data[formTitle];
+						let fieldTitle: string;
+						let fieldObjOptions: OptionsType;
 						let file;
-						let oldKey;
 						if (data[formTitle].type === 'Image') {
 							for (let i = 0; i < fieldArr.length; i++) {
 								fieldTitle = fieldArr[i][0];
-								fieldObj = fieldArr[i][1];
-								file = data[formTitle][fieldObj.options.dataFormKey];
+								fieldObjOptions = fieldArr[i][1].options;
+								file = data[formTitle][fieldObjOptions.dataFormKey ?? ''];
 								if (!file) continue;
 								if (formSelected.update && data[formTitle][fieldTitle]) {
 									const res = await fetch(`/api/handle_s3_url`, {
@@ -63,9 +63,10 @@ const AssetForm = ({}) => {
 										})
 									});
 									if (!res.ok) {
-										const data = await res2.json();
+										const data = await res.json();
+										const { errors } = data;
 										console.log(data);
-										console.log('S3 Delete Failed, object keys:', keysToDelete);
+										console.log('S3 Delete Failed, object keys:', errors);
 									}
 								}
 								const res = await fetch(`/api/handle_s3_url`, {
@@ -191,7 +192,7 @@ const AssetForm = ({}) => {
 							onClick={() => {
 								setData(prev => {
 									const newData = cloneDeep(prev);
-									newData['Assets'] = resetObj;
+									newData['Assets'] = dataInitialValue['Assets'];
 									return newData;
 								})
 								setFormSelected(prev => {

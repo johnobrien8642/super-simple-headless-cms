@@ -1,4 +1,4 @@
-import mongoose, { InferSchemaType } from 'mongoose';
+import mongoose, { InferSchemaType, HydratedDocument } from 'mongoose';
 import { assetTypes, textAlignOptions } from '../template_options';
 import { OptionsType, assetsEnumValueArr, textAlignOptionsEnumValueArr } from './model-types';
 const Schema = mongoose.Schema;
@@ -172,7 +172,7 @@ const AssetsSchema = new Schema({
 	}
 });
 
-export type AssetsType = InferSchemaType<typeof AssetsSchema>;
+export type AssetsType = HydratedDocument<InferSchemaType<typeof AssetsSchema>>;
 
 const Assets =
 	mongoose.models?.Assets || mongoose.model('Assets', AssetsSchema, 'assets');

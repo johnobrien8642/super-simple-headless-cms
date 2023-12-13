@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
 	Drawer,
 	DrawerBody,
-	DrawerFooter,
 	DrawerHeader,
 	DrawerOverlay,
 	DrawerContent,
@@ -13,25 +12,21 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from 'next/router';
 
-
 const MobileHeaderDrawers = ({
-	placement = "right",
-	width,
 	isOpen,
-	children,
 	onClose,
-	btnRef,
-	title,
-	footer,
+	children
+}: {
+	isOpen: boolean;
+	onClose: () => void;
+	children?: React.ReactNode
 }) => {
 	const router = useRouter();
 	return (
-		<Flex w={width}>
+		<Flex>
 			<Drawer
 				isOpen={isOpen}
-				placement={placement}
 				onClose={onClose}
-				finalFocusRef={btnRef}
 			>
 			<DrawerOverlay />
 				<DrawerContent
@@ -60,7 +55,6 @@ const MobileHeaderDrawers = ({
 						</Button>
 					</DrawerHeader>
 					<DrawerBody>{children}</DrawerBody>
-					<DrawerFooter>{footer}</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
 		</Flex>

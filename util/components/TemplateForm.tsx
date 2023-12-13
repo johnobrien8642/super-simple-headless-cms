@@ -10,7 +10,7 @@ import { useManagePageForm, initialValueObj } from '../contexts/useManagePageFor
 import { cloneDeep } from 'lodash';
 
 const TemplateForm = ({}) => {
-	const [fieldArr, setFieldArr] = useState(null);
+	const [fieldArr, setFieldArr] = useState<[string, any][]>();
 	const [saveType, setSaveType] = useState('');
 	let [error, setError] = useState('');
 	const { formSelected, setFormSelected, data, setData } = useManagePageForm();
@@ -93,7 +93,7 @@ const TemplateForm = ({}) => {
 						}
 					}}
 				>
-					<FormFields fieldArr={fieldArr} dataKey='Assets' />
+					<FormFields fieldArr={fieldArr} />
 					{
 						error &&
 							<Text

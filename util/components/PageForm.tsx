@@ -9,7 +9,7 @@ import { useManagePageForm, dataInitialValue } from '../contexts/useManagePageFo
 import { cloneDeep, kebabCase } from 'lodash';
 
 const PageForm = ({}) => {
-	const [fieldArr, setFieldArr] = useState(null);
+	const [fieldArr, setFieldArr] = useState<[string, any][]>([]);
 	let [error, setError] = useState('');
 	const { data, setData, formSelected, setFormSelected, setTopLevelModal } = useManagePageForm();
 	const { formTitle, editItemTraceObj } = formSelected;

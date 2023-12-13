@@ -8,20 +8,30 @@ import {
 	Input
 } from '@chakra-ui/react'
 import { useManagePageForm } from '../contexts/useManagePageForm';
-import { useDragDropManager } from 'react-dnd';
-import { assetTypes, templateOptions } from '../../template_options';
+import { assetsEnumValueArr, templatesEnumValueArr } from '../../models/model-types';
+import { OptionsType } from '../../models/model-types';
+import { AllDocArrayType } from './types/util_types';
 
-const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
-	const [availableItems, setAvailableItems] = useState([]);
-	const [chosenItems, setChosenItems] = useState([]);
+const ListField = ({
+		obj,
+		title,
+		singleChoice
+	}: {
+		obj: { options: OptionsType & { ref?: string; }; caster?: { options: OptionsType & { ref?: string; } }; instance: string; };
+		title: string;
+		singleChoice: boolean | undefined;
+	}) => {
+	const [availableItems, setAvailableItems] = useState<AllDocArrayType>([]);
+	const [chosenItems, setChosenItems] = useState<AllDocArrayType>([]);
 	const [itemFilter, setItemFilter] = useState('');
-	const [itemFilterArr, setItemFilterArr] = useState([]);
+	const [itemFilterArr, setItemFilterArr] =
+		useState<typeof templatesEnumValueArr | typeof assetsEnumValueArr>([]);
 	const [textFilter, setTextFilter] = useState('');
 	const { formSelected, setFormSelected, data } = useManagePageForm();
 	const { formTitle } = formSelected;
 
 	useEffect(() => {
-		const itemFilterArr = formTitle === 'Page' ? templateOptions : assetTypes;
+		const itemFilterArr = formTitle === 'Page' ? templatesEnumValueArr : assetsEnumValueArr;
 		setItemFilterArr(itemFilterArr)
 		setItemFilter(itemFilterArr[0])
 	}, [])
@@ -29,7 +39,8 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 	useEffect(() => {
 		handleGetList();
 		async function handleGetList() {
-			const paramsObj = { schema: obj.caster?.options?.ref ?? obj.options?.ref };
+			const paramsObj: { schema: string; nestedItemIds?: string; itemType?: string; } =
+				{ schema: obj.caster?.options?.ref ?? obj.options?.ref ?? '' };
 			if (data?.[formTitle]?.[title]) {
 				paramsObj['nestedItemIds'] = data?.[formTitle]?.[title];
 			}
@@ -62,7 +73,6 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 				{
 					chosenItems?.map((item, index) => {
 						return <ListFieldItem
-							key={item._id}
 							item={item}
 							title={title}
 							chosen='true'
@@ -85,7 +95,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 					setFormSelected(prev => {
 						return {
 							...prev,
-							formTitle: obj.caster.options.ref,
+							formTitle: obj.caster?.options.ref ?? '',
 							prevFormTitle: prev.formTitle
 						}
 					})
@@ -116,7 +126,7 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 					width='35%'
 					placeholder={`Search ${obj.caster?.options?.ref ?? obj.options?.ref}`}
 					onInput={e => {
-						setTextFilter(e.target.value)
+						setTextFilter((e.target as HTMLInputElement).value)
 					}}
 				/>
 			</Box>
@@ -131,14 +141,13 @@ const ListField = ({ obj, title, singleChoice, formTitleProp }) => {
 				{
 					availableItems
 						?.filter(item => {
-							const regexp = new RegExp(textFilter, 'i')
-							return item.title.match(regexp) ||
-								item.description.match(regexp) ||
-								item.richDescription.match(regexp)
+							const regexp: RegExp = new RegExp(textFilter, 'i')
+							return (item as any).title?.match(regexp) ||
+								(item as any).description?.match(regexp) ||
+								(item as any).richDescription?.match(regexp)
 						})
 						?.map(item => {
 							return <ListFieldItem
-								key={item._id}
 								item={item}
 								title={title}
 								chosen='false'

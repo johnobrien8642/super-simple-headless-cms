@@ -1,21 +1,27 @@
 import React, { useRef } from "react";
-import { useDisclosure, Flex, Box, Button, Text, VStack, Icon, HStack, IconButton, useBreakpointValue } from "@chakra-ui/react";
+import {
+	useDisclosure,
+	Flex,
+	Text,
+	VStack,
+	IconButton,
+	useBreakpointValue
+} from "@chakra-ui/react";
 import Link from "next/link";
 import { HamburgerIcon } from '@chakra-ui/icons';
 import MobileHeaderDrawers from "./MobileHeaderDrawers";
+import { PageType } from "../../models/Page";
 
-
-const MobileHeader = ({ pages }) => {
+const MobileHeader = ({ pages }: { pages: PageType[] }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const btnRef = useRef();
+	const btnRef: React.MutableRefObject<HTMLButtonElement | null> = useRef(null);
 	const desktop = useBreakpointValue(
 		{
 			base: false,
 			md: true
 		}
 	)
-
-  return (
+	return (
 		<Flex
 			ml='auto'
 			display={desktop ? 'none' : 'block'}
@@ -24,13 +30,12 @@ const MobileHeader = ({ pages }) => {
 				ref={btnRef}
 				onClick={onOpen}
 				icon={<HamburgerIcon />}
-				alt='Hamburger Icon'
+				aria-label='Hamburger Icon'
 			/>
 
 			<MobileHeaderDrawers
 				isOpen={isOpen}
 				onClose={onClose}
-				finalFocusRef={btnRef}
 			>
 				<VStack alignItems="left">
 					{pages.map((obj, i) => (

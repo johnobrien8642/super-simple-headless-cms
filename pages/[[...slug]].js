@@ -24,7 +24,7 @@ const Home = ({ pageManager, page }) => {
 			<Header
 				pages={pPageManager.pageIds}
 			/>
-			<Templates page={pPage} />
+			<Templates page={pPage} templates={pPage.templatesIds} />
 		</>
 	);
 }

@@ -12,21 +12,19 @@ import {
 	ModalBody,
 	ModalFooter,
 	Flex,
-	Box,
-	Spinner
 } from '@chakra-ui/react'
-import AdminHeader from '../../../util/components/AdminHeader.js';
-import PageForm from '../../../util/components/PageForm.js';
-import TemplateForm from '../../../util/components/TemplateForm.js';
-import AssetForm from '../../../util/components/AssetForm.js';
+import AdminHeader from '../../../util/components/AdminHeader';
+import PageForm from '../../../util/components/PageForm';
+import TemplateForm from '../../../util/components/TemplateForm';
+import AssetForm from '../../../util/components/AssetForm';
 import { useRouter } from 'next/router';
 import { ManagePageFormProvider, dataInitialValue, editItemTraceObjInitObj } from '../../../util/contexts/useManagePageForm.tsx';
-import ListFieldItem from '../../../util/components/ListFieldItem.js';
+import ListFieldItem from '../../../util/components/ListFieldItem';
 import Head from 'next/head';
 
 const ManagePages = ({ admin }) => {
 	const [topLevelModal, setTopLevelModal] = useState(false);
-	const [formSelected, setFormSelected] = useState({ formTitle: 'Page', formIndex: 0, editItemTraceObj: editItemTraceObjInitObj, update: false, loading: false });
+	const [formSelected, setFormSelected] = useState({ formTitle: 'Page', formIndex: 0, editItemTraceObj: editItemTraceObjInitObj, update: '', loading: false });
 	const [data, setData] = useState(dataInitialValue);
 	const [items, setItems] = useState([]);
 	const [renderCount, setRenderCount] = useState(0);

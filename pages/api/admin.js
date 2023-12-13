@@ -24,7 +24,7 @@ export default async (req, res) => {
 			return res.status(200).json({ success: true, data: { admin, token } });
 		} catch (err) {
 			console.log(err)
-			return res.status(400).json({ success: false });
+			return res.status(400).json({ error: `Error on admin create: ${err}` });
 		}
 	}
 };

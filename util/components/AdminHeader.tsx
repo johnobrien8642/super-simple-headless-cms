@@ -12,7 +12,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router';
 import Logout from './Logout';
 
-const AdminHeader = ({ title }) => {
+const AdminHeader = ({ title }: { title: string; }) => {
 	const [loggedIn, setLoggedIn] = useState(false)
 	const router = useRouter();
 	const desktop = useBreakpointValue(
@@ -23,16 +23,10 @@ const AdminHeader = ({ title }) => {
 	)
 
 	useEffect(() => {
-		if(window.localStorage.getItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR)) {
+		if(window.localStorage.getItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR as string)) {
 			setLoggedIn(true)
 		}
 	}, [])
-
-	function handleLoggedIn() {
-		if (loggedIn) {
-			return <Logout router={router} />;
-		}
-	}
 
 	return (
 		<chakra.header id="header">
@@ -83,7 +77,7 @@ const AdminHeader = ({ title }) => {
 						</Link>
 					</Text>
 					<Box>
-						{handleLoggedIn()}
+						{loggedIn && <Logout />}
 					</Box>
 				</HStack>
 			</Flex>

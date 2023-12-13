@@ -1,23 +1,17 @@
 import React, { useState } from 'react'
 import {
-	Heading,
-	Box,
 	Grid,
-	GridItem,
 	Flex,
-	Button,
-	Text,
 	useBreakpointValue
 } from '@chakra-ui/react';
-import { DragHandleIcon } from '@chakra-ui/icons';
-import Link from 'next/link';
-import ImageSlider from '../ImageSlider';
 import MyImage from '../Image';
 import ImageFocus from '../ImageFocus';
 import ImageInfo from '../ImageInfo';
+import { AssetsType } from '../../../models/Assets';
+import { TemplatesType } from '../../../models/Templates';
 
-const PhotoList = ({ template }) => {
-	const [image, setImage] = useState({});
+const PhotoList = ({ template }: { template: TemplatesType }) => {
+	const [image, setImage] = useState<AssetsType | {}>({});
 	const [openModal, setOpenModal] = useState(false);
 	const asset = template.assetsIds[0];
 	const desktop = useBreakpointValue(

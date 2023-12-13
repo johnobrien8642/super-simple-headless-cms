@@ -51,9 +51,9 @@ export default async (req, res) => {
 			}
 		}
 		if (!errors.length) {
-			res.status(200).json({ success: true });
+			return res.status(200).json({ success: true });
 		} else {
-			res.status(500).json({ success: false, errors });
+			return res.status(500).json({ success: false, errors });
 		}
 
 	}

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Flex,
 	Button,
@@ -6,23 +6,17 @@ import {
 	chakra,
 	Text,
 	Box,
-	useDisclosure,
 	useBreakpointValue
 } from '@chakra-ui/react';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
-import { useParams } from 'next/navigation';
 import Logout from './Logout';
 import MobileHeader from "./MobileHeader";
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { PageType } from "../../models/Page";
 
-const Header = ({ pages }) => {
-	const [openNav, setOpenNav] = useState('');
+const Header = ({ pages }: { pages: PageType[] }) => {
 	const [loggedIn, setLoggedIn] = useState(false)
-	const dropdownRef = useRef(null);
 	const router = useRouter();
-	const params = useParams();
-	const pathname = router.pathname;
 	const desktop = useBreakpointValue(
 		{
 			base: false,
@@ -31,16 +25,10 @@ const Header = ({ pages }) => {
 	)
 
 	useEffect(() => {
-		if(window.localStorage.getItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR)) {
+		if(window.localStorage.getItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR as string)) {
 			setLoggedIn(true)
 		}
 	}, [])
-
-	function handleLoggedIn() {
-		if (loggedIn) {
-			return Logout({ router });
-		}
-	}
 
 	return (
 		<chakra.header id="header">
@@ -86,8 +74,8 @@ const Header = ({ pages }) => {
 					{pages.map((obj, i) => {
 						if (obj.folderHref !== '/' && obj.showInNavigation) {
 							return <Text
-								fontWeight={(obj.pageSelected || router.asPath) === obj.folderHref ? '800' : '200'}
-								fontSize={(obj.pageSelected || router.asPath) === obj.folderHref ? '1.8rem !important' : '1.5rem'}
+								fontWeight={router.asPath === obj.folderHref ? '800' : '200'}
+								fontSize={router.asPath === obj.folderHref ? '1.8rem !important' : '1.5rem'}
 								sx={{
 									'a:hover': {
 										color: 'lightgray'
@@ -105,7 +93,7 @@ const Header = ({ pages }) => {
 						}
 					})}
 					<Box>
-						{handleLoggedIn()}
+						{loggedIn && <Logout />}
 					</Box>
 				</HStack>
 			</Flex>

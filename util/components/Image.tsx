@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import { Box, useBreakpointValue } from '@chakra-ui/react';
 import Image from 'next/image';
+import { AssetsType } from '../../models/Assets';
 
-const MyImage = ({ image, height, setPhotoHook, setOpenModalHook, padding, priority }) => {
+const MyImage = ({
+	image,
+	height,
+	setPhotoHook,
+	setOpenModalHook,
+	padding,
+	priority
+}: {
+	image: AssetsType;
+	height?: number;
+	setPhotoHook?: React.Dispatch<React.SetStateAction<AssetsType | {}>>;
+	setOpenModalHook?: React.Dispatch<React.SetStateAction<boolean>>;
+	padding?: number;
+	priority?: boolean;
+}) => {
 	const desktop = useBreakpointValue(
 		{
 			base: false,
@@ -11,7 +26,7 @@ const MyImage = ({ image, height, setPhotoHook, setOpenModalHook, padding, prior
 	)
 
 	return <Box
-		key={image._id}
+		key={image._id.toString()}
 		width='100%'
 		maxW='825px'
 		padding={padding}
@@ -46,7 +61,7 @@ const MyImage = ({ image, height, setPhotoHook, setOpenModalHook, padding, prior
 			alt={image.title || 'alt text'}
 			width={image.assetDimensions[0]}
 			height={image.assetDimensions[1]}
-			src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + image.assetKey}
+			src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL as string + image.assetKey}
 			blurDataURL={image?.base64String ? Buffer.from(image?.base64String).toString() : ''}
 			placeholder='blur'
 		/>

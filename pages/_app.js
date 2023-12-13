@@ -4,10 +4,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { extendTheme } from '@chakra-ui/react';
 import { IBM_Plex_Serif } from 'next/font/google'
 const inter = IBM_Plex_Serif({ subsets: ['latin'], weight: ['400', '500', '600', '700'] })
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function MyApp({ Component, pageProps }) {
-	const [pageSelected, setPageSelected] = useState({})
 	let themeObj = {};
 	if (!pageProps.admin) {
 		themeObj = {

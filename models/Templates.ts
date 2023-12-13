@@ -1,4 +1,4 @@
-import mongoose, { InferSchemaType } from 'mongoose';
+import mongoose, { InferSchemaType, HydratedDocument } from 'mongoose';
 import { templateOptions } from '../template_options'
 import { OptionsType, templatesEnumValueArr } from './model-types';
 const Schema = mongoose.Schema;
@@ -126,7 +126,7 @@ const TemplatesSchema = new Schema({
 	}
 });
 
-export type TemplatesType = InferSchemaType<typeof TemplatesSchema>;
+export type TemplatesType = HydratedDocument<InferSchemaType<typeof TemplatesSchema>>;
 
 const Templates =
 	mongoose.models?.Templates || mongoose.model('Templates', TemplatesSchema, 'templates');

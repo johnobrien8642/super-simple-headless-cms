@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import {
@@ -24,26 +24,28 @@ const Editor = dynamic(() => import('./Editor'), { ssr: false });
 import { useManagePageForm } from '../contexts/useManagePageForm';
 import { templateOptions, assetTypes, textAlignOptions } from '../../template_options';
 import { cloneDeep, get, set, startCase } from 'lodash';
+import { OptionsType } from '../../models/model-types';
 
-const FormFields = ({ fieldArr, dataKey }) => {
-	const [fields, setFields] = useState(fieldArr);
+const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
+	const [fields, setFields] = useState<[string, any][] | undefined>(fieldArr);
 	const { data, setData, formSelected } = useManagePageForm();
 	const { formTitle } = formSelected;
 	useEffect(() => {
 		setFields(fieldArr)
 	}, [fieldArr])
-	function resolveInput(title, obj) {
+	function resolveInput(title: string, obj: { options: OptionsType; instance: string; }) {
 		const resolvedValue = get(data[formTitle], title, '');
-		const resolveValue = (e) => {
+		const resolveValue = (e: Event | ChangeEvent | FormEvent<HTMLInputElement>) => {
 			setData(prev => {
 				const newData = cloneDeep(prev);
-				set(newData[formTitle], title, innerResolveValue(e.target.value))
+				set(newData[formTitle], title, innerResolveValue((e.target as HTMLInputElement).value))
 				return newData;
 			})
 			if (formTitle === 'Templates' && title === 'type') {
+				// @ts-expect-error something something "needs a [Symbol.iterator]()" idk doesn't make sense
 				setFields([...fields])
 			}
-			function innerResolveValue(val) {
+			function innerResolveValue(val: string | undefined) {
 				if (val === 'true') return false;
 				if (val === 'false') return true;
 				return val;
@@ -54,7 +56,6 @@ const FormFields = ({ fieldArr, dataKey }) => {
 				title={title}
 				obj={obj}
 				singleChoice={obj.options?.singleChoice}
-				formTitleProp={formTitle}
 			/>
 		} else if (obj.instance === 'String' && obj.options.textbox) {
 			return <Textarea
@@ -81,7 +82,7 @@ const FormFields = ({ fieldArr, dataKey }) => {
 				value={resolvedValue}
 			>
 				{
-					obj.options.enum.map(str => {
+					obj.options.enum && obj.options.enum.map(str => {
 						return <option key={str} value={str}>{startCase(str)}</option>
 					})
 				}
@@ -102,11 +103,11 @@ const FormFields = ({ fieldArr, dataKey }) => {
 						value={undefined}
 						accept='*'
 						type='file'
-						disabled={data[formTitle][obj.options.dataFormKey]}
-						onInput={async (e) => {
+						disabled={data[formTitle][obj.options.dataFormKey ?? '']}
+						onInput={async (e: FormEvent<HTMLInputElement>) => {
 							await handleDataUpdate()
 							async function handleDataUpdate() {
-								const blobToData = (file) => {
+								const blobToData = (file: File) => {
 									if (file.type.includes('video')) return '';
 									return new Promise((resolve) => {
 										const reader = new FileReader()
@@ -114,28 +115,32 @@ const FormFields = ({ fieldArr, dataKey }) => {
 										reader.readAsDataURL(file)
 									})
 								}
-								const dataUrl = await blobToData(e.target.files[0]);
+								if (!e?.currentTarget?.files) return;
+								const dataUrl = await blobToData(e.currentTarget.files[0]);
 								setData((prev) => {
+									if (!e?.currentTarget?.files) return prev;
 									const newData = cloneDeep(prev);
-									newData[formTitle][obj.options.dataFormKey] = e.target.files[0];
-									newData[formTitle][obj.options.dataPreviewUrl] = dataUrl;
-									newData[formTitle][obj.options.previewTypeKey] = e.target.files[0].type;
+									newData[formTitle][obj.options.dataFormKey ?? ''] = e.currentTarget.files[0];
+									newData[formTitle][obj.options.dataPreviewUrl ?? ''] = dataUrl;
+									newData[formTitle][obj.options.previewTypeKey ?? ''] = e.currentTarget.files[0].type;
 									return newData;
 								})
 							}
 						}}
 					/>
 					{
-						data[formTitle][obj.options.dataFormKey] &&
+						data[formTitle][obj.options.dataFormKey ?? ''] &&
 							<Button
 								onClick={() => {
 									setData((prev) => {
 										const newData = cloneDeep(prev);
-										newData[formTitle][obj.options.dataFormKey] = '';
-										newData[formTitle][obj.options.dataPreviewUrl] = '';
-										newData[formTitle][obj.options.previewTypeKey] = '';
-										const el = document.querySelector(`#${title}`);
-										el.value = '';
+										newData[formTitle][obj.options.dataFormKey ?? ''] = '';
+										newData[formTitle][obj.options.dataPreviewUrl ?? ''] = '';
+										newData[formTitle][obj.options.previewTypeKey ?? ''] = '';
+										const el: HTMLInputElement | null = document.querySelector(`#${title}`);
+										if (el) {
+											el.value = '';
+										}
 										return newData;
 									})
 								}}
@@ -159,18 +164,18 @@ const FormFields = ({ fieldArr, dataKey }) => {
 					}
 					{
 						data[formTitle].type === 'Image' &&
-							data[formTitle][obj.options.dataPreviewUrl] &&
+							data[formTitle][obj.options.dataPreviewUrl ?? ''] &&
 								<>
 									<Text>Current Image</Text>
 									<Image
 										width='100'
 										height='100'
 										alt={data[formTitle]?.[title] ?? 'alt'}
-										src={data[formTitle][obj.options.dataPreviewUrl]}
+										src={data[formTitle][obj.options.dataPreviewUrl ?? '']}
 										onLoad={(e) => {
 											setData(prev => {
 												const newData = cloneDeep(prev);
-												newData[formTitle][obj.options.dimensionsKey] =
+												newData[formTitle][obj.options.dimensionsKey ?? ''] =
 													[e.currentTarget.naturalWidth, e.currentTarget.naturalHeight];
 												return newData;
 											})
@@ -199,8 +204,8 @@ const FormFields = ({ fieldArr, dataKey }) => {
 		>
 			{
 				fields?.map(sub => {
-					const titleLevel1 = sub[0];
-					const obj = sub[1];
+					const titleLevel1: string = sub[0];
+					const obj: any = sub[1];
 					const inUse = obj.options?.templates?.[data['Templates'].type];
 					if (obj.options.collapseTitle) {
 						return <Skeleton isLoaded={!formSelected.loading} key={titleLevel1 + obj.options}>
@@ -215,8 +220,8 @@ const FormFields = ({ fieldArr, dataKey }) => {
 									<AccordionPanel>
 										{
 											Object.entries(obj.options.type.paths).map(sub => {
-												const titleLevel2 = sub[0];
-												const obj = sub[1];
+												const titleLevel2: string = sub[0];
+												const obj: any = sub[1];
 												if (!obj.options.hide && !titleLevel2.match('_id') && !titleLevel2.match('__v')) {
 													return <FormControl my='1rem' height='fit-content' key={titleLevel2} isRequired={obj.isRequired}>
 														<FormLabel htmlFor={titleLevel2}>{capitalize(obj.options.formTitle ?? titleLevel2)}</FormLabel>

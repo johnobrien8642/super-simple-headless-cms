@@ -1,4 +1,4 @@
-import mongoose, { InferSchemaType } from 'mongoose';
+import mongoose, { InferSchemaType, HydratedDocument, HydratedSingleSubdocument } from 'mongoose';
 import { OptionsType } from './model-types';
 const Schema = mongoose.Schema;
 
@@ -95,8 +95,8 @@ const PageSchema = new Schema({
 	}
 });
 
-export type MetaDropdownType = InferSchemaType<typeof MetaDropdownSchema>;
-export type PageType = InferSchemaType<typeof PageSchema>;
+export type MetaDropdownType = HydratedSingleSubdocument<InferSchemaType<typeof MetaDropdownSchema>>;
+export type PageType = HydratedDocument<InferSchemaType<typeof PageSchema>>;
 
 const Page =
 	mongoose.models?.Page || mongoose.model('Page', PageSchema, 'pages');

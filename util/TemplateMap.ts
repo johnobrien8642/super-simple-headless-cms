@@ -1,3 +1,4 @@
+import React from "react";
 import { TemplatesEnum } from "../models/model-types";
 import ImageGrid from "./components/templates/ImageGrid";
 import ImageTriptych from "./components/templates/ImageTriptych";

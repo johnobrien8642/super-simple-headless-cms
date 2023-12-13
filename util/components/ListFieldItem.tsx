@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import Image from 'next/image';
 import {
 	Text,
@@ -12,18 +12,19 @@ import {
 	ModalOverlay,
 	ModalContent,
 	ModalBody,
-	ModalFooter,
 	Button,
 	Tooltip,
-	Skeleton,
 	Spinner
 } from '@chakra-ui/react';
 import { truncate } from 'lodash';
-import { useManagePageForm } from '../contexts/useManagePageForm';
+import { FormSelectedType, useManagePageForm } from '../contexts/useManagePageForm';
 import { EditIcon, AddIcon, MinusIcon, RepeatIcon, DeleteIcon } from '@chakra-ui/icons';
 import { remove, cloneDeep } from 'lodash';
 import { useDrag, useDrop } from 'react-dnd';
+// @ts-expect-error there's no types for lodash-move it's old af
 import move from 'lodash-move';
+import { AllDocType, AllDocArrayType } from './types/util_types';
+import { OptionsType } from '../../models/model-types';
 
 const ListFieldItem = ({
 	item,
@@ -36,6 +37,18 @@ const ListFieldItem = ({
 	setChosenItems,
 	setAvailableItems,
 	singleChoice
+}: {
+	item: AllDocType;
+	type: string;
+	chosen: string;
+	title: string;
+	singleChoice: boolean | undefined;
+	index?: number;
+	setItems?: React.Dispatch<SetStateAction<AllDocArrayType>>;
+	setChosenItems?: React.Dispatch<SetStateAction<AllDocArrayType>>;
+	setAvailableItems?: React.Dispatch<SetStateAction<AllDocArrayType>>;
+	chosenItems?: AllDocArrayType;
+	noForm?: boolean;
 }) => {
 	const { data, setData, formSelected, setFormSelected, setTopLevelModal } = useManagePageForm();
 	const { formTitle } = formSelected;
@@ -49,18 +62,22 @@ const ListFieldItem = ({
 	}
 	const [{ isOver }, drop] = useDrop(() => ({
 		accept: 'ListFieldItem',
-		drop: (item) => {
+		drop: (item: { index: number; } & AllDocType) => {
 			if (noForm) {
-				setItems(prev => {
-					const newData = cloneDeep(prev);
-					return move(newData, item.index, index);
-				})
+				if (setItems) {
+					setItems(prev => {
+						const newData = cloneDeep(prev);
+						return move(newData, item.index, index);
+					})
+				}
 			} else {
-				setChosenItems(prev => {
-					let newData = cloneDeep(prev);
-					newData = move(newData, item.index, index);
-					return newData;
-				})
+				if (setChosenItems) {
+					setChosenItems(prev => {
+						let newData = cloneDeep(prev);
+						newData = move(newData, item.index, index);
+						return newData;
+					})
+				}
 				setData(prev => {
 					const newData = cloneDeep(prev);
 					newData[formTitle][title] = move(newData[formTitle][title], item.index, index);
@@ -72,47 +89,48 @@ const ListFieldItem = ({
 			isOver: monitor.isOver()
 		})
 	}))
+	// @ts-expect-error object is throwing error, typing not needed
 	const [{}, drag] = useDrag(() => ({
 		type: 'ListFieldItem',
 		item: {
 			...item,
 			index
-		},
+		}
 	}), [])
 
 	function handleListFieldItemContent() {
 		return (
 			<>
-				<Text {...styleProps}>{item?.folderHref}</Text>
-				<Text {...styleProps}>{truncate(item?.title, { length: 50 })}</Text>
+				<Text sx={{...styleProps}}>{(item as any)?.folderHref}</Text>
+				<Text sx={{...styleProps}}>{truncate((item as any)?.title ?? '', { length: 50 })}</Text>
 				<Tooltip
-					label={item?.description}
+					label={(item as any)?.description}
 					openDelay={500}
 				>
-					<Text {...styleProps}>{truncate(item?.description, { length: 20 })}</Text>
+					<Text sx={{...styleProps}}>{truncate((item as any)?.description ?? '', { length: 20 })}</Text>
 				</Tooltip>
 				<Tooltip
-					label={item?.richDescription}
+					label={(item as any)?.richDescription}
 					openDelay={500}
 				>
 					<Text
-						{...styleProps}
 						whiteSpace='nowrap'
 						overflow='hidden'
 						textOverflow='ellipsis'
 						maxWidth='10rem'
 						display='block'
 						sx={{
+							...styleProps,
 							'p': {
 								marginBottom: '0'
 							}
 						}}
-						dangerouslySetInnerHTML={{ __html: item?.richDescription }}
+						dangerouslySetInnerHTML={{ __html: (item as any)?.richDescription ?? '' }}
 					/>
 				</Tooltip>
-				<Text {...styleProps}>{item?.type}</Text>
+				<Text sx={{...styleProps}}>{(item as any)?.type}</Text>
 				{
-					item?.assetKey && item?.type === 'Image' &&
+					(item as any)?.assetKey && (item as any)?.type === 'Image' &&
 						<Box
 							mx='1rem'
 							width='100'
@@ -122,12 +140,12 @@ const ListFieldItem = ({
 								width='100'
 								height='100'
 								alt={item?.title ?? 'alt'}
-								src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + item.assetKey}
+								src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + (item as any).assetKey}
 							/>
 						</Box>
 				}
 				{
-					item?.thumbnailKey &&
+					(item as any)?.thumbnailKey &&
 						<Box
 							mx='1rem'
 							width='100'
@@ -137,9 +155,8 @@ const ListFieldItem = ({
 								width='100'
 								height='100'
 								alt={item?.title ?? 'alt'}
-								src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + item.thumbnailKey}
+								src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + (item as any).thumbnailKey}
 							/>
-
 						</Box>
 				}
 			</>
@@ -149,7 +166,7 @@ const ListFieldItem = ({
 	return (
 		<>
 			<Box
-				key={item._id}
+				key={item._id.toString()}
 				ref={drop}
 			>
 				<Flex
@@ -167,22 +184,27 @@ const ListFieldItem = ({
 							chosen && chosen === 'true' &&
 								<IconButton
 									onClick={() => {
-										setAvailableItems(prev => {
-											const newData = cloneDeep(prev);
-											newData.push(item);
-											return newData;
-										})
-										setChosenItems(prev => {
-											let newData = cloneDeep(prev);
-											if (singleChoice) {
-												newData = [item];
-											} else {
-												remove(newData, (arrItem) => {
-													return arrItem._id === item._id
-												});
-											}
-											return newData;
-										})
+										if (setAvailableItems) {
+											setAvailableItems(prev => {
+												const newData = cloneDeep(prev);
+												newData.push((item as any));
+												return newData;
+											})
+										}
+										if (setChosenItems) {
+											setChosenItems(prev => {
+												let newData = cloneDeep(prev);
+												if (singleChoice) {
+													newData = [item] as AllDocArrayType;
+												} else {
+													//@ts-expect-error
+													remove(newData, (arrItem) => {
+														return arrItem._id === item._id
+													});
+												}
+												return newData;
+											})
+										}
 										setData(prev => {
 											const newData = cloneDeep(prev);
 											if (singleChoice) {
@@ -197,24 +219,30 @@ const ListFieldItem = ({
 									}}
 									icon={<MinusIcon />}
 									mr='.3rem'
+									aria-label='Minus Button'
 								/>
 						}
 						{
 							chosen && chosen === 'false' &&
 								<IconButton
 									onClick={() => {
-										setChosenItems(prev => {
-											const newData = cloneDeep(prev);
-											newData.push(item);
-											return newData;
-										})
-										setAvailableItems(prev => {
-											let newData = cloneDeep(prev);
-											remove(newData, (arrItem) => {
-												return arrItem._id === item._id
-											});
-											return newData;
-										})
+										if (setChosenItems) {
+											setChosenItems(prev => {
+												const newData = cloneDeep(prev);
+												newData.push((item as any));
+												return newData;
+											})
+										}
+										if (setAvailableItems) {
+											setAvailableItems(prev => {
+												let newData = cloneDeep(prev);
+												//@ts-expect-error
+												remove(newData, (arrItem) => {
+													return arrItem._id === item._id
+												});
+												return newData;
+											})
+										}
 										setData(prev => {
 											const newData = cloneDeep(prev);
 											if (singleChoice) {
@@ -227,20 +255,21 @@ const ListFieldItem = ({
 									}}
 									icon={<AddIcon />}
 									mr='.3rem'
+									aria-label='Add Button'
 								/>
 						}
 						<IconButton
 							onClick={() => {
 								setData(prev => {
 									const newData = cloneDeep(prev);
-									newData[item.schemaName] = item;
+									newData[item.schemaName ?? ''] = item;
 									return newData;
 								})
 								setFormSelected(prev => {
-									const newData = { ...prev };
-									newData.formTitle = item.schemaName;
-									newData.update = item.schemaName;
-									newData.editItemTraceObj[item.schemaName] = item._id;
+									const newData: FormSelectedType = { ...prev };
+									newData.formTitle = item.schemaName ?? '';
+									newData.update = item.schemaName ?? '';
+									newData.editItemTraceObj[item.schemaName ?? ''] = item._id;
 									return newData;
 								})
 								if (item.schemaName === 'Page') {
@@ -249,10 +278,12 @@ const ListFieldItem = ({
 							}}
 							icon={<EditIcon />}
 							mr='.3rem'
+							aria-label='Edit Button'
 						/>
 						{formTitle !== 'Page' && <IconButton
 							onClick={async () => {
 								let itemRef = { ...item };
+								// @ts-expect-error but I do want to delete a non-optional param tho
 								delete itemRef._id;
 								const res3 = await fetch('/api/handle_duplicate_item',
 								{
@@ -275,21 +306,25 @@ const ListFieldItem = ({
 										return newData;
 									})
 								} else {
-									setAvailableItems(prev => {
-										const newData = cloneDeep(prev);
-										newData.splice(index, 0, savedNewItem);
-										return newData;
-									})
+									if (setAvailableItems && index) {
+										setAvailableItems(prev => {
+											const newData = cloneDeep(prev);
+											newData.splice(index, 0, savedNewItem);
+											return newData;
+										})
+									}
 								}
 							}}
 							icon={<RepeatIcon />}
 							mr='.3rem'
+							aria-label='Duplicate Button'
 						/>}
 						{<IconButton
 							onClick={() => {
 								setOpenModal(true)
 							}}
 							icon={<DeleteIcon />}
+							aria-label='Delete Button'
 						/>}
 					</Flex>
 					<Modal
@@ -320,6 +355,7 @@ const ListFieldItem = ({
 												color='red'
 												my='1rem'
 											>
+
 												{`Something went wrong: ${error}`}
 											</Text>
 									}
@@ -338,15 +374,15 @@ const ListFieldItem = ({
 												const data = await res.json();
 												const { schemaPaths } = data;
 												const entries = Object.entries(schemaPaths);
-												let entryTitle;
-												let obj;
+												let entryTitle: string;
+												let obj: { options: OptionsType; };
 												let keysToDelete = {};
 												for (let i = 0; i < entries.length; i++) {
 													entryTitle = entries[i][0];
-													obj = entries[i][1];
+													obj = entries[i][1] as { options: OptionsType; };
 													if (obj.options.file) {
-														if (item[entryTitle]) {
-															keysToDelete[entryTitle] = item[entryTitle]
+														if ((item as any)[entryTitle]) {
+															(keysToDelete as any)[entryTitle] = (item as any)[entryTitle]
 														}
 													}
 												}
@@ -374,29 +410,36 @@ const ListFieldItem = ({
 															if (newData[formTitle]?.[title]) {
 																newData[formTitle][title] =
 																	newData[formTitle][title]
-																.filter(str => str !== item._id);
+																.filter((str: string) => str !== item._id.toString());
 															}
 														return newData;
 													})
 													if (noForm) {
-														setItems(prev => {
-															const newData = cloneDeep(prev);
-															if (newData.length === 1) return [];
-															return newData.filter(obj => obj._id !== item._id);
-														})
+														if (setItems) {
+															setItems(prev => {
+																const newData = cloneDeep(prev);
+																if (newData.length === 1) return [] as AllDocArrayType;
+																return newData.filter(obj => obj._id.toString() !== item._id.toString()) as AllDocArrayType;
+															})
+														}
 													} else {
-														setChosenItems(prev => {
-															let newData = cloneDeep(prev);
-															remove(newData, (arrItem) => {
-																return arrItem._id === item._id
-															});
-															return newData;
-														})
-														setAvailableItems(prev => {
-															const newData = cloneDeep(prev);
-															if (newData.length === 1) return [];
-															return newData.filter(obj => obj._id !== item._id);
-														})
+														if (setChosenItems) {
+															setChosenItems(prev => {
+																let newData = cloneDeep(prev);
+																//@ts-expect-error
+																remove(newData, (arrItem) => {
+																	return arrItem._id === item._id
+																});
+																return newData;
+															})
+														}
+														if (setAvailableItems) {
+															setAvailableItems(prev => {
+																const newData = cloneDeep(prev);
+																if (newData.length === 1) return [] as AllDocArrayType;
+																return newData.filter(obj => obj._id !== item._id)  as AllDocArrayType;
+															})
+														}
 													}
 													setOpenModal(false)
 												} else {

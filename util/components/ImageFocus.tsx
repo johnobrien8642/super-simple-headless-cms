@@ -1,27 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-	Box,
-	Heading,
-	Text,
 	Modal,
 	ModalOverlay,
 	ModalContent,
-	ModalHeader,
 	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
 	Button,
-	useBreakpointValue
 } from '@chakra-ui/react';
 import MyImage from './Image';
 import ImageSlider from './ImageSlider';
 import ImageInfo from './ImageInfo';
-import Link from 'next/link';
+import { AssetsType } from '../../models/Assets';
 
 
-const ImageFocus = ({ assets, imageIndexNum, setImageIndexHook, setOpenModalHook, openModalBool }) => {
-	const asset = typeof assets === 'array' ? assets[0] : assets;
-
+const ImageFocus = ({
+	assets,
+	imageIndexNum,
+	setImageIndexHook,
+	setOpenModalHook,
+	openModalBool
+}: {
+	assets: AssetsType | AssetsType[];
+	imageIndexNum: number;
+	setImageIndexHook: React.Dispatch<React.SetStateAction<number>>;
+	setOpenModalHook: React.Dispatch<React.SetStateAction<boolean>>;
+	openModalBool: boolean;
+}) => {
 	return <Modal
 		isOpen={openModalBool}
 		onClose={() => {
@@ -43,11 +48,11 @@ const ImageFocus = ({ assets, imageIndexNum, setImageIndexHook, setOpenModalHook
 				p='5rem 3rem'
 			>
 				{
-					assets?.length > 1 &&
+					Array.isArray(assets) &&
 						<ImageSlider images={assets} startingIndex={imageIndexNum} />
 				}
 				{
-					assets?.length === 1 || typeof assets === 'object' &&
+					!Array.isArray(assets) &&
 						<>
 							<MyImage image={asset} />
 							<ImageInfo image={asset} />
