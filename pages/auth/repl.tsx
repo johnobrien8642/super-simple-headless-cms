@@ -1,61 +1,63 @@
 import { useState } from 'react'
-import dbConnect from '../../lib/mongodb'
-import jwt from 'jsonwebtoken'
-import { GetServerSideProps } from 'next'
-import Admin from '../../models/Admin'
-import Link from 'next/link'
-import {
-	Center,
-	Box,
-	Text,
-	Grid,
-	Input,
-	Button,
-	FormControl,
-	FormLabel,
-	FormErrorMessage,
-	useTheme,
-	Code,
-	Flex
-} from '@chakra-ui/react'
-import {
-	Formik,
-	Form
-} from 'formik'
-// import 'ace-builds/src-noconflict/ace'
-// import 'ace-builds/src-noconflict/mode-javascript'
-import dynamic from 'next/dynamic'
-// import AceEditor from 'react-ace'
-import { AdminType } from '../../models/Admin'
-const AceEditor = dynamic(
-	() => import('../../util/ace_editor'),
-	{ ssr: false }
-)
+// import dbConnect from '../../lib/mongodb'
+// import jwt from 'jsonwebtoken'
+// import { GetServerSideProps } from 'next'
+// import Admin from '../../models/Admin'
+// import Link from 'next/link'
+// import {
+// 	Center,
+// 	Box,
+// 	Text,
+// 	Grid,
+// 	Input,
+// 	Button,
+// 	FormControl,
+// 	FormLabel,
+// 	FormErrorMessage,
+// 	useTheme,
+// 	Code,
+// 	Flex
+// } from '@chakra-ui/react'
+// import {
+// 	Formik,
+// 	Form
+// } from 'formik'
+// // import 'ace-builds/src-noconflict/ace'
+// // import 'ace-builds/src-noconflict/mode-javascript'
+// import dynamic from 'next/dynamic'
+// // import AceEditor from 'react-ace'
+// import { AdminType } from '../../models/Admin'
+// const AceEditor = dynamic(
+// 	() => import('../../util/ace_editor'),
+// 	{ ssr: false }
+// )
 
-type CodeEditorType = {
-	codeString: string;
-}
-type AdminLoginType = {
-	username: string;
-	password: string;
-}
-type ReplWindowPropType = {
-	data: boolean;
-}
-const ReplWindow = ({ data }: ReplWindowPropType) => {
-	let [admin, setAdmin] = useState<AdminType | null>(null)
-	let [result, setResult] = useState('')
-	let [codeString, setCodeString] = useState('')
-	const theme = useTheme()
-	const codeEditorInitVals:
-		CodeEditorType = {
-			codeString: ''
-		}
-	const adminSigninInitVals:
-		AdminLoginType = {
-			username: '',
-			password: ''
-		}
+// type CodeEditorType = {
+// 	codeString: string;
+// }
+// type AdminLoginType = {
+// 	username: string;
+// 	password: string;
+// }
+// type ReplWindowPropType = {
+// 	data: boolean;
+// }
+const ReplWindow = ({ data }) => {
+	// let [admin, setAdmin] = useState<AdminType | null>(null)
+	// let [result, setResult] = useState('')
+	// let [codeString, setCodeString] = useState('')
+	// const theme = useTheme()
+	// const codeEditorInitVals:
+	// 	CodeEditorType = {
+	// 		codeString: ''
+	// 	}
+	// const adminSigninInitVals:
+	// 	AdminLoginType = {
+	// 		username: '',
+	// 		password: ''
+	// 	}
+
+	return <></>
 
 	if (process.env.NEXT_PUBLIC_SUPER_ACTIVE === 'false' || data) {
 		return (
@@ -143,25 +145,25 @@ const ReplWindow = ({ data }: ReplWindowPropType) => {
 	}
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	await dbConnect();
-	type jwtType = {
-		id: string;
-	} & jwt.JwtPayload
-	let decoded;
-	let authenticated
-	if (context.req.cookies.token) {
-		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY!) as jwtType;
-		if (decoded) {
-			authenticated = await Admin.findById(decoded.id);
-		}
-	}
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+// 	await dbConnect();
+// 	type jwtType = {
+// 		id: string;
+// 	} & jwt.JwtPayload
+// 	let decoded;
+// 	let authenticated
+// 	if (context.req.cookies.token) {
+// 		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY!) as jwtType;
+// 		if (decoded) {
+// 			authenticated = await Admin.findById(decoded.id);
+// 		}
+// 	}
 
-	return {
-		props: {
-			data: !!authenticated
-		}
-	};
-}
+// 	return {
+// 		props: {
+// 			data: !!authenticated
+// 		}
+// 	};
+// }
 
 export default ReplWindow
