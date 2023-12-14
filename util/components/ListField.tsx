@@ -10,7 +10,7 @@ import {
 import { useManagePageForm } from '../contexts/useManagePageForm';
 import { assetsEnumValueArr, templatesEnumValueArr } from '../../models/model-types';
 import { OptionsType } from '../../models/model-types';
-import { AllDocArrayType } from './types/util_types';
+import { AllDocUnionType } from './types/util_types';
 
 const ListField = ({
 		obj,
@@ -21,8 +21,8 @@ const ListField = ({
 		title: string;
 		singleChoice: boolean | undefined;
 	}) => {
-	const [availableItems, setAvailableItems] = useState<AllDocArrayType>([]);
-	const [chosenItems, setChosenItems] = useState<AllDocArrayType>([]);
+	const [availableItems, setAvailableItems] = useState<AllDocUnionType[]>([]);
+	const [chosenItems, setChosenItems] = useState<AllDocUnionType[]>([]);
 	const [itemFilter, setItemFilter] = useState('');
 	const [itemFilterArr, setItemFilterArr] =
 		useState<typeof templatesEnumValueArr | typeof assetsEnumValueArr>([]);
@@ -76,7 +76,6 @@ const ListField = ({
 							item={item}
 							title={title}
 							chosen='true'
-							type={formTitle}
 							index={index}
 							setChosenItems={setChosenItems}
 							setAvailableItems={setAvailableItems}
@@ -151,7 +150,6 @@ const ListField = ({
 								item={item}
 								title={title}
 								chosen='false'
-								type={formTitle}
 								setAvailableItems={setAvailableItems}
 								setChosenItems={setChosenItems}
 								singleChoice={singleChoice}

@@ -1,45 +1,52 @@
 {
-    "compilerOptions": {
-      "target": "es2020",
-      "lib": [
-        "dom",
-        "dom.iterable",
-        "esnext",
-        "es2020"
-      ],
-      "allowJs": true,
-      "skipLibCheck": true,
-      "strict": true,
-      "forceConsistentCasingInFileNames": true,
-      "noEmit": true,
-      "esModuleInterop": true,
-      "module": "esnext",
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "jsx": "preserve",
-      "incremental": true,
-      "plugins": [
-        {
-          "name": "next"
-        }
+  "compilerOptions": {
+    "target": "es2020",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "es2020"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "paths": {
+      "react": [
+        "./node_modules/@types/react"
       ]
     },
-    "include": [
-      "next-env.d.ts",
-      "**/*.ts",
-      "**/*.tsx",
-      ".next/types/**/*.ts",
-      "/home/johnobrien/personal-site/.next/types/**/*.ts",
-      "lib/dbConnect.ts",
-      "pages/[[...slug]].js",
-      "pages/[..slug]/index.js",
-      "util/components/*.tsx",
-      "util/components/*.ts",
-      "util/components/*.js",
-      "util/components/templates/*.js",
-    ],
-    "exclude": [
-      "node_modules"
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
     ]
-  }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "/home/johnobrien/personal-site/.next/types/**/*.ts",
+    "lib/dbConnect.ts",
+    "pages/[[...slug]].js",
+    "pages/[..slug]/index.js",
+    "util/components/*.tsx",
+    "util/components/*.ts",
+    "util/components/*.js",
+    "util/components/templates/*.js",
+    "util/components/templates/TextBlock.tdsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

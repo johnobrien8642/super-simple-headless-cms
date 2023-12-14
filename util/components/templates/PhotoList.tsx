@@ -9,8 +9,9 @@ import ImageFocus from '../ImageFocus';
 import ImageInfo from '../ImageInfo';
 import { AssetsType } from '../../../models/Assets';
 import { TemplatesType } from '../../../models/Templates';
+import { BasePropsType } from '../types/prop_types';
 
-const PhotoList = ({ template }: { template?: TemplatesType }) => {
+const PhotoList = ({ template }: BasePropsType) => {
 	const [image, setImage] = useState<AssetsType | undefined>();
 	const [openModal, setOpenModal] = useState(false);
 	const assets = template?.assetsIds;

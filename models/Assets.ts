@@ -113,6 +113,10 @@ const optionsObj: { [key: string]: OptionsType } = {
 }
 
 const AssetsSchema = new Schema({
+	schemaName: {
+		type: String,
+		...optionsObj.schemaName
+	},
 	assetKey: {
 		type: String,
 		...optionsObj.assetKey
@@ -157,10 +161,6 @@ const AssetsSchema = new Schema({
 		type: String,
 		...optionsObj.extLink
 	},
-	schemaName: {
-		type: String,
-		...optionsObj.schemaName
-	},
 	isDuplicate: {
 		type: Boolean,
 		...optionsObj.isDuplicate
@@ -172,9 +172,13 @@ const AssetsSchema = new Schema({
 	}
 });
 
-export type AssetsType = HydratedDocument<InferSchemaType<typeof AssetsSchema>>;
+// export type AssetsType = HydratedDocument<InferSchemaType<typeof AssetsSchema>>;
+export type AssetsType =
+	InferSchemaType<typeof AssetsSchema> &
+		{ _id: string; typeName: 'Assets'; };
+export type HydratedAssetsType = HydratedDocument<AssetsType>;
 
 const Assets =
-	mongoose.models?.Assets || mongoose.model('Assets', AssetsSchema, 'assets');
+	mongoose.models?.Assets || mongoose.model<AssetsType>('Assets', AssetsSchema, 'assets');
 
 export default Assets;

@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useState, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import {
 	Text,
@@ -23,12 +23,11 @@ import { remove, cloneDeep } from 'lodash';
 import { useDrag, useDrop } from 'react-dnd';
 // @ts-expect-error there's no types for lodash-move it's old af
 import move from 'lodash-move';
-import { AllDocType, AllDocArrayType } from './types/util_types';
+import { AllDocUnionType, AllDocType, AllDocArrayType, AllDocIntersectionType, AllDocUnionTypeDyn } from './types/util_types';
 import { OptionsType } from '../../models/model-types';
 
 const ListFieldItem = ({
 	item,
-	type,
 	chosen,
 	title,
 	index,
@@ -38,22 +37,22 @@ const ListFieldItem = ({
 	setAvailableItems,
 	singleChoice
 }: {
-	item: AllDocType;
-	type: string;
-	chosen: string;
-	title: string;
-	singleChoice: boolean | undefined;
+	item: AllDocUnionType;
+	title?: string;
+	chosen?: string;
+	singleChoice?: boolean | undefined;
 	index?: number;
-	setItems?: React.Dispatch<SetStateAction<AllDocArrayType>>;
-	setChosenItems?: React.Dispatch<SetStateAction<AllDocArrayType>>;
-	setAvailableItems?: React.Dispatch<SetStateAction<AllDocArrayType>>;
-	chosenItems?: AllDocArrayType;
+	setItems?: React.Dispatch<SetStateAction<AllDocUnionType[]>>;
+	setChosenItems?: React.Dispatch<SetStateAction<AllDocUnionType[]>>;
+	setAvailableItems?: React.Dispatch<SetStateAction<AllDocUnionType[]>>;
+	chosenItems?: AllDocUnionType[];
 	noForm?: boolean;
 }) => {
 	const { data, setData, formSelected, setFormSelected, setTopLevelModal } = useManagePageForm();
 	const { formTitle } = formSelected;
 	const [openModal, setOpenModal] = useState(false);
 	const [error, setError] = useState('');
+	const itemT = item as AllDocUnionTypeDyn<typeof item.typeName>;
 	const styleProps = {
 		as: 'span',
 		mx: '1rem',
@@ -78,11 +77,13 @@ const ListFieldItem = ({
 						return newData;
 					})
 				}
-				setData(prev => {
-					const newData = cloneDeep(prev);
-					newData[formTitle][title] = move(newData[formTitle][title], item.index, index);
-					return newData;
-				})
+				if (title) {
+					setData(prev => {
+						const newData = cloneDeep(prev);
+						newData[formTitle][title] = move(newData[formTitle][title], item.index, index);
+						return newData;
+					})
+				}
 			}
 		},
 		collect: (monitor) => ({
@@ -101,51 +102,62 @@ const ListFieldItem = ({
 	function handleListFieldItemContent() {
 		return (
 			<>
-				<Text sx={{...styleProps}}>{(item as any)?.folderHref}</Text>
-				<Text sx={{...styleProps}}>{truncate((item as any)?.title ?? '', { length: 50 })}</Text>
+				{item.typeName === 'Page' && <Text sx={{...styleProps}}>{item?.folderHref ?? ''}</Text>}
+				<Text sx={{...styleProps}}>{truncate(item?.title ?? '', { length: 50 })}</Text>
 				<Tooltip
-					label={(item as any)?.description}
+					label={item?.description}
 					openDelay={500}
 				>
-					<Text sx={{...styleProps}}>{truncate((item as any)?.description ?? '', { length: 20 })}</Text>
+					<Text sx={{...styleProps}}>{truncate(item?.description ?? '', { length: 20 })}</Text>
 				</Tooltip>
-				<Tooltip
-					label={(item as any)?.richDescription}
-					openDelay={500}
-				>
-					<Text
-						whiteSpace='nowrap'
-						overflow='hidden'
-						textOverflow='ellipsis'
-						maxWidth='10rem'
-						display='block'
-						sx={{
-							...styleProps,
-							'p': {
-								marginBottom: '0'
-							}
-						}}
-						dangerouslySetInnerHTML={{ __html: (item as any)?.richDescription ?? '' }}
-					/>
-				</Tooltip>
-				<Text sx={{...styleProps}}>{(item as any)?.type}</Text>
 				{
-					(item as any)?.assetKey && (item as any)?.type === 'Image' &&
-						<Box
-							mx='1rem'
-							width='100'
-							height='100%'
+					(item.typeName === 'Assets' ||
+						item.typeName === 'Templates') &&
+						<Tooltip
+							label={item?.richDescription}
+							openDelay={500}
 						>
-							<Image
-								width='100'
-								height='100'
-								alt={item?.title ?? 'alt'}
-								src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + (item as any).assetKey}
+							<Text
+								whiteSpace='nowrap'
+								overflow='hidden'
+								textOverflow='ellipsis'
+								maxWidth='10rem'
+								display='block'
+								sx={{
+									...styleProps,
+									'p': {
+										marginBottom: '0'
+									}
+								}}
+								dangerouslySetInnerHTML={{ __html: item?.richDescription ?? '' }}
 							/>
-						</Box>
+						</Tooltip>
 				}
 				{
-					(item as any)?.thumbnailKey &&
+					(item.typeName === 'Assets' ||
+						item.typeName === 'Templates') &&
+						<Text sx={{...styleProps}}>{item?.type}</Text>
+				}
+				{
+					item.typeName === 'Assets' &&
+						item?.assetKey &&
+							item?.type === 'Image' &&
+							<Box
+								mx='1rem'
+								width='100'
+								height='100%'
+							>
+								<Image
+									width='100'
+									height='100'
+									alt={item?.title ?? 'alt'}
+									src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + item.assetKey}
+								/>
+							</Box>
+				}
+				{
+					item.typeName === 'Assets'&&
+						item?.thumbnailKey &&
 						<Box
 							mx='1rem'
 							width='100'
@@ -155,7 +167,7 @@ const ListFieldItem = ({
 								width='100'
 								height='100'
 								alt={item?.title ?? 'alt'}
-								src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + (item as any).thumbnailKey}
+								src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL + item.thumbnailKey}
 							/>
 						</Box>
 				}
@@ -186,8 +198,8 @@ const ListFieldItem = ({
 									onClick={() => {
 										if (setAvailableItems) {
 											setAvailableItems(prev => {
-												const newData = cloneDeep(prev);
-												newData.push((item as any));
+												let newData = cloneDeep(prev);
+												newData = [...newData, item] as AllDocUnionType[];
 												return newData;
 											})
 										}
@@ -195,9 +207,8 @@ const ListFieldItem = ({
 											setChosenItems(prev => {
 												let newData = cloneDeep(prev);
 												if (singleChoice) {
-													newData = [item] as AllDocArrayType;
+													newData = [item] as unknown as AllDocUnionType[];
 												} else {
-													//@ts-expect-error
 													remove(newData, (arrItem) => {
 														return arrItem._id === item._id
 													});
@@ -207,9 +218,9 @@ const ListFieldItem = ({
 										}
 										setData(prev => {
 											const newData = cloneDeep(prev);
-											if (singleChoice) {
+											if (singleChoice && title) {
 												newData[formTitle][title] = [];
-											} else {
+											} else if (!singleChoice && title) {
 												remove(newData[formTitle]?.[title], (id) => {
 													return id === item._id
 												});
@@ -228,15 +239,14 @@ const ListFieldItem = ({
 									onClick={() => {
 										if (setChosenItems) {
 											setChosenItems(prev => {
-												const newData = cloneDeep(prev);
-												newData.push((item as any));
+												let newData = cloneDeep(prev);
+												newData = [...newData, item] as AllDocArrayType;
 												return newData;
 											})
 										}
 										if (setAvailableItems) {
 											setAvailableItems(prev => {
 												let newData = cloneDeep(prev);
-												//@ts-expect-error
 												remove(newData, (arrItem) => {
 													return arrItem._id === item._id
 												});
@@ -245,9 +255,9 @@ const ListFieldItem = ({
 										}
 										setData(prev => {
 											const newData = cloneDeep(prev);
-											if (singleChoice) {
+											if (singleChoice && title) {
 												newData[formTitle][title] = [item._id];
-											} else {
+											} else if (!singleChoice && title) {
 												newData[formTitle]?.[title].push(item._id);
 											}
 											return newData;
@@ -302,7 +312,10 @@ const ListFieldItem = ({
 								if (chosen === 'true') {
 									setData(prev => {
 										const newData = cloneDeep(prev);
-										newData[formTitle][title] = [...data[formTitle][title], savedNewItem._id];
+										if (title) {
+											newData[formTitle][title] =
+												[...data[formTitle][title], savedNewItem._id];
+										}
 										return newData;
 									})
 								} else {
@@ -376,13 +389,13 @@ const ListFieldItem = ({
 												const entries = Object.entries(schemaPaths);
 												let entryTitle: string;
 												let obj: { options: OptionsType; };
-												let keysToDelete = {};
+												let keysToDelete: any = {};
 												for (let i = 0; i < entries.length; i++) {
 													entryTitle = entries[i][0];
 													obj = entries[i][1] as { options: OptionsType; };
 													if (obj.options.file) {
 														if ((item as any)[entryTitle]) {
-															(keysToDelete as any)[entryTitle] = (item as any)[entryTitle]
+															keysToDelete[entryTitle] = (item as any)[entryTitle]
 														}
 													}
 												}
@@ -407,10 +420,12 @@ const ListFieldItem = ({
 													});
 													setData(prev => {
 														const newData = cloneDeep(prev);
-															if (newData[formTitle]?.[title]) {
-																newData[formTitle][title] =
-																	newData[formTitle][title]
-																.filter((str: string) => str !== item._id.toString());
+															if (title) {
+																if (newData[formTitle]?.[title]) {
+																	newData[formTitle][title] =
+																		newData[formTitle][title]
+																	.filter((str: string) => str !== item._id.toString());
+																}
 															}
 														return newData;
 													})
@@ -418,15 +433,16 @@ const ListFieldItem = ({
 														if (setItems) {
 															setItems(prev => {
 																const newData = cloneDeep(prev);
-																if (newData.length === 1) return [] as AllDocArrayType;
-																return newData.filter(obj => obj._id.toString() !== item._id.toString()) as AllDocArrayType;
+																if (newData.length === 1) return [] as AllDocUnionType[];
+																return newData.filter(obj =>
+																	obj._id.toString() !== item._id.toString()
+																) as AllDocUnionType[];
 															})
 														}
 													} else {
 														if (setChosenItems) {
 															setChosenItems(prev => {
 																let newData = cloneDeep(prev);
-																//@ts-expect-error
 																remove(newData, (arrItem) => {
 																	return arrItem._id === item._id
 																});

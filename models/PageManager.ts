@@ -1,5 +1,6 @@
-import mongoose, { InferSchemaType } from 'mongoose';
+import mongoose, { HydratedDocument, InferSchemaType } from 'mongoose';
 import { OptionsType } from './model-types';
+import { PageType } from './Page';
 const Schema = mongoose.Schema;
 
 const optionsObj: { [key: string]: OptionsType } = {
@@ -29,7 +30,13 @@ const PageManagerSchema = new Schema({
 	}
 });
 
-export type PageManagerType = InferSchemaType<typeof PageManagerSchema>;
+export type PageManagerSubDocsType = {
+	pageIds: PageType[];
+}
+export type PageManagerNoSubdocsType = Omit<InferSchemaType<typeof PageManagerSchema>, 'pageIds'>;
+// export type PageType = HydratedDocument<PageNoSubdocsType & PageSubDocsType>;
+export type PageManagerType = PageManagerNoSubdocsType & PageManagerSubDocsType & { _id: string; };
+export type HydratedPageManagerType = HydratedDocument<PageManagerType>;
 
 const PageManager =
 	mongoose.models.PageManager || mongoose.model('PageManager', PageManagerSchema, 'page-managers');

@@ -50,6 +50,10 @@ const MetaDropdownSchema = new Schema({
 })
 
 const PageSchema = new Schema({
+	schemaName: {
+		type: String,
+		...optionsObj.schemaName
+	},
 	title: {
 		type: String
 	},
@@ -80,10 +84,6 @@ const PageSchema = new Schema({
 		type: MetaDropdownSchema,
 		...optionsObj.meta
 	},
-	schemaName: {
-		type: String,
-		...optionsObj.schemaName
-	},
 	updatedAt: {
 		type: Date,
 		default: Date.now,
@@ -102,9 +102,11 @@ export type PageSubDocsType = {
 	meta: MetaDropdownType;
 }
 export type PageNoSubdocsType = Omit<InferSchemaType<typeof PageSchema>, 'templatesIds' | 'meta'>;
-export type PageType = HydratedDocument<PageNoSubdocsType & PageSubDocsType>;
+// export type PageType = HydratedDocument<PageNoSubdocsType & PageSubDocsType>;
+export type PageType = PageNoSubdocsType & PageSubDocsType & { _id: string; typeName: 'Page' };
+export type HydratedPageType = HydratedDocument<PageType>;
 
 const Page =
-	mongoose.models?.Page || mongoose.model('Page', PageSchema, 'pages');
+	mongoose.models?.Page || mongoose.model<PageType>('Page', PageSchema, 'pages');
 
 export default Page;

@@ -65,6 +65,10 @@ const optionsObj: { [key: string]: OptionsType } = {
 }
 
 const TemplatesSchema = new Schema({
+	schemaName: {
+		type: String,
+		...optionsObj.schemaName
+	},
 	title: {
 		type: String,
 		...optionsObj.title
@@ -107,10 +111,6 @@ const TemplatesSchema = new Schema({
 		],
 		...optionsObj.videoId
 	},
-	schemaName: {
-		type: String,
-		...optionsObj.schemaName
-	},
 	isDuplicate: {
 		type: Boolean,
 		...optionsObj.isDuplicate
@@ -131,8 +131,10 @@ export type TemplatesSubdocsType = {
 	videoId: AssetsType[];
 }
 export type TemplatesTypeNoSubDoc = Omit<InferSchemaType<typeof TemplatesSchema>, 'assetsIds' | 'videoId'>;
-export type TemplatesType = HydratedDocument<TemplatesTypeNoSubDoc & TemplatesSubdocsType>;
+// export type TemplatesType = HydratedDocument<TemplatesTypeNoSubDoc & TemplatesSubdocsType>;
+export type TemplatesType = TemplatesTypeNoSubDoc & TemplatesSubdocsType & { _id: string; typeName: 'Templates' };
+export type HydratedTemplatesType = HydratedDocument<TemplatesType>;
 const Templates =
-	mongoose.models?.Templates || mongoose.model('Templates', TemplatesSchema, 'templates');
+	mongoose.models?.Templates || mongoose.model<TemplatesType>('Templates', TemplatesSchema, 'templates');
 
 export default Templates;
