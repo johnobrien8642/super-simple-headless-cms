@@ -99,7 +99,9 @@ const optionsObj: { [key: string]: OptionsType } = {
 	schemaName: {
 		default: 'Assets',
 		hide: true,
-		internal: true
+		internal: true,
+		required: true,
+		enum: ['Assets']
 	},
 	isDuplicate: {
 		default: false,
@@ -113,10 +115,6 @@ const optionsObj: { [key: string]: OptionsType } = {
 }
 
 const AssetsSchema = new Schema({
-	schemaName: {
-		type: String,
-		...optionsObj.schemaName
-	},
 	assetKey: {
 		type: String,
 		...optionsObj.assetKey
@@ -160,6 +158,10 @@ const AssetsSchema = new Schema({
 	extLink: {
 		type: String,
 		...optionsObj.extLink
+	},
+	schemaName: {
+		type: String,
+		...optionsObj.schemaName
 	},
 	isDuplicate: {
 		type: Boolean,

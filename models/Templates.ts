@@ -47,7 +47,9 @@ const optionsObj: { [key: string]: OptionsType } = {
 	schemaName: {
 		default: 'Templates',
 		hide: true,
-		internal: true
+		internal: true,
+		required: true,
+		enum: ['Templates']
 	},
 	isDuplicate: {
 		default: false,
@@ -65,10 +67,6 @@ const optionsObj: { [key: string]: OptionsType } = {
 }
 
 const TemplatesSchema = new Schema({
-	schemaName: {
-		type: String,
-		...optionsObj.schemaName
-	},
 	title: {
 		type: String,
 		...optionsObj.title
@@ -114,6 +112,10 @@ const TemplatesSchema = new Schema({
 	isDuplicate: {
 		type: Boolean,
 		...optionsObj.isDuplicate
+	},
+	schemaName: {
+		type: String,
+		...optionsObj.schemaName
 	},
 	updatedAt: {
 		type: Date,

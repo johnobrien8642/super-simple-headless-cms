@@ -40,6 +40,7 @@ const MobileHeader = ({ pages }: { pages: PageType[] }) => {
 				<VStack alignItems="left">
 					{pages.map((obj, i) => (
 						<Text
+							key={obj._id}
 							fontSize='1.5rem'
 							sx={{
 								':focus': {

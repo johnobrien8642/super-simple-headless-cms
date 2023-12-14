@@ -26,7 +26,9 @@ const optionsObj: { [key: string]: OptionsType } = {
 	schemaName: {
 		default: 'Page',
 		hide: true,
-		internal: true
+		internal: true,
+		required: true,
+		enum: ['Page']
 	},
 	updatedAt: {
 		hide: true,
@@ -50,10 +52,6 @@ const MetaDropdownSchema = new Schema({
 })
 
 const PageSchema = new Schema({
-	schemaName: {
-		type: String,
-		...optionsObj.schemaName
-	},
 	title: {
 		type: String
 	},
@@ -83,6 +81,10 @@ const PageSchema = new Schema({
 	meta: {
 		type: MetaDropdownSchema,
 		...optionsObj.meta
+	},
+	schemaName: {
+		type: String,
+		...optionsObj.schemaName
 	},
 	updatedAt: {
 		type: Date,

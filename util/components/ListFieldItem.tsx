@@ -25,6 +25,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import move from 'lodash-move';
 import { AllDocUnionType, AllDocType, AllDocArrayType, AllDocIntersectionType, AllDocUnionTypeDyn } from './types/util_types';
 import { OptionsType } from '../../models/model-types';
+import { SchemaNameOptionsType, schemaNameOptionsEnumArr } from '../../models/model-types';
 
 const ListFieldItem = ({
 	item,
@@ -52,7 +53,7 @@ const ListFieldItem = ({
 	const { formTitle } = formSelected;
 	const [openModal, setOpenModal] = useState(false);
 	const [error, setError] = useState('');
-	const itemT = item as AllDocUnionTypeDyn<typeof item.typeName>;
+	item.typeName = item.schemaName as SchemaNameOptionsType;
 	const styleProps = {
 		as: 'span',
 		mx: '1rem',

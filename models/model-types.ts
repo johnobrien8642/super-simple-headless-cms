@@ -37,13 +37,18 @@ export type SubdocumentType = {
 export const templatesEnumValueArr = Object.values(TemplatesEnum);
 export const assetsEnumValueArr = Object.values(AssetsEnum);
 export const textAlignOptionsEnumValueArr = Object.values(TextAlignOptionsEnum);
+export const schemaNameOptionsEnumArr = ['Page', 'Templates', 'Assets'];
+export type SchemaNameOptionsType = 'Page' | 'Templates' | 'Assets';
 
 export type OptionsType = {
 	// Can be multiple different kinds as per mongoose, handled by Typegoose ultimately
 	required?: boolean;
 	default?: boolean | string | number | Date;
 	index?: boolean;
-	enum?: typeof templatesEnumValueArr | typeof assetsEnumValueArr | typeof textAlignOptionsEnumValueArr;
+	enum?: typeof templatesEnumValueArr |
+		typeof assetsEnumValueArr |
+		typeof textAlignOptionsEnumValueArr |
+		typeof schemaNameOptionsEnumArr;
 	// For accessing enum array from object (deprecated)
 	enumKey?: string;
 	// Default value for the select input

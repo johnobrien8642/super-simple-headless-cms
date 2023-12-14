@@ -74,6 +74,7 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 					{pages.map((obj, i) => {
 						if (obj.folderHref !== '/' && obj.showInNavigation) {
 							return <Text
+								key={obj._id}
 								fontWeight={router.asPath === obj.folderHref ? '800' : '200'}
 								fontSize={router.asPath === obj.folderHref ? '1.8rem !important' : '1.5rem'}
 								sx={{
