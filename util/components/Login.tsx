@@ -127,7 +127,7 @@ const Login = () => {
 					<Button
 						type='submit'
 						onClick={e => {
-							if (password !== confirmPW) {
+							if (firstTimeUser && password !== confirmPW) {
 								e.preventDefault();
 								setError("Passwords don't match");
 							}
