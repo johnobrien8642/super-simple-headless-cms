@@ -10,10 +10,10 @@ import ImageInfo from '../ImageInfo';
 import { AssetsType } from '../../../models/Assets';
 import { TemplatesType } from '../../../models/Templates';
 
-const PhotoList = ({ template }: { template: TemplatesType }) => {
-	const [image, setImage] = useState<AssetsType | {}>({});
+const PhotoList = ({ template }: { template?: TemplatesType }) => {
+	const [image, setImage] = useState<AssetsType | undefined>();
 	const [openModal, setOpenModal] = useState(false);
-	const asset = template.assetsIds[0];
+	const assets = template?.assetsIds;
 	const desktop = useBreakpointValue(
 		{
 			base: false,
@@ -27,9 +27,9 @@ const PhotoList = ({ template }: { template: TemplatesType }) => {
 		m='5rem auto'
 	>
 		{
-			template.assetsIds.map((asset, index) => {
+			assets?.map((asset, index) => {
 				return <Grid
-					key={asset._id}
+					key={asset._id.toString()}
 					gridTemplateColumns={{ base: '100%', lg: '50% 1fr'}}
 					gap={{ base: '0', md: '2%' }}
 					width='100%'

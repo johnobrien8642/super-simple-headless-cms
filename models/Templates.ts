@@ -1,6 +1,7 @@
-import mongoose, { InferSchemaType, HydratedDocument } from 'mongoose';
+import mongoose, { InferSchemaType, HydratedDocument, Types } from 'mongoose';
 import { templateOptions } from '../template_options'
 import { OptionsType, templatesEnumValueArr } from './model-types';
+import { AssetsType } from './Assets';
 const Schema = mongoose.Schema;
 
 const optionsObj: { [key: string]: OptionsType } = {
@@ -125,9 +126,12 @@ const TemplatesSchema = new Schema({
 		...optionsObj.createdAt
 	}
 });
-
-export type TemplatesType = HydratedDocument<InferSchemaType<typeof TemplatesSchema>>;
-
+export type TemplatesSubdocsType = {
+	assetsIds: AssetsType[];
+	videoId: AssetsType[];
+}
+export type TemplatesTypeNoSubDoc = Omit<InferSchemaType<typeof TemplatesSchema>, 'assetsIds' | 'videoId'>;
+export type TemplatesType = HydratedDocument<TemplatesTypeNoSubDoc & TemplatesSubdocsType>;
 const Templates =
 	mongoose.models?.Templates || mongoose.model('Templates', TemplatesSchema, 'templates');
 

@@ -13,7 +13,7 @@ const MyImage = ({
 }: {
 	image: AssetsType;
 	height?: number;
-	setPhotoHook?: React.Dispatch<React.SetStateAction<AssetsType | {}>>;
+	setPhotoHook?: React.Dispatch<React.SetStateAction<AssetsType | undefined>>;
 	setOpenModalHook?: React.Dispatch<React.SetStateAction<boolean>>;
 	padding?: number;
 	priority?: boolean;

@@ -21,16 +21,18 @@ const ImageFocus = ({
 	setOpenModalHook,
 	openModalBool
 }: {
-	assets: AssetsType | AssetsType[];
-	imageIndexNum: number;
-	setImageIndexHook: React.Dispatch<React.SetStateAction<number>>;
-	setOpenModalHook: React.Dispatch<React.SetStateAction<boolean>>;
+	assets: AssetsType | AssetsType[] | undefined;
 	openModalBool: boolean;
+	setOpenModalHook: React.Dispatch<React.SetStateAction<boolean>>;
+	imageIndexNum?: number;
+	setImageIndexHook?: React.Dispatch<React.SetStateAction<number>>;
 }) => {
 	return <Modal
 		isOpen={openModalBool}
 		onClose={() => {
-			setOpenModalHook(false)
+			if (setOpenModalHook) {
+				setOpenModalHook(false)
+			}
 			if (setImageIndexHook) {
 				setImageIndexHook(0)
 			}
@@ -52,10 +54,10 @@ const ImageFocus = ({
 						<ImageSlider images={assets} startingIndex={imageIndexNum} />
 				}
 				{
-					!Array.isArray(assets) &&
+					!Array.isArray(assets) && assets &&
 						<>
-							<MyImage image={asset} />
-							<ImageInfo image={asset} />
+							<MyImage image={assets} />
+							<ImageInfo image={assets} />
 						</>
 				}
 			</ModalBody>

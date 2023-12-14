@@ -1,5 +1,6 @@
 import mongoose, { InferSchemaType, HydratedDocument, HydratedSingleSubdocument } from 'mongoose';
 import { OptionsType } from './model-types';
+import { TemplatesType } from './Templates';
 const Schema = mongoose.Schema;
 
 const optionsObj: { [key: string]: OptionsType } = {
@@ -95,8 +96,13 @@ const PageSchema = new Schema({
 	}
 });
 
-export type MetaDropdownType = HydratedSingleSubdocument<InferSchemaType<typeof MetaDropdownSchema>>;
-export type PageType = HydratedDocument<InferSchemaType<typeof PageSchema>>;
+export type MetaDropdownType = InferSchemaType<typeof MetaDropdownSchema>;
+export type PageSubDocsType = {
+	templatesIds: TemplatesType[];
+	meta: MetaDropdownType;
+}
+export type PageNoSubdocsType = Omit<InferSchemaType<typeof PageSchema>, 'templatesIds' | 'meta'>;
+export type PageType = HydratedDocument<PageNoSubdocsType & PageSubDocsType>;
 
 const Page =
 	mongoose.models?.Page || mongoose.model('Page', PageSchema, 'pages');

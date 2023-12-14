@@ -17,9 +17,9 @@ const ImageSlider = ({
 	startingIndex
 }: {
 	images: AssetsType[];
-	height: number;
-	padding: number;
-	startingIndex: number;
+	height?: number;
+	padding?: number;
+	startingIndex?: number;
 }) => {
 	const desktop = useBreakpointValue(
 		{
