@@ -12,7 +12,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router';
 import Logout from './Logout';
 
-const AdminHeader = ({ title }: { title: string; }) => {
+const AdminHeader = ({ title }: { title?: string; }) => {
 	const [loggedIn, setLoggedIn] = useState(false)
 	const router = useRouter();
 	const desktop = useBreakpointValue(
