@@ -64,6 +64,7 @@ const AdminHeader = ({ title }: { title?: string; }) => {
 					spacing='1.5rem'
 				>
 					<Text
+						fontSize='1.5rem'
 						sx={{
 							'a:hover': {
 								color: 'lightgray'
