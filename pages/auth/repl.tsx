@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import dbConnect from '../../lib/mongodb';
 import jwt from 'jsonwebtoken'
 import { GetServerSideProps, NextPage } from 'next';
@@ -12,18 +12,16 @@ import {
 	Button,
 	useTheme,
 	Code,
-	Heading
+	Heading,
+	Spinner,
+	Flex
 } from '@chakra-ui/react';
 import {
 	Formik
 } from 'formik';
-import dynamic from 'next/dynamic';
 import beautify from 'json-beautify';
 import Head from 'next/head';
-const AceEditor = dynamic(
-	() => import('../../util/components/util/ace_editor'),
-	{ ssr: false }
-)
+import Editor from '@monaco-editor/react';
 type CodeEditorType = {
 	codeString: string;
 }
@@ -37,6 +35,8 @@ type ReplWindowPropType = {
 const ReplWindow: NextPage<ReplWindowPropType> = ({}) => {
 	let [result, setResult] = useState('');
 	let [error, setError] = useState('');
+	let [loading, setLoading] = useState(false);
+	const editorRef = useRef(null);
 	let [codeString, setCodeString] = useState('');
 	const theme = useTheme()
 	const codeEditorInitVals:
@@ -48,6 +48,10 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({}) => {
 			username: '',
 			password: ''
 		}
+
+	function handleEditorDidMount(editor: any, monaco: any) {
+		editorRef.current = editor;
+	}
 	return (
 		<>
 			<Head>
@@ -65,6 +69,7 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({}) => {
 						<Formik
 							initialValues={codeEditorInitVals}
 							onSubmit={async (values, actions) => {
+								setLoading(true);
 								const res = await fetch('/api/auth/repl', {
 									method: 'POST',
 									body: JSON.stringify({ codeString }),
@@ -75,9 +80,11 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({}) => {
 								})
 								if (res.ok) {
 									const { finalResult } = await res.json()
+									setLoading(false);
 									setResult(finalResult)
 								} else {
 									const { error } = await res.json()
+									setLoading(false);
 									setError(error)
 								}
 							}}
@@ -86,16 +93,31 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({}) => {
 								<form
 									onSubmit={props.handleSubmit}
 								>
-									<AceEditor
-										style={{ width: '100%'}}
-										mode='javascript'
-										setCodeString={setCodeString}
-										name='codeString'
-										editorProps={{ $blockScrolling: true }}
-										enableBasicAutocompletion
-										fontSize={'1rem'}
-									/>
-									<Button type='submit' mt={'5%'}>Submit</Button>
+									<Box
+										height='600px'
+										outline='.1px solid gray'
+										padding='.5rem'
+										borderRadius='1%'
+									>
+										<Editor
+											height='100%'
+
+											defaultLanguage='javascript'
+											defaultValue='// Monaco editor (powers VS Code)'
+											onMount={handleEditorDidMount}
+											onChange={() => {
+												//@ts-expect-error
+												setCodeString(editorRef?.current?.getValue())
+											}}
+										/>
+									</Box>
+									<Flex
+										alignContent='center'
+										my='2rem'
+									>
+										<Button isDisabled={loading} type='submit'>Submit</Button>
+										{loading && <Spinner my='auto' ml='1rem' />}
+									</Flex>
 									{error && <Text fontSize='1.1rem' color='red' my='1rem'>{`Server Error: ${error}`}</Text>}
 									<Text fontSize='1.2rem' my='1rem'>All mongoose models available in "models". Use Mongoose/Javascript as you normally would.</Text>
 									<Text fontSize='1.5rem' my='1rem'>Examples</Text>
