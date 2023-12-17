@@ -238,6 +238,11 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({ editorTheme, adminId }) => {
 							overflowY={'auto'}
 							padding={'2%'}
 							overscrollBehavior='none'
+							sx={{
+								'pre': {
+									border: 'none !important'
+								}
+							}}
 						>
 							<pre className='prettyprint'>
 								<code className='language-javascirpt'>
