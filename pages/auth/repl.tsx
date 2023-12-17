@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import dbConnect from '../../lib/mongodb';
 import jwt from 'jsonwebtoken'
 import { GetServerSideProps, NextPage } from 'next';
@@ -14,7 +14,8 @@ import {
 	Code,
 	Heading,
 	Spinner,
-	Flex
+	Flex,
+	Select
 } from '@chakra-ui/react';
 import {
 	Formik
@@ -22,6 +23,7 @@ import {
 import beautify from 'json-beautify';
 import Head from 'next/head';
 import Editor from '@monaco-editor/react';
+import { kebabCase } from 'lodash';
 type CodeEditorType = {
 	codeString: string;
 }
@@ -31,12 +33,28 @@ type AdminLoginType = {
 }
 type ReplWindowPropType = {
 	loggedIn: boolean;
+	editorTheme: string;
+	adminId: string;
 }
-const ReplWindow: NextPage<ReplWindowPropType> = ({}) => {
+const ReplWindow: NextPage<ReplWindowPropType> = ({ editorTheme, adminId }) => {
 	let [result, setResult] = useState('');
 	let [error, setError] = useState('');
 	let [loading, setLoading] = useState(false);
+	let [themeStr, setThemeStr] = useState(editorTheme);
+	const themeStrArr = [
+		'Active4D',
+		'Monokai',
+		'Monokai Bright',
+		'Birds of Paradise',
+		'Clouds Midnight',
+		'GitHub Dark',
+		'GitHub Light',
+		'GitHub',
+		'monoindustrial',
+		'Textmate (Mac Classic)'
+	];
 	const editorRef = useRef(null);
+	const monacoRef = useRef(null);
 	let [codeString, setCodeString] = useState('');
 	const theme = useTheme()
 	const codeEditorInitVals:
@@ -50,19 +68,45 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({}) => {
 		}
 
 	function handleEditorDidMount(editor: any, monaco: any) {
+		import(`monaco-themes/themes/${themeStr}.json`)
+			.then(data =>{
+				const theme = kebabCase(themeStr.split('.')[0].toLowerCase());
+				monaco.editor.defineTheme(theme, {...data, base: 'hc-black'})
+				monaco.editor.setTheme(theme)
+			})
 		editorRef.current = editor;
+		monacoRef.current = monaco;
 	}
+	useEffect(() => {
+		handleSetTheme()
+		async function handleSetTheme() {
+			if (monacoRef.current) {
+				import(`monaco-themes/themes/${themeStr}.json`)
+					.then(data =>{
+						console.log(data)
+						const theme = kebabCase(themeStr.split('.')[0].toLowerCase());
+						//@ts-expect-error
+						monacoRef.current?.editor?.defineTheme(theme, data)
+						//@ts-expect-error
+						monacoRef.current?.editor?.setTheme(theme)
+					})
+			}
+		}
+	}, [themeStr])
+
 	return (
 		<>
 			<Head>
 				<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 			</Head>
 			<Heading fontSize='1.5rem' m='3rem' textDecoration={'underline'}><Link href={'/admin/manage-pages'}>Back to Manage Pages</Link></Heading>
-			<Center>
+			<Center
+				maxW='1200px'
+				m='0 auto'
+			>
 				<Grid
-					gridTemplateColumns={'1.5fr 1fr'}
+					gridTemplateColumns={'1.15fr 1fr'}
 					gap={'5%'}
-					width={'90%'}
 					my='3rem'
 				>
 					<Box>
@@ -93,6 +137,39 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({}) => {
 								<form
 									onSubmit={props.handleSubmit}
 								>
+									<Select
+										onChange={async (e) => {
+											setThemeStr(e.target.value)
+											const res = await fetch('/api/handle_update_admin_theme', {
+												method: 'PUT',
+												headers: {
+													Accept: 'application/json',
+													'Content-Type': 'application/json'
+												},
+												body: JSON.stringify({
+													editorTheme: e.target.value,
+													adminId
+												})
+											});
+											if (!res.ok) {
+												const { errorMessage } = await res.json();
+												console.log(`Update admin theme failed: ${errorMessage}`);
+											}
+										}}
+										placeholder='Choose Theme'
+										value={themeStr}
+										width='30%'
+										position='relative'
+										top='-1rem'
+										fontSize='.8rem'
+										height='1.5rem'
+									>
+										{
+											themeStrArr.map(str => {
+												return <option key={str} value={str}>{str}</option>
+											})
+										}
+									</Select>
 									<Box
 										height='600px'
 										outline='.1px solid gray'
@@ -101,7 +178,6 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({}) => {
 									>
 										<Editor
 											height='100%'
-
 											defaultLanguage='javascript'
 											defaultValue='// Monaco editor (powers VS Code)'
 											onMount={handleEditorDidMount}
@@ -155,7 +231,6 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({}) => {
 					<Box>
 						<Text fontSize='1.5rem'>Results</Text>
 						<Box
-							width='800px'
 							height='800px'
 							outline='.1px solid black'
 							borderRadius='1%'
@@ -194,7 +269,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	if (authenticated) {
 		return {
 			props: {
-				admin: !!authenticated
+				admin: !!authenticated,
+				editorTheme: authenticated.editorTheme,
+				adminId: authenticated._id.toString()
 			}
 		};
 	} else {

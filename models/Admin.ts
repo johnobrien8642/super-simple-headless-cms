@@ -32,6 +32,16 @@ const adminSchema = new Schema({
 			type: String,
 			required: true
 		},
+		editorTheme: {
+			type: String,
+			default: 'Monokai',
+			required: true
+		},
+		editorContrast: {
+			type: String,
+			default: 'vs',
+			required: true
+		},
 		// superAdmin: {
 		// 	type: Boolean,
 		// 	required: true
