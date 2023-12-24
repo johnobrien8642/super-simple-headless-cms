@@ -88,6 +88,7 @@ const ManagePages: NextPage<{}> = () => {
 			>
 				<AdminHeader title='Manage Pages' />
 				<Button
+					m='1rem 2rem'
 					onClick={() => {
 						setTopLevelModal(true);
 						setData(dataInitialValue);

@@ -13,41 +13,47 @@ export type SlugPropsType = {
 }
 
 const Home: NextPage<SlugPropsType> = ({ pageManager, page }) => {
-	const pPage: PageType = JSON.parse(page);
-	const pPageManager: PageManagerType = JSON.parse(pageManager);
-
-	return (
-		<>
-			<Head>
-				<title>{pPage?.meta?.metaTitle}</title>
-				<meta
-					name="description"
-					content={pPage?.meta?.metaDescription as string}
+	if (!pageManager) {
+		return <></>
+	} else {
+		const pPage: PageType = JSON.parse(page);
+		const pPageManager: PageManagerType = JSON.parse(pageManager);
+		return (
+			<>
+				<Head>
+					<title>{pPage?.meta?.metaTitle}</title>
+					<meta
+						name="description"
+						content={pPage?.meta?.metaDescription as string}
+					/>
+					<link rel="canonical" href='https://www.johneobrien.com' />
+					<link rel="icon" type="image/icon" href="/icons8-book-ios-16-16.png" />
+				</Head>
+				<Header
+					pages={pPageManager.pageIds}
 				/>
-				<link rel="canonical" href='https://www.johneobrien.com' />
-				<link rel="icon" type="image/icon" href="/icons8-book-ios-16-16.png" />
-			</Head>
-			<Header
-				pages={pPageManager.pageIds}
-			/>
-			<Templates templates={pPage.templatesIds} />
-		</>
-	);
+				<Templates templates={pPage.templatesIds} />
+			</>
+		);
+	}
 }
 
-export const getStaticPaths= async () => {
+export const getStaticPaths = async () => {
 	await connectDb();
 	const pageManager =
 		await PageManager
 			.find({ title: 'manage-pages' })
 				.populate('pageIds')
-	const paths = pageManager[0].pageIds.map((obj: PageType) => {
-		return {
-			params: {
-				slug: [ obj.folderHref.substring(1) ]
+	let paths: any = [];
+	if (pageManager) {
+		pageManager?.[0]?.pageIds.map((obj: PageType) => {
+			return {
+				params: {
+					slug: [ obj.folderHref.substring(1) ]
+				}
 			}
-		}
-	})
+		});
+	}
 	return {
 		paths,
 		fallback: false
@@ -56,10 +62,10 @@ export const getStaticPaths= async () => {
 
 export const getStaticProps: GetStaticProps<SlugPropsType> = async (context) => {
 	await connectDb();
-	const pageManager = await PageManager.find({}).populate('pageIds');
+	const pageManager = await PageManager.findOne({}).populate('pageIds');
 	const page =
 		await Page
-			.find({ folderHref: context.params?.slug?.[0] ? `/${context.params?.slug[0]}` : '/' })
+			.findOne({ folderHref: context.params?.slug?.[0] ? `/${context.params?.slug[0]}` : '/' })
 				.populate([
 					{
 						path: 'templatesIds',
@@ -76,13 +82,21 @@ export const getStaticProps: GetStaticProps<SlugPropsType> = async (context) => 
 						],
 					}
 				])
-
-	return {
-		props: {
-			pageManager: JSON.stringify(pageManager[0]),
-			page: JSON.stringify(page[0])
-		}
-	};
+	if (!pageManager || !page) {
+		return {
+			redirect: {
+				permanent: false,
+				destination: "/admin",
+			}
+		};
+	} else {
+		return {
+			props: {
+				pageManager: JSON.stringify(pageManager),
+				page: JSON.stringify(page)
+			}
+		};
+	}
 }
 
 export default Home;

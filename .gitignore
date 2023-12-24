@@ -37,4 +37,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+data
+doc
+
 # End of https://www.toptal.com/developers/gitignore/api/nextjs

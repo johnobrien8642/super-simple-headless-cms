@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connectDb from '../../lib/mongodb.js';
+import Page from '../../models/Page';
 import PageManager, { HydratedPageManagerType } from '../../models/PageManager';
 export const config = {
 	api: {
@@ -11,10 +12,20 @@ export const config = {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	await connectDb();
-	let pageManager = await PageManager.findOne({ title: 'manage-pages'}).populate('pageIds');
-
+	let pageManager = await PageManager.findOne({ title: 'manage-pages' }).populate('pageIds');
+	let page;
 	if (!pageManager) {
-		pageManager = await new PageManager({ title: 'manage-pages' }).save()
+		page = await new Page({
+			title: '',
+			folderHref: '/',
+			description: '',
+			templatesIds: [],
+			meta: {
+				metaTitle: '',
+				metaDescription: ''
+			}
+		}).save()
+		pageManager = await new PageManager({ title: 'manage-pages', pageIds: [page._id] }).save().then((pg: HydratedPageManagerType) => pg.populate('pageIds'))
 	}
 
 	if (req.method === 'PUT') {
