@@ -12,13 +12,25 @@ export const config = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	await connectDb();
 	const { name, type } = req.body;
-	const s3 = new aws.S3({
-		accessKeyId: process.env.NEXT_PUBLIC_MY_AWS_ACCESS_KEY,
-		secretAccessKey: process.env.NEXT_PUBLIC_MY_AWS_SECRET_ACCESS_KEY,
-		signatureVersion: 'v4',
-		region: 'us-west-1'
-	})
-
+	let s3InitObj;
+	if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DOCKER === 'true') {
+		s3InitObj = {
+			endpoint: process.env.NEXT_PUBLIC_CLOUDFRONT_URL,
+			s3ForcePathStyle: true,
+			accessKeyId: 'test',
+			secretAccessKey: 'test',
+			signatureVersion: 'v4',
+			region: 'eu-central-1',
+		}
+	} else {
+		s3InitObj = {
+			accessKeyId: process.env.NEXT_PUBLIC_MY_AWS_ACCESS_KEY,
+			secretAccessKey: process.env.NEXT_PUBLIC_MY_AWS_SECRET_ACCESS_KEY,
+			signatureVersion: 'v4',
+			region: 'us-west-1'
+		}
+	}
+	const s3 = new aws.S3(s3InitObj)
 	if (req.method === 'POST') {
 		const key = Date.now() + '-' + name
 

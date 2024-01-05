@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	let blurBase64;
 	try {
 		if (data.assetKey && data.type === 'Image') {
-			const src = process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data.assetKey
+			const src = process.env.NEXT_PUBLIC_CLOUDFRONT_URL + data.assetKey;
 			const buffer = await fetch(src).then(async (res) =>
 				Buffer.from(await res.arrayBuffer())
 			);

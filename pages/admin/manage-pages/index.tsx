@@ -112,6 +112,7 @@ const ManagePages: NextPage<{}> = () => {
 					{
 						items?.map((obj, index) => {
 							return <ListFieldItem
+								key={obj._id}
 								item={obj}
 								noForm={true}
 								setItems={setItems}

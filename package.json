@@ -58,6 +58,7 @@
 				"react-slideshow-image": "^4.3.0",
 				"serialize-error": "^11.0.3",
 				"sharp": "^0.32.6",
+				"tsx": "^4.7.0",
 				"typescript": "^5.0.4"
 		},
 		"peerDependencies": {

@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   web:
     build:
@@ -11,13 +9,23 @@ services:
       - "3000:3000"
     depends_on:
       - mongo
+      - localstack
     volumes:
       - ./:/app
       - /app/node_modules
       - /app/.next
+    env_file:
+      - .env.docker
+    dns:
+      # Set the DNS server to be the LocalStack container
+      - 10.0.2.20
+    networks:
+      - ls
   mongo:
     container_name: mongo
     image: mongo:latest
+    logging:
+      driver: none
     volumes:
       - type: volume
         source: MONGO_DATA
@@ -28,11 +36,32 @@ services:
     restart: always
     ports:
       - "27017:27017"
-    logging:
-      driver: "none"
+    networks:
+      - ls
+  localstack:
+    container_name: localstack
+    build: ./docker/aws
+    ports:
+      - '4566:4566' # LocalStack endpoint
+      - '4510-4559:4510-4559' # external services port range
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    networks:
+      ls:
+        # Set the container IP address in the 10.0.2.0/24 subnet
+        ipv4_address: 10.0.2.20
 
 volumes:
   MONGO_DATA:
     name: MONGO_DATA
   MONGO_CONFIG:
     name: MONGO_CONFIG
+
+networks:
+  ls:
+    ipam:
+      config:
+        # Specify the subnet range for IP address allocation
+        - subnet: 10.0.2.0/24

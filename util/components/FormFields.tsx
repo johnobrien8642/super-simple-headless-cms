@@ -115,14 +115,14 @@ const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
 										reader.readAsDataURL(file)
 									})
 								}
-								if (!e?.currentTarget?.files) return;
-								const dataUrl = await blobToData(e.currentTarget.files[0]);
+								if (!e?.target?.files) return;
+								const dataUrl = await blobToData(e.target.files[0]);
 								setData((prev) => {
-									if (!e?.currentTarget?.files) return prev;
+									if (!e?.target?.files) return prev;
 									const newData = cloneDeep(prev);
-									newData[formTitle][obj.options.dataFormKey ?? ''] = e.currentTarget.files[0];
+									newData[formTitle][obj.options.dataFormKey ?? ''] = e.target.files[0];
 									newData[formTitle][obj.options.dataPreviewUrl ?? ''] = dataUrl;
-									newData[formTitle][obj.options.previewTypeKey ?? ''] = e.currentTarget.files[0].type;
+									newData[formTitle][obj.options.previewTypeKey ?? ''] = e.target.files[0].type;
 									return newData;
 								})
 							}

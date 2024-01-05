@@ -82,7 +82,7 @@ const AssetForm = ({}) => {
 								});
 								const data1 = await res.json()
 								const { url, key } = data1;
-								dataRef[fieldTitle] = key
+								dataRef[fieldTitle] = process.env.NEXT_PUBLIC_DOCKER === 'true' ? 'super-simple-cms/' + key : key;
 								try {
 									await axios.put(url, file, {
 										headers: {

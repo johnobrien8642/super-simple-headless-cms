@@ -77,13 +77,13 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({ editorTheme, adminId }) => {
 		editorRef.current = editor;
 		monacoRef.current = monaco;
 	}
+
 	useEffect(() => {
 		handleSetTheme()
 		async function handleSetTheme() {
 			if (monacoRef.current) {
 				import(`monaco-themes/themes/${themeStr}.json`)
 					.then(data =>{
-						console.log(data)
 						const theme = kebabCase(themeStr.split('.')[0].toLowerCase());
 						//@ts-expect-error
 						monacoRef.current?.editor?.defineTheme(theme, data)

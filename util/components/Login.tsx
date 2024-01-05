@@ -70,12 +70,13 @@ const Login = () => {
 								window.localStorage.setItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR as string, 'true');
 								router.push('/admin/manage-pages');
 							} else {
-								setLoading(false);
 								setError(error);
+								setLoading(false);
 							}
 						} else {
 							const { error } = await res.json();
 							setError(error)
+							setLoading(false);
 						}
 					}}
 				>
