@@ -267,8 +267,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		id: string;
 	} & jwt.JwtPayload
 	let decoded;
-	if (context.req.cookies.token) {
-		decoded = jwt.verify(context.req.cookies.token, process.env.NEXT_PUBLIC_SECRET_KEY!) as jwtType;
+	let token = context.req.cookies[process.env.NEXT_PUBLIC_LOGGED_IN_VAR as string];
+	if (token) {
+		decoded = jwt.verify(token, process.env.NEXT_PUBLIC_SECRET_KEY!) as jwtType;
 	}
 	const authenticated = await Admin.findById(decoded?.id);
 	if (authenticated) {

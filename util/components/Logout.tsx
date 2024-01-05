@@ -9,7 +9,7 @@ const Logout = ({}) => {
 			<Button
 				onClick={(e) => {
 					e.preventDefault();
-					Cookies.remove('token');
+					Cookies.remove(process.env.NEXT_PUBLIC_LOGGED_IN_VAR as string);
 					window.localStorage.removeItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR as string);
 					router.push('/admin');
 				}}

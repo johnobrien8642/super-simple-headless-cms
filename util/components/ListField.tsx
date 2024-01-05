@@ -73,6 +73,7 @@ const ListField = ({
 				{
 					chosenItems?.map((item, index) => {
 						return <ListFieldItem
+							key={item._id}
 							item={item}
 							title={title}
 							chosen='true'
@@ -147,6 +148,7 @@ const ListField = ({
 						})
 						?.map(item => {
 							return <ListFieldItem
+								key={item._id}
 								item={item}
 								title={title}
 								chosen='false'

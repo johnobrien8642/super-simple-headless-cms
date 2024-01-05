@@ -179,9 +179,10 @@ const ManagePages: NextPage<{}> = () => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	await connectDb();
 	let decoded;
-	if (context.req.cookies.token) {
+	let token = context.req.cookies[process.env.NEXT_PUBLIC_LOGGED_IN_VAR as string];
+	if (token) {
 		decoded = jwt.verify(
-			context.req.cookies.token,
+			token,
 			process.env.NEXT_PUBLIC_SECRET_KEY as string
 		) as { id?: string; };
 	}

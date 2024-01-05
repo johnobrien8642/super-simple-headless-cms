@@ -66,7 +66,7 @@ const Login = () => {
 							const { data: { admin, token }, error } = await res.json();
 							if (token) {
 								setLoading(false);
-								Cookies.set('token', token);
+								Cookies.set(process.env.NEXT_PUBLIC_LOGGED_IN_VAR as string, token);
 								window.localStorage.setItem(process.env.NEXT_PUBLIC_LOGGED_IN_VAR as string, 'true');
 								router.push('/admin/manage-pages');
 							} else {

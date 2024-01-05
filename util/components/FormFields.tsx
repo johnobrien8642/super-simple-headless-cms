@@ -115,14 +115,15 @@ const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
 										reader.readAsDataURL(file)
 									})
 								}
-								if (!e?.currentTarget?.files) return;
-								const dataUrl = await blobToData(e.currentTarget.files[0]);
+								if (!(e.target as HTMLInputElement)?.files) return;
+								//@ts-expect-error error is unnecessary it's handled by line above
+								const dataUrl = await blobToData((e.target as HTMLInputElement).files[0]);
 								setData((prev) => {
-									if (!e?.currentTarget?.files) return prev;
+									if (!(e.target as HTMLInputElement)?.files) return prev;
 									const newData = cloneDeep(prev);
-									newData[formTitle][obj.options.dataFormKey ?? ''] = e.currentTarget.files[0];
+									newData[formTitle][obj.options.dataFormKey ?? ''] = (e.target as HTMLInputElement)?.files?.[0];
 									newData[formTitle][obj.options.dataPreviewUrl ?? ''] = dataUrl;
-									newData[formTitle][obj.options.previewTypeKey ?? ''] = e.currentTarget.files[0].type;
+									newData[formTitle][obj.options.previewTypeKey ?? ''] = (e.target as HTMLInputElement)?.files?.[0].type;
 									return newData;
 								})
 							}
