@@ -48,6 +48,7 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
+      - './my-localstack-data:/persisted-data'
     networks:
       ls:
         # Set the container IP address in the 10.0.2.0/24 subnet

@@ -3,7 +3,7 @@
 		"scripts": {
 				"dev": "next dev",
 				"build": "next build",
-				"start": "next start",
+				"start": "docker compose up --no-attach mongo",
 				"prettier": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
 				"proxy": "lcp --proxyUrl https://www.yourdomain.ie"
 		},

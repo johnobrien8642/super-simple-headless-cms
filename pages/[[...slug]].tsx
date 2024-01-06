@@ -26,7 +26,7 @@ const Home: NextPage<SlugPropsType> = ({ pageManager, page }) => {
 						name="description"
 						content={pPage?.meta?.metaDescription as string}
 					/>
-					<link rel="canonical" href='https://www.johneobrien.com' />
+					<link rel="canonical" href='' />
 					<link rel="icon" type="image/icon" href="/icons8-book-ios-16-16.png" />
 				</Head>
 				<Header
