@@ -1,0 +1,27 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import models from '../../lib/index';
+export const config = {
+	api: {
+		bodyParser: {
+			sizeLimit: '50mb',
+		},
+	},
+}
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+	const { schema, nestedItemIds, itemType } = req.query;
+	const nestedItemIdsArr = nestedItemIds ? (nestedItemIds as string).split(',') : [];
+	const availableItems = await models[schema as string].find({ _id: { $nin: nestedItemIdsArr }, type: itemType })
+	const chosenItems = await models[schema as string].find({ _id: { $in: nestedItemIdsArr } })
+	if (availableItems && chosenItems) {
+		const orderedChosenItems = new Array(chosenItems.length);
+		let item;
+		for (let i = 0; i < chosenItems.length; i++) {
+			item = chosenItems[i];
+			orderedChosenItems.splice(nestedItemIdsArr.indexOf(item._id.toString()), 1, item)
+		}
+		return res.status(200).json({ availableItems, chosenItems: orderedChosenItems });
+	} else {
+		return res.status(401).json({ error: 'That wasnt a valid model' });
+	}
+};
