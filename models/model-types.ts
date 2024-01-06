@@ -4,15 +4,10 @@ typeof mongoose.SchemaTypes
 // ATTN: Enum key and value should match
 // template component name Pascal Cased.
 export enum TemplatesEnum {
-	ImageGrid = 'ImageGrid',
-	ImageTriptych = 'ImageTriptych',
 	PhotoList = 'PhotoList',
 	VideoPlayer = 'VideoPlayer',
-	BookCoverCTA = 'BookCoverCTA',
 	HeadlineOnlyCTA = 'HeadlineOnlyCTA',
 	TextBlock = 'TextBlock',
-	About = 'About',
-	PdfList = 'PdfList'
 }
 
 export enum AssetsEnum {
