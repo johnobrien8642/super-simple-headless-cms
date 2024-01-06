@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import Login from '../../util/components/Login';
+import Login from '../../util/components/system/Login';
 import connectDb from '../../lib/mongodb';
 import Admin from '../../models/Admin';
 import jwt from 'jsonwebtoken';
 import { Text } from '@chakra-ui/react'
-import AdminHeader from '../../util/components/AdminHeader';
+import AdminHeader from '../../util/components/system/AdminHeader';
 import { useRouter } from 'next/router';
 import { AdminType } from '../../models/Admin';
 import { GetServerSideProps, NextPage } from 'next';

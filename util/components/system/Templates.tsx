@@ -1,10 +1,10 @@
 import React from 'react';
 import { Center } from '@chakra-ui/react';
-import TemplateMap from '../TemplateMap';
+import TemplateMap from '../../TemplateMap';
 import { useSearchParams } from 'next/navigation';
-import { PageType } from '../../models/Page';
-import { TemplatesType } from '../../models/Templates';
-import { TemplatesEnum } from '../../models/model-types';
+import { PageType } from '../../../models/Page';
+import { TemplatesType } from '../../../models/Templates';
+import { TemplatesEnum } from '../../../models/model-types';
 
 const Templates = ({ templates }: { templates: TemplatesType[] }) => {
 	const searchParams = useSearchParams();

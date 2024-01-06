@@ -2,7 +2,7 @@ import React from "react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { cloneDeep } from "lodash";
-import { ManagePageFormDataType } from "../contexts/useManagePageForm";
+import { ManagePageFormDataType } from "../../contexts/useManagePageForm";
 
 const Editor = ({
 	data,

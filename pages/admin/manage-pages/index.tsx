@@ -13,13 +13,13 @@ import {
 	ModalFooter,
 	Flex,
 } from '@chakra-ui/react'
-import AdminHeader from '../../../util/components/AdminHeader';
-import PageForm from '../../../util/components/PageForm';
-import TemplateForm from '../../../util/components/TemplateForm';
-import AssetForm from '../../../util/components/AssetForm';
+import AdminHeader from '../../../util/components/system/AdminHeader.tsx';
+import PageForm from '../../../util/components/system/PageForm.tsx';
+import TemplateForm from '../../../util/components/system/TemplateForm.tsx';
+import AssetForm from '../../../util/components/system/AssetForm.tsx';
 import { useRouter } from 'next/router';
 import { ManagePageFormProvider, dataInitialValue, editItemTraceObjInitObj } from '../../../util/contexts/useManagePageForm.tsx';
-import ListFieldItem from '../../../util/components/ListFieldItem';
+import ListFieldItem from '../../../util/components/system/ListFieldItem.tsx';
 import Head from 'next/head';
 import { AllDocUnionType } from '../../../util/components/types/util_types.ts';
 import { GetServerSideProps, NextPage } from 'next';

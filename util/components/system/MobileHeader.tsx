@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 import { HamburgerIcon } from '@chakra-ui/icons';
 import MobileHeaderDrawers from "./MobileHeaderDrawers";
-import { PageType } from "../../models/Page";
+import { PageType } from "../../../models/Page";
 
 const MobileHeader = ({ pages }: { pages: PageType[] }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();

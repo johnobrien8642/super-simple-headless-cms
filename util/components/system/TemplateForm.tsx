@@ -6,7 +6,7 @@ import {
 	Heading
 } from '@chakra-ui/react';
 import FormFields from './FormFields';
-import { useManagePageForm, initialValueObj } from '../contexts/useManagePageForm';
+import { useManagePageForm, initialValueObj } from '../../contexts/useManagePageForm';
 import { cloneDeep } from 'lodash';
 
 const TemplateForm = ({}) => {

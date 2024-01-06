@@ -21,10 +21,10 @@ import {
 import { capitalize } from 'lodash';
 import ListField from './ListField';
 const Editor = dynamic(() => import('./Editor'), { ssr: false });
-import { useManagePageForm } from '../contexts/useManagePageForm';
-import { templateOptions, assetTypes, textAlignOptions } from '../../template_options';
+import { useManagePageForm } from '../../contexts/useManagePageForm';
+import { templateOptions, assetTypes, textAlignOptions } from '../../../template_options';
 import { cloneDeep, get, set, startCase } from 'lodash';
-import { OptionsType } from '../../models/model-types';
+import { OptionsType } from '../../../models/model-types';
 
 const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
 	const [fields, setFields] = useState<[string, any][] | undefined>(fieldArr);
