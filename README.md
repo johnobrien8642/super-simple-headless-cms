@@ -1,76 +1,96 @@
-## Example app using MongoDB
+## Welcome to Super Simple CMS!
 
-[MongoDB](https://www.mongodb.com/) is a general purpose, document-based, distributed database built for modern application developers and for the cloud era. This example will show you how to connect to and use MongoDB as your backend for your Next.js app.
+Super Simple CMS is exactly what it sounds like... a Super Simple CMS! Do you need a Super Simple CMS that's simple enough for one person to manage but still complex enough to handle
+semi-complex state and diverse asset management paired with a powerful global CDN... well, guess what, with Super Simple CMS, that's what you get!
 
-If you want to learn more about MongoDB, visit the following pages:
+A Next.js app utilizing ChakraUI, powered by MongoDB and Mongoose ODM, with asset management handled by AWS S3 and support for CloudFront CDN built-in.
 
-- [MongoDB Atlas](https://mongodb.com/atlas)
-- [MongoDB Documentation](https://docs.mongodb.com/)
+## Quick Start
 
-## Deploy your own
+If you haven't already, install the latest versions of docker and docker compose.
+For WSL users, make sure you have docker-compose-plugin installed. Make sure to create a docker group and add yourself as a user if you haven't already, docs here: https://docs.docker.com/engine/install/linux-postinstall/
 
-Once you have access to the environment variables you'll need, deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+Then:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb&project-name=with-mongodb&repository-name=with-mongodb&env=MONGODB_URI&envDescription=Required%20to%20connect%20the%20app%20with%20MongoDB)
+1. Clone this repo
+2. From the root of the project, run `npm start`
+3. Go to http://localhost:3000/admin and create your first admin
 
-## How to use
+https://localhost:3000 is your homepage... and that's it! That's all you need to do to get started.
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+## Quick Summary
 
-```bash
-npx create-next-app --example with-mongodb with-mongodb-app
-# or
-yarn create next-app --example with-mongodb with-mongodb-app
+Super Simple CMS is built on a Page -> Template -> Asset model. You create Pages that have Templates that are filled with Assets. You can either
+update existing pages or create new ones. Drag and drop to rearrange order.
+
+- Note: Super Simple CMS is so simple currently that it doesn't have nested pages, but this could be easily added in the future.
+
+When you add a page, it'll be automatically added to the Navbar if you don't toggle "Show In Navigation" to false.
+
+## Adding a New Template
+
+This is what you're here for, the thing that makes building a web page with a lot of content quick and easy to do. You can do anything that a React template
+can possibly do. The limits are only your own imagination... and the constraints of this particular framework of course!
+
+To add a Template:
+
+1. Go to util/components/templates
+2. Add your new Template component, standard PascalCased
+3. Go to models/model-types.ts
+4. Add your new Template component name to the TemplatesEnum, enum key PascalCased, enum value the same as the key but as a string, PascalCased
+5. That's it! Find your new Template as an option in the Templates form.
+
+## Adding/Deleting/Modifying Form Fields
+
+The Form Fields in the Page, Templates, and Assets Forms are powered by Mongoose! You can add, remove, update, or re-arrange forms by simply
+updating the corresponding Mongoose model.
+
+Mongoose fields supported by FormFields.tsx:
+1. Subdocuments (single nested)
+2. String (with built-in support for enum restriction, see "type" as an example)
+3. Boolean
+4. Number
+5. Custom Schema, single nested (see Page.ts -> meta field for an example)
+
+- Note: Form Fields are resolved by the FormFields.tsx component. This will also be a place to visit for debugging if changes aren't immediately working.
+
+How to add a new field:
+1. Add a standard supported Mongoose field as you normally would.
+2. Reference OptionsType in models/model-types.ts for all built-in "options" These can be added to the `optionsObj` at the top of each model and then destructed into the field. Reference the existing pattern.
+
+- Note: The Context Provider value type for Forms are automatically generated. If you want to add a currently unsupported type, you'll need to also remember to add a resolution in contexts/util/context_util.ts.
+
+## Managing Database Data
+
+But hey, whenever you're updating Templates, or doing custom data or Template work, invariably at some point you'll need to update or manage the data, so doing all this would be pointless... if you didn't have
+an easy to use Repl window!
+
+1. In /admin/manage-pages, click "Repl", or navigate to /auth/repl manually.
+2. Follow the simple instructions and examples for using Mongoose to interact with your database.
+
+That's it! Do anything you can do with Mongoose and Javascript right in your Repl window!
+
+## Going Live
+
+To use Super Simple CMS, you'll need a working knowledge of AWS S3, IAM roles, and Cloudfront. You'll also need a MongoDB Atlas URI.
+
+- Note: Super Simple CMS uses localstack--an AWS emulator--as a docker image in the docker container. This removes the need to connect to AWS during development, but you can still do that if you'd like by setting up the environment variables below in an `.env.local` file and running `npm run dev`. You'll need to connect to AWS and MongoDB Atlas. You can do this if you'd like to test all of your connections locally before going live.
+
+- S3 with IAM Role Walkthrough: https://docs.aws.amazon.com/AmazonS3/latest/userguide/walkthrough1.html
+- Cloudfront for S3 Guide: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/GettingStarted.SimpleDistribution.html
+- MongoDB Atlas DB Create Docs: https://www.mongodb.com/basics/create-database
+
+It's recommended to deploy this app to Vercel. On Vercel, you'll want to add the following environment variables:
+
+```
+NEXT_PUBLIC_URL=[Your public domain URL] // Your public domain URL, used to hit the /api from the server
+NEXT_PUBLIC_CLOUDFRONT_URL=[Your cloudfront url] // Will be generated as part of your CloudFront distribution
+NEXT_PUBLIC_SECRET_KEY=[Your secret key] // Used to sign your jsonwebtoken used for authenticating
+NEXT_PUBLIC_MY_AWS_SECRET_ACCESS_KEY=[Your AWS Secret Access Key] // Comes from IAM role
+NEXT_PUBLIC_MY_AWS_ACCESS_KEY=[Your AWS Access Key] // Comes from IAM role
+NEXT_PUBLIC_S3_BUCKET_NAME=[Your S3 Bucket Name] // Important, must match what you created in AWS exactly
+MONGODB_URI=[Your MongoDB Atlas SRV connection string] // Get this from your MongoDB Atlas db, click "Connect", and then "Compass", follow the instructions for adding your password to the srv string, copy the srv string here
+NEXT_PUBLIC_LOGGED_IN_VAR=[Your logged in var] // Just needs to be semi-unique, use your site name for example, like "myCoolSite-logged-in". Used for browser auth tokens, etc.
+NEXT_PUBLIC_DOCKER='false'
 ```
 
-## Configuration
-
-### Set up a MongoDB database
-
-Set up a MongoDB database either locally or with [MongoDB Atlas for free](https://mongodb.com/atlas).
-
-### Set up environment variables
-
-Copy the `env.local.example` file in this directory to `.env.local` (which will be ignored by Git):
-
-```bash
-cp .env.local.example .env.local
-```
-
-Set each variable on `.env.local`:
-
-- `MONGODB_URI` - Your MongoDB connection string. If you are using [MongoDB Atlas](https://mongodb.com/atlas) you can find this by clicking the "Connect" button for your cluster.
-
-### Run Next.js in development mode
-
-```bash
-npm install
-npm run dev
-
-# or
-
-yarn install
-yarn dev
-```
-
-Your app should be up and running on [http://localhost:3000](http://localhost:3000)! If it doesn't work, post on [GitHub discussions](https://github.com/vercel/next.js/discussions).
-
-You will either see a message stating "You are connected to MongoDB" or "You are NOT connected to MongoDB". Ensure that you have provided the correct `MONGODB_URI` environment variable.
-
-When you are successfully connected, you can refer to the [MongoDB Node.js Driver docs](https://mongodb.github.io/node-mongodb-native/3.4/tutorials/collections/) for further instructions on how to query your database.
-
-## Deploy on Vercel
-
-You can deploy this app to the cloud with [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
-
-#### Deploy Your Local Project
-
-To deploy your local project to Vercel, push it to GitHub/GitLab/Bitbucket and [import to Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example).
-
-**Important**: When you import your project on Vercel, make sure to click on **Environment Variables** and set them to match your `.env.local` file.
-
-#### Deploy from Our Template
-
-Alternatively, you can deploy using our template by clicking on the Deploy button below.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb&project-name=with-mongodb&repository-name=with-mongodb&env=MONGODB_URI,MONGODB_DB&envDescription=Required%20to%20connect%20the%20app%20with%20MongoDB)
