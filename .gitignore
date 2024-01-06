@@ -40,6 +40,6 @@ next-env.d.ts
 data
 doc
 
-my-localstack-data
+/my-localstack-data
 
 # End of https://www.toptal.com/developers/gitignore/api/nextjs
