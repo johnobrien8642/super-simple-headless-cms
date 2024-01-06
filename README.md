@@ -16,7 +16,22 @@ Then:
 2. From the root of the project, run `npm start`
 3. Go to http://localhost:3000/admin and create your first admin
 
-https://localhost:3000 is your homepage... and that's it! That's all you need to do to get started.
+http://localhost:3000 is your homepage... and that's it! That's all you need to do to get started.
+
+There are a few example Templates that have been left in the base repo. Try adding a Photo List Template to the root `/` page:
+1. In /admin/manage-pages, click the "edit" button for the `/` page.
+2. Find "Create New Templates" button, click.
+3. Select "Photo List" type.
+4. Find "Create New Assets", click.
+5. Select "Image" type.
+6. Choose your image file.
+7. Add any title or description text that you'd like.
+8. Click "Save", you'll be taken back to the Template, your new Asset has been automatically added to the Template "Assets".
+9. Click "Save" again, you'll be taken back to the `/` page, your new Template has been automatically added to the Page "Templates".
+10. Click "Update", you'll be taken back to manage-pages.
+11. Visit the root home page at `http://localhost:3000` and see your asset displayed!
+
+To add a new page, simply select "Create New Page" in /admin/manage-pages and repeat the above process for any Template and Asset. You'll see your new Page added to the Navbar. Try it out!
 
 ## Quick Summary
 
@@ -34,11 +49,13 @@ can possibly do. The limits are only your own imagination... and the constraints
 
 To add a Template:
 
-1. Go to util/components/templates
-2. Add your new Template component, standard PascalCased
-3. Go to models/model-types.ts
-4. Add your new Template component name to the TemplatesEnum, enum key PascalCased, enum value the same as the key but as a string, PascalCased
-5. That's it! Find your new Template as an option in the Templates form.
+1. Go to util/components/templates.
+2. Add your new Template component, standard PascalCased.
+3. Go to models/model-types.ts.
+4. Add your new Template component name to the TemplatesEnum, enum key PascalCased, enum value the same as the key but as a string, PascalCased.
+5. Go to util/TemplateMap.tsx.
+6. Import your new Template, add it to the TemplateMap with the component name stringified as a key.
+7. That's it! Find your new Template as an option in the Templates form and add the Template to any page.
 
 ## Adding/Deleting/Modifying Form Fields
 
