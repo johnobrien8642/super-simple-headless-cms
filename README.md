@@ -18,7 +18,7 @@ Then:
 
 http://localhost:3000 is your homepage... and that's it! That's all you need to do to get started.
 
-There are a few example Templates that have been left in base repo. Try adding a Photo List Template to the root `/` page:
+There are a few example Templates that have been left in the base repo. Try adding a Photo List Template to the root `/` page:
 1. In /admin/manage-pages, click the "edit" button for the `/` page.
 2. Find "Create New Templates" button, click.
 3. Select "Photo List" type.
