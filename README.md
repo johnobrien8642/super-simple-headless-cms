@@ -75,14 +75,14 @@ Mongoose fields supported by FormFields.tsx:
 
 How to add a new field:
 1. Add a standard supported Mongoose field as you normally would.
-2. Reference OptionsType in models/model-types.ts for all built-in "options" These can be added to the `optionsObj` at the top of each model and then destructed into the field. Reference the existing pattern.
+2. Reference OptionsType in models/model-types.ts for all built-in "options" These can be added to the `optionsObj` at the top of each model and then destructured into the field. Reference the existing pattern.
 
 - Note: The Context Provider value type for Forms are automatically generated. If you want to add a currently unsupported type, you'll need to also remember to add a resolution in contexts/util/context_util.ts.
 
 ## Managing Database Data
 
 But hey, whenever you're updating Templates, or doing custom data or Template work, invariably at some point you'll need to update or manage the data, so doing all this would be pointless... if you didn't have
-an easy to use Repl window!
+an easy-to-use Repl window!
 
 1. In /admin/manage-pages, click "Repl", or navigate to /auth/repl manually.
 2. Follow the simple instructions and examples for using Mongoose to interact with your database.
