@@ -57,6 +57,8 @@ To add a Template:
 6. Import your new Template, add it to the TemplateMap with the component name stringified as a key.
 7. That's it! Find your new Template as an option in the Templates form and add the Template to any page.
 
+- Bonus: When you figure out exactly what Assets fields will be used in your new Template, you can go to models/Assets and add your component name as a stringed key with a value of 1 to the `templates` object option field. This will cause the field label to be highlighted blue in the form, helping you see what Assets fields are used for a given Template.
+
 ## Adding/Deleting/Modifying Form Fields
 
 The Form Fields in the Page, Templates, and Assets Forms are powered by Mongoose! You can add, remove, update, or re-arrange forms by simply
