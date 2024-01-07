@@ -75,7 +75,7 @@ Mongoose fields supported by FormFields.tsx:
 
 How to add a new field:
 1. Add a standard supported Mongoose field as you normally would.
-2. Reference OptionsType in models/model-types.ts for all built-in "options" These can be added to the `optionsObj` at the top of each model and then destructured into the field. Reference the existing pattern.
+2. Reference OptionsType in models/model-types.ts for all built-in "options" These can be added to the `optionsObj` at the top of each model and then spread into the field. Reference the existing pattern.
 
 - Note: The Context Provider value type for Forms are automatically generated. If you want to add a currently unsupported type, you'll need to also remember to add a resolution in contexts/util/context_util.ts.
 
