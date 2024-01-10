@@ -8,7 +8,7 @@ A Next.js app utilizing ChakraUI, powered by MongoDB and Mongoose ODM, with asse
 ## Quick Start
 
 If you haven't already, install the latest versions of docker and docker compose.
-For WSL users, make sure you have docker-compose-plugin installed. Make sure to create a docker group and add yourself as a user if you haven't already, docs here: https://docs.docker.com/engine/install/linux-postinstall/
+For WSL users, make sure you have docker-compose-plugin installed. Make sure to create a docker group and add yourself as a user if you haven't already, docs here: https://docs.docker.com/engine/install/linux-postinstall/ Make sure to login. If you're getting "pass store is not initialized", try this solution: https://stackoverflow.com/a/73558624/13836220 
 
 Then:
 
