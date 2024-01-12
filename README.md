@@ -13,7 +13,7 @@ For WSL users, make sure you have docker-compose-plugin installed. Make sure to 
 Then:
 
 1. Clone this repo
-3. From the root of the project, and then `npm start`
+3. From the root of the project, and then `npm docker`
 4. Go to http://localhost:3000/admin and create your first admin
 
 http://localhost:3000 is your homepage... and that's it! That's all you need to do to get started.
@@ -94,8 +94,6 @@ That's it! Do anything you can do with Mongoose and Javascript right in your Rep
 ## Going Live
 
 To use Super Simple CMS, you'll need a working knowledge of AWS S3, IAM roles, and Cloudfront. You'll also need a MongoDB Atlas URI.
-
-**IMPORTANT:** You **must** redeploy your app manually after creating your first admin. SSCMS initializes the first page when you do this, so you need to redeploy to build the first page the first time.
 
 - Note: Super Simple CMS uses localstack--an AWS emulator--as a docker image in the docker container. This removes the need to connect to AWS during development, but you can still do that if you'd like by setting up the environment variables below in an `.env.local` file and running `npm run dev`. You'll need to connect to AWS and MongoDB Atlas. You can do this if you'd like to test all of your connections locally before going live.
 
