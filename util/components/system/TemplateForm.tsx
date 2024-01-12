@@ -76,7 +76,7 @@ const TemplateForm = ({}) => {
 								setFormSelected(prev => {
 									const newData = cloneDeep(prev);
 									newData.update = newData.editItemTraceObj['Page'] ? 'Page' : '';
-									editItemTraceObj['Templates'] = '';
+									newData.editItemTraceObj['Templates'] = '';
 									newData.loading = false;
 									return newData;
 								});
