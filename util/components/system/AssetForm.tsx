@@ -7,8 +7,8 @@ import {
 } from '@chakra-ui/react'
 import axios from 'axios';
 import FormFields from './FormFields';
-import { initialValueObj, useManagePageForm, FormSelectedType, ManagePageFormDataType, dataInitialValue } from '../contexts/useManagePageForm';
-import { OptionsType } from '../../models/model-types';
+import { initialValueObj, useManagePageForm, FormSelectedType, ManagePageFormDataType, dataInitialValue } from '../../contexts/useManagePageForm';
+import { OptionsType } from '../../../models/model-types';
 import { cloneDeep } from 'lodash';
 
 const AssetForm = ({}) => {
