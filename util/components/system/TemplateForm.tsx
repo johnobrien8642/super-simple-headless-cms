@@ -6,7 +6,7 @@ import {
 	Heading
 } from '@chakra-ui/react';
 import FormFields from './FormFields';
-import { useManagePageForm, initialValueObj } from '../../contexts/useManagePageForm';
+import { useManagePageForm, initialValueObj } from '../contexts/useManagePageForm';
 import { cloneDeep } from 'lodash';
 
 const TemplateForm = ({}) => {
@@ -56,11 +56,9 @@ const TemplateForm = ({}) => {
 							const { templateId } = resData;
 							setData(prev => {
 								const newData = cloneDeep(prev);
-								if (!formSelected.editItemTraceObj['Templates']) {
-									newData['Page'].templatesIds.push(templateId);
-								}
 								newData['Templates'] = initialValueObj['Templates'];
-								if (saveType === 'Save') {
+								if (saveType === 'Save' && !formSelected.editItemTraceObj['Templates']) {
+									newData['Page'].templatesIds.push(templateId);
 									setFormSelected(prev => {
 										const newData = cloneDeep(prev);
 										newData.formTitle = 'Page';
