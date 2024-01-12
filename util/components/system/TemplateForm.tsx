@@ -57,8 +57,10 @@ const TemplateForm = ({}) => {
 							setData(prev => {
 								const newData = cloneDeep(prev);
 								newData['Templates'] = initialValueObj['Templates'];
-								if (saveType === 'Save' && !formSelected.editItemTraceObj['Templates']) {
+								if (!formSelected.editItemTraceObj['Templates']) {
 									newData['Page'].templatesIds.push(templateId);
+								}
+								if (saveType === 'Save') {
 									setFormSelected(prev => {
 										const newData = cloneDeep(prev);
 										newData.formTitle = 'Page';
