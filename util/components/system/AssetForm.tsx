@@ -117,8 +117,10 @@ const AssetForm = ({}) => {
 							setData(prev => {
 								const newData = cloneDeep(prev);
 								newData['Assets'] = initialValueObj['Assets'];
-								if (saveType === 'Save' && !formSelected.editItemTraceObj['Assets']) {
+								if (!formSelected.editItemTraceObj['Assets']) {
 									newData['Templates'].assetsIds.push(savedAssetId)
+								}
+								if (saveType === 'Save') {
 									setFormSelected(prev => {
 										const newData = cloneDeep(prev);
 										newData.formTitle = 'Templates';
