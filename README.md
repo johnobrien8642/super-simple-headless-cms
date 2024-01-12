@@ -13,10 +13,12 @@ For WSL users, make sure you have docker-compose-plugin installed. Make sure to 
 Then:
 
 1. Clone this repo
-2. From the root of the project, run `npm start`
-3. Go to http://localhost:3000/admin and create your first admin
+3. From the root of the project, and then `npm start`
+4. Go to http://localhost:3000/admin and create your first admin
 
 http://localhost:3000 is your homepage... and that's it! That's all you need to do to get started.
+
+**NOTE:** You will need to have node and npm installed locally to develop. After you install these, from the root of the repo, run `npm install`.
 
 There are a few example Templates that have been left in the base repo. Try adding a Photo List Template to the root `/` page:
 1. In /admin/manage-pages, click the "edit" button for the `/` page.
