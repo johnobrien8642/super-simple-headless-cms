@@ -208,7 +208,7 @@ const ListFieldItem = ({
 											setChosenItems(prev => {
 												let newData = cloneDeep(prev);
 												if (singleChoice) {
-													newData = [item] as unknown as AllDocUnionType[];
+													newData = [] as unknown as AllDocUnionType[];
 												} else {
 													remove(newData, (arrItem) => {
 														return arrItem._id === item._id
