@@ -30,6 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			try {
 				let pageManager = await PageManager.findOne({ title: 'manage-pages' });
 				const savedPage = await page.save();
+				await res.revalidate(folderHref);
 				await PageManager.findOneAndUpdate({ _id: pageManager._id }, { pageIds: [...pageManager.pageIds, savedPage._id] });
 				return res.status(200).json({ success: true, _id: savedPage._id });
 			} catch (err: any) {
