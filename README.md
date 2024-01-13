@@ -1,7 +1,7 @@
-## Welcome to Super Simple CMS!
+## Welcome to Super Simple Headless CMS!
 
-Super Simple CMS is exactly what it sounds like... a Super Simple CMS! Do you need a Super Simple CMS that's simple enough for one person to manage but still complex enough to handle
-semi-complex state and diverse asset management paired with a powerful global CDN... well, guess what, with Super Simple CMS, that's what you get!
+Super Simple Headless CMS is exactly what it sounds like... a Super Simple Headless CMS! Do you need a Super Simple Headless CMS that's simple enough for one person to manage but still complex enough to handle
+semi-complex state and diverse asset management paired with a powerful global CDN... well, guess what, with Super Simple Headless CMS, that's what you get!
 
 A Next.js app utilizing ChakraUI, powered by MongoDB and Mongoose ODM, with asset management handled by AWS S3 and support for CloudFront CDN built-in.
 
@@ -37,10 +37,10 @@ To add a new page, simply select "Create New Page" in /admin/manage-pages and re
 
 ## Quick Summary
 
-Super Simple CMS is built on a Page -> Template -> Asset model. You create Pages that have Templates that are filled with Assets. You can either
+Super Simple Headless CMS is built on a Page -> Template -> Asset model. You create Pages that have Templates that are filled with Assets. You can either
 update existing pages or create new ones. Drag and drop to rearrange order.
 
-- Note: Super Simple CMS is so simple currently that it doesn't have nested pages, but this could be easily added in the future.
+- Note: Super Simple Headless CMS is so simple currently that it doesn't have nested pages, but this could be easily added in the future.
 
 When you add a page, it'll be automatically added to the Navbar if you don't toggle "Show In Navigation" to false.
 
@@ -93,9 +93,9 @@ That's it! Do anything you can do with Mongoose and Javascript right in your Rep
 
 ## Going Live
 
-To use Super Simple CMS, you'll need a working knowledge of AWS S3, IAM roles, and Cloudfront. You'll also need a MongoDB Atlas URI.
+To use Super Simple Headless CMS, you'll need a working knowledge of AWS S3, IAM roles, and Cloudfront. You'll also need a MongoDB Atlas URI.
 
-- Note: Super Simple CMS uses localstack--an AWS emulator--as a docker image in the docker container. This removes the need to connect to AWS during development, but you can still do that if you'd like by setting up the environment variables below in an `.env.local` file and running `npm run dev`. You'll need to connect to AWS and MongoDB Atlas. You can do this if you'd like to test all of your connections locally before going live.
+- Note: Super Simple Headless CMS uses localstack--an AWS emulator--as a docker image in the docker container. This removes the need to connect to AWS during development, but you can still do that if you'd like by setting up the environment variables below in an `.env.local` file and running `npm run dev`. You'll need to connect to AWS and MongoDB Atlas. You can do this if you'd like to test all of your connections locally before going live.
 
 - S3 with IAM Role Walkthrough: https://docs.aws.amazon.com/AmazonS3/latest/userguide/walkthrough1.html
 - Cloudfront for S3 Guide: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/GettingStarted.SimpleDistribution.html
