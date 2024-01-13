@@ -80,7 +80,7 @@ How to add a new field:
 2. Reference OptionsType in models/model-types.ts for all built-in "options" These can be added to the `optionsObj` at the top of each model and then spread into the field. Reference the existing pattern.
 
 **Example**:
-Let's say you want to add a new Link text field to Assets (you probably want to do this anyway, it's been left in as a fun tutorial :) ):
+Let's say you want to add a new Link text field to Assets (you probably want to do this anyway, it's been left in as a fun tutorial :) )
 1. Go to `models/Assets.ts`.
 2. Find the `extLink` field.
 3. Below it, add another field `extLinkText`, and set the type as `String`.
