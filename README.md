@@ -76,8 +76,19 @@ Mongoose fields supported by FormFields.tsx:
 - Note: Form Fields are resolved by the FormFields.tsx component. This will also be a place to visit for debugging if changes aren't immediately working.
 
 How to add a new field:
-1. Add a standard supported Mongoose field as you normally would.
+1. Add a standard supported Mongoose field to any Mongoose model as you normally would.
 2. Reference OptionsType in models/model-types.ts for all built-in "options" These can be added to the `optionsObj` at the top of each model and then spread into the field. Reference the existing pattern.
+
+Example:
+Let's say you want to add a new Link text field to Assets (you probably want to do this anyway, it's been left in as a fun tutorial :) ):
+1. Go to `models/Assets.ts`.
+2. Find the `extLink` field.
+3. Below it, add another field `extLinkText`, and set the type as `String`.
+4. Add `extLinkText` key and options object to `optionsObj` (reference `extLink`).
+5. In `optionsObj.extLinkText` add `formTitle: 'External Link Text'` (you can wait to add `templates` until you know which templates `extLinkText` will be used in (reference `extLink`)).
+6. Destructure `optionsObj.extLinkText` into the `extLinkText` Mongoose field you just created (reference `extLink`).
+7. Stop/restart your container if utilizing docker. Stop and rerun `npm run dev` if you're not.
+8. Edit or create an Asset and see the new "External Link Field" in the form! Add text and update/save and then use the text as your Mongoose field name, `extLinkText`.
 
 - Note: The Context Provider value type for Forms are automatically generated. If you want to add a currently unsupported type, you'll need to also remember to add a resolution in contexts/util/context_util.ts.
 
