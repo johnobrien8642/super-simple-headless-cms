@@ -46,7 +46,7 @@ export const getStaticPaths = async () => {
 				.populate('pageIds')
 	let paths: any = [];
 	if (pageManager) {
-		pageManager?.[0]?.pageIds.map((obj: PageType) => {
+		paths = pageManager?.[0]?.pageIds.map((obj: PageType) => {
 			return {
 				params: {
 					slug: [ obj.folderHref.substring(1) ]
@@ -56,7 +56,7 @@ export const getStaticPaths = async () => {
 	}
 	return {
 		paths,
-		fallback: true
+		fallback: false
 	}
 }
 
