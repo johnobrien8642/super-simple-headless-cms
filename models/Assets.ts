@@ -39,9 +39,6 @@ const optionsObj: { [key: string]: OptionsType } = {
 	thumbnailDimensions: {
 		hide: true
 	},
-	base64String: {
-		hide: true
-	},
 	title: {
 		templates: {
 			'ImageGrid': 1,
@@ -131,10 +128,6 @@ const AssetsSchema = new Schema({
 	thumbnailDimensions: {
 		type: [Number, Number],
 		...optionsObj.thumbnailDimensions
-	},
-	base64String: {
-		type: Buffer,
-		...optionsObj.base64String
 	},
 	title: {
 		type: String,
