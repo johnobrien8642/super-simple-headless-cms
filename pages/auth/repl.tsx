@@ -244,7 +244,7 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({ editorTheme, adminId }) => {
 								}
 							}}
 						>
-							<pre className='prettyprint'>
+							<pre className='prettyprint' style={{ width: '700px', overflow: 'scroll' }}>
 								<code className='language-javascirpt'>
 									{
 										//@ts-expect-error
