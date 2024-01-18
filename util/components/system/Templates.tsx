@@ -26,5 +26,5 @@ const Templates = ({ templates }: { templates: TemplatesType[] }) => {
 		</Center>
 	)
 }
-[]
+
 export default Templates;
