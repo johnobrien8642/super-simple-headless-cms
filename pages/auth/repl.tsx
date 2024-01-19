@@ -222,7 +222,7 @@ const ReplWindow: NextPage<ReplWindowPropType> = ({ editorTheme, adminId }) => {
 									>
 										<Code fontSize='1.2rem' children="const { Admin } = models;" />
 										<Code fontSize='1.2rem' children="const admins = await Admin.find({});" />
-										<Code fontSize='1.2rem' children="return adminIds = admins.map(obj => obj._id);" />
+										<Code fontSize='1.2rem' children="return admins.map(obj => obj._id);" />
 									</Code>
 								</form>
 							)}
