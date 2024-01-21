@@ -109,7 +109,7 @@ const ListFieldItem = ({
 					label={item?.description}
 					openDelay={500}
 				>
-					<Text sx={{...styleProps}}>{truncate(item?.description ?? '', { length: 20 })}</Text>
+					<Text sx={{...styleProps}}>{truncate(item?.description ?? '', { length: 50 })}</Text>
 				</Tooltip>
 				{
 					(item.typeName === 'Assets' ||
@@ -130,7 +130,7 @@ const ListFieldItem = ({
 										marginBottom: '0'
 									}
 								}}
-								dangerouslySetInnerHTML={{ __html: item?.richDescription ?? '' }}
+								dangerouslySetInnerHTML={{ __html: truncate(item?.richDescription ?? '', { length: 50 })}}
 							/>
 						</Tooltip>
 				}
