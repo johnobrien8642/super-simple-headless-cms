@@ -13,7 +13,7 @@ For WSL users, make sure you have docker-compose-plugin installed. Make sure to 
 Then:
 
 1. Clone this repo
-3. From the root of the project, and then `npm run docker`
+3. From the root of the project run `npm run docker`
 4. Go to http://localhost:3000/admin and create your first admin
 
 http://localhost:3000 is your homepage... and that's it! That's all you need to do to get started.
