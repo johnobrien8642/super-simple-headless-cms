@@ -39,10 +39,10 @@ const ListFieldItem = ({
 	singleChoice
 }: {
 	item: AllDocUnionType;
+	index: number;
 	title?: string;
 	chosen?: string;
 	singleChoice?: boolean | undefined;
-	index?: number;
 	setItems?: React.Dispatch<SetStateAction<AllDocUnionType[]>>;
 	setChosenItems?: React.Dispatch<SetStateAction<AllDocUnionType[]>>;
 	setAvailableItems?: React.Dispatch<SetStateAction<AllDocUnionType[]>>;
@@ -291,7 +291,7 @@ const ListFieldItem = ({
 							mr='.3rem'
 							aria-label='Edit Button'
 						/>
-						{formTitle !== 'Page' && <IconButton
+						{item.schemaName !== 'Page' && <IconButton
 							onClick={async () => {
 								let itemRef = { ...item };
 								// @ts-expect-error but I do want to delete a non-optional param tho
@@ -311,19 +311,25 @@ const ListFieldItem = ({
 								const data2 = await res3.json();
 								const { savedNewItem } = data2;
 								if (chosen === 'true') {
+									if (setChosenItems) {
+										setChosenItems(prev => {
+											const newData = cloneDeep(prev);
+											newData.splice(index + 1, 0, savedNewItem);
+											return newData;
+										})
+									}
 									setData(prev => {
 										const newData = cloneDeep(prev);
 										if (title) {
-											newData[formTitle][title] =
-												[...data[formTitle][title], savedNewItem._id];
+											newData[formTitle][title].splice(index + 1, 0, savedNewItem);
 										}
 										return newData;
 									})
 								} else {
-									if (setAvailableItems && index) {
+									if (setAvailableItems) {
 										setAvailableItems(prev => {
 											const newData = cloneDeep(prev);
-											newData.splice(index, 0, savedNewItem);
+											newData.splice(index + 1, 0, savedNewItem);
 											return newData;
 										})
 									}

@@ -49,7 +49,7 @@ const MyApp: AppType<{ admin: boolean; }> = ({ Component, pageProps }) => {
 	return (
 		<ChakraProvider theme={theme}>
 			<DndProvider backend={HTML5Backend}>
-				<main className={inter.className}>
+				<main className={inter.className} style={{ overflow: 'auto' }}>
 					<Component {...pageProps} />
 				</main>
 			</DndProvider>

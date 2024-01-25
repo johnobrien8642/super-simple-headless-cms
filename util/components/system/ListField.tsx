@@ -146,11 +146,12 @@ const ListField = ({
 								(item as any).description?.match(regexp) ||
 								(item as any).richDescription?.match(regexp)
 						})
-						?.map(item => {
+						?.map((item, index) => {
 							return <ListFieldItem
 								key={item._id}
 								item={item}
 								title={title}
+								index={index}
 								chosen='false'
 								setAvailableItems={setAvailableItems}
 								setChosenItems={setChosenItems}
