@@ -21,7 +21,8 @@ const optionsObj: { [key: string]: OptionsType } = {
 		textbox: true
 	},
 	templatesIds: {
-		formTitle: 'Templates'
+		formTitle: 'Templates',
+		filterType: true
 	},
 	schemaName: {
 		default: 'Page',

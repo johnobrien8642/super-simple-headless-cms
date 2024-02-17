@@ -6,9 +6,7 @@ const Schema = mongoose.Schema;
 
 const optionsObj: { [key: string]: OptionsType } = {
 	title: {
-		templates: {
-			'ImageTriptych': 1
-		}
+		templates: {}
 	},
 	type: {
 		required: true,
@@ -23,9 +21,7 @@ const optionsObj: { [key: string]: OptionsType } = {
 	},
 	description: {
 		textbox: true,
-		templates: {
-			'ImageTriptych': 1
-		}
+		templates: {}
 	},
 	richDescription: {
 		richText: true,
@@ -34,15 +30,20 @@ const optionsObj: { [key: string]: OptionsType } = {
 	extLink: {
 		formTitle: 'External Link'
 	},
-	assetsIds: {
-		formTitle: 'Assets'
+	pagesIds: {
+		formTitle: 'Page',
+		filterType : false
 	},
+	assetsIds: {
+		formTitle: 'Assets',
+		filterType: true
+	},
+	// This could actually just be like extAssetLink, not videoId
 	videoId: {
 		formTitle: 'Exterior Asset To Link To',
 		singleChoice: true,
-		templates: {
-			'ImageTriptych': 1
-		}
+		templates: {},
+		filterType: true
 	},
 	schemaName: {
 		default: 'Templates',
@@ -90,6 +91,15 @@ const TemplatesSchema = new Schema({
 	extLink: {
 		type: String,
 		...optionsObj.extLink
+	},
+	pagesIds: {
+		type: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Page'
+			}
+		],
+		...optionsObj.pagesIds
 	},
 	assetsIds: {
 		type: [

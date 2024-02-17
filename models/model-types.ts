@@ -82,4 +82,6 @@ export type OptionsType = {
 	templates?: { [key in TemplatesEnum]?: 1; };
 	// For limiting subdocument choices to just a single document in the form
 	singleChoice?: boolean;
+	// For showing filter types for ListField if needed/available
+	filterType?: boolean;
 }

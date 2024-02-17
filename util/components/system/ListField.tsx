@@ -25,15 +25,20 @@ const ListField = ({
 	const [chosenItems, setChosenItems] = useState<AllDocUnionType[]>([]);
 	const [itemFilter, setItemFilter] = useState('');
 	const [itemFilterArr, setItemFilterArr] =
-		useState<typeof templatesEnumValueArr | typeof assetsEnumValueArr>([]);
+		useState<typeof templatesEnumValueArr | typeof assetsEnumValueArr | null>([]);
 	const [textFilter, setTextFilter] = useState('');
 	const { formSelected, setFormSelected, data } = useManagePageForm();
 	const { formTitle } = formSelected;
 
 	useEffect(() => {
-		const itemFilterArr = formTitle === 'Page' ? templatesEnumValueArr : assetsEnumValueArr;
+		let itemFilterArr;
+		if (obj.options.filterType) {
+			itemFilterArr = formTitle === 'Page' ? templatesEnumValueArr : assetsEnumValueArr;
+		} else {
+			itemFilterArr = null;
+		}
 		setItemFilterArr(itemFilterArr)
-		setItemFilter(itemFilterArr[0])
+		setItemFilter(itemFilterArr?.[0] ?? '')
 	}, [])
 
 	useEffect(() => {
@@ -48,13 +53,11 @@ const ListField = ({
 				paramsObj['itemType'] = itemFilter;
 			}
 			const params = new URLSearchParams(paramsObj);
-			if (itemFilter) {
-				const res = await fetch(`/api/get_list_field_items?${params}`);
-				const resData = await res.json();
-				const { availableItems, chosenItems } = resData;
-				setAvailableItems(availableItems);
-				setChosenItems(chosenItems);
-			}
+			const res = await fetch(`/api/get_list_field_items?${params}`);
+			const resData = await res.json();
+			const { availableItems, chosenItems } = resData;
+			setAvailableItems(availableItems);
+			setChosenItems(chosenItems);
 		}
 	}, [itemFilter]);
 
@@ -65,7 +68,7 @@ const ListField = ({
 			<Box
 				outline='black solid .1rem'
 				borderRadius='.2rem'
-				height={singleChoice ? '100px' : '600px'}
+				height={singleChoice ? '100px' : '400px'}
 				overflow='auto'
 				my='1rem'
 				padding='.5rem'
@@ -105,7 +108,7 @@ const ListField = ({
 			</Button>
 			<ButtonGroup gap='1' mt='1rem' flexWrap='wrap'>
 				{
-					itemFilterArr.map(str => {
+					itemFilterArr?.map(str => {
 						return <Button
 							key={str}
 							variant={str === itemFilter ? 'ghost' : 'outline'}
@@ -133,7 +136,7 @@ const ListField = ({
 			<Box
 				outline='black solid .1rem'
 				borderRadius='.2rem'
-				height='600px'
+				height='400px'
 				overflow='auto'
 				my='1rem'
 				padding='.5rem'

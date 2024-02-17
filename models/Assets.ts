@@ -14,11 +14,7 @@ const optionsObj: { [key: string]: OptionsType } = {
 		previewTypeKey: 'assetPreviewType',
 		index: true,
 		templates: {
-			'ImageGrid': 1,
-			'ImageTriptych': 1,
-			'PhotoList': 1,
-			'BookCoverCTA': 1,
-			'About': 1
+			'PhotoList': 1
 		}
 	},
 	assetDimensions: {
@@ -32,19 +28,14 @@ const optionsObj: { [key: string]: OptionsType } = {
 		dimensionsKey: 'thumbnailDimensions',
 		previewTypeKey: 'thumbnailPreviewType',
 		index: true,
-		templates: {
-
-		}
+		templates: {}
 	},
 	thumbnailDimensions: {
 		hide: true
 	},
 	title: {
 		templates: {
-			'ImageGrid': 1,
-			'ImageTriptych': 1,
 			'PhotoList': 1,
-			'BookCoverCTA': 1,
 			'HeadlineOnlyCTA': 1,
 			'TextBlock': 1
 		}
@@ -58,11 +49,7 @@ const optionsObj: { [key: string]: OptionsType } = {
 	description: {
 		textbox: true,
 		formTitle: 'Regular Text',
-		templates: {
-			'ImageTriptych': 1,
-			'BookCoverCTA': 1,
-			'About': 1
-		}
+		templates: {}
 	},
 	textAlign: {
 		enum: textAlignOptionsEnumValueArr,
@@ -78,21 +65,19 @@ const optionsObj: { [key: string]: OptionsType } = {
 		richText: true,
 		formTitle: 'Rich Text',
 		templates: {
-			'ImageGrid': 1,
-			'ImageTriptych': 1,
 			'PhotoList': 1,
-			'BookCoverCTA': 1,
-			'TextBlock': 1,
-			'About': 1
+			'TextBlock': 1
 		}
 	},
 	extLink: {
 		formTitle: 'External Link',
 		templates: {
-			'ImageGrid': 1,
-			'PhotoList': 1,
-			'BookCoverCTA': 1
+			'PhotoList': 1
 		}
+	},
+	pagesIds: {
+		formTitle: 'Page',
+		filterType: false
 	},
 	schemaName: {
 		default: 'Assets',
@@ -152,6 +137,15 @@ const AssetsSchema = new Schema({
 	extLink: {
 		type: String,
 		...optionsObj.extLink
+	},
+	pagesIds: {
+		type: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Page'
+			}
+		],
+		...optionsObj.pagesIds
 	},
 	schemaName: {
 		type: String,

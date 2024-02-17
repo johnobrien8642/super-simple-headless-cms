@@ -11,7 +11,14 @@ export const config = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const { schema, nestedItemIds, itemType } = req.query;
 	const nestedItemIdsArr = nestedItemIds ? (nestedItemIds as string).split(',') : [];
-	const availableItems = await models[schema as string].find({ _id: { $nin: nestedItemIdsArr }, type: itemType })
+	let availableItemsFilter: any = {
+		_id: { $nin: nestedItemIdsArr }
+	};
+	if (itemType) {
+		availableItemsFilter.type = itemType;
+	}
+	console.log(availableItemsFilter)
+	const availableItems = await models[schema as string].find(availableItemsFilter)
 	const chosenItems = await models[schema as string].find({ _id: { $in: nestedItemIdsArr } })
 	if (availableItems && chosenItems) {
 		const orderedChosenItems = new Array(chosenItems.length);
