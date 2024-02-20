@@ -278,12 +278,12 @@ const ListFieldItem = ({
 									newData.formTitle = item.schemaName ?? '';
 									newData.update = item.schemaName ?? '';
 									newData.editItemTraceObj[item.schemaName ?? ''] = item._id;
+									newData.nestedItemTraceObj[item.schemaName ?? ''] =
+										[
+											...newData.nestedItemTraceObj[item.schemaName ?? ''],
+											item
+										]
 									if (!skipNesting) {
-										newData.nestedItemTraceObj[item.schemaName ?? ''] =
-											[
-												...newData.nestedItemTraceObj[item.schemaName ?? ''],
-												item
-											]
 									}
 									return newData;
 								})

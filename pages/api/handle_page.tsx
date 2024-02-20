@@ -15,22 +15,37 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const {
 		data,
 		update,
+		isNested,
+		parentId,
 		itemToEditId,
 		folderHref
 	} = req.body
-
 	let page;
 	let pageExistsAlready;
 	if (req.method === 'POST') {
+		console.log(data)
 		page = new Page({
 			...data
 		});
 		pageExistsAlready = await Page.find({ folderHref: page.folderHref });
 		if (!pageExistsAlready.length) {
 			try {
-				let pageManager = await PageManager.findOne({ title: 'manage-pages' });
 				const savedPage = await page.save();
-				await PageManager.findOneAndUpdate({ _id: pageManager._id }, { pageIds: [...pageManager.pageIds, savedPage._id] });
+				if (!isNested) {
+					let pageManager = await PageManager.findOne({ title: 'manage-pages' });
+					await PageManager.findOneAndUpdate({ _id: pageManager._id }, { pageIds: [...pageManager.pageIds, savedPage._id] });
+				} else {
+					let page = await Page.findById(parentId);
+					await Page.findOneAndUpdate(
+						{ _id: parentId },
+						{
+							childPagesIds: [
+								...page.childPagesIds,
+								savedPage._id
+							]
+						}
+					);
+				}
 				return res.status(200).json({ success: true, _id: savedPage._id });
 			} catch (err: any) {
 				return res.status(500).json({ success: false, errorMessage: err.message });

@@ -21,6 +21,7 @@ const AssetForm = ({}) => {
 	useEffect(() => {
 		handleModelSchema();
 		async function handleModelSchema() {
+			if (!formTitle) return;
 			const res = await fetch(`/api/get_model_schema?formTitle=${formTitle}`);
 			const data = await res.json();
 			const { schemaPaths } = data;
@@ -192,7 +193,7 @@ const AssetForm = ({}) => {
 							onClick={() => {
 								setData(prev => {
 									const newData = cloneDeep(prev);
-									newData['Assets'] = dataInitialValue['Assets'];
+									newData['Assets'] = cloneDeep(dataInitialValue['Assets']);
 									return newData;
 								})
 								setFormSelected(prev => {

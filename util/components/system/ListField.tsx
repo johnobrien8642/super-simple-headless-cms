@@ -7,11 +7,11 @@ import {
 	ButtonGroup,
 	Input
 } from '@chakra-ui/react'
-import { useManagePageForm } from '../../contexts/useManagePageForm';
+import { initialValueObj, useManagePageForm } from '../../contexts/useManagePageForm';
 import { assetsEnumValueArr, templatesEnumValueArr } from '../../../models/model-types';
 import { OptionsType } from '../../../models/model-types';
 import { AllDocUnionType } from '../types/util_types';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, last } from 'lodash';
 
 const ListField = ({
 		obj,
@@ -28,8 +28,8 @@ const ListField = ({
 	const [itemFilterArr, setItemFilterArr] =
 		useState<typeof templatesEnumValueArr | typeof assetsEnumValueArr | null>([]);
 	const [textFilter, setTextFilter] = useState('');
-	const { formSelected, setFormSelected, data, topLevelModal } = useManagePageForm();
-	const { formTitle } = formSelected;
+	const { formSelected, setFormSelected, data, setData, topLevelModal } = useManagePageForm();
+	const { formTitle, nestedItemTraceObj } = formSelected;
 
 	useEffect(() => {
 		let itemFilterArr;
@@ -63,8 +63,8 @@ const ListField = ({
 			setAvailableItems(availableItems);
 			setChosenItems(chosenItems);
 		}
-	}, [itemFilter]);
-	console.log(obj, availableItems)
+	}, [itemFilter, formSelected]);
+	console.log(nestedItemTraceObj['Page'])
 	return (
 		<Flex
 			flexDir='column'
@@ -100,18 +100,21 @@ const ListField = ({
 			</Box>
 			<Button
 				width='fit-content'
+				isDisabled={
+					formTitle === obj.caster?.options.ref
+						&& !data[obj.caster?.options.ref ?? '']?._id
+				}
 				onClick={() => {
 					setFormSelected(prev => {
 						const newData = cloneDeep(prev);
-						if (obj.caster?.options.ref === formTitle  && topLevelModal) {
-							newData.nestedItemTraceObj[obj.caster?.options.ref] =
-								[
-									...newData.nestedItemTraceObj[obj.caster?.options.ref],
-									{ ...data[obj.caster?.options.ref] }
-								]
-						}
 						newData.formTitle = obj.caster?.options.ref ?? '';
 						newData.prevFormTitle = prev.formTitle;
+						return newData;
+					})
+					setData(prev => {
+						const newData = cloneDeep(prev);
+						newData[obj.caster?.options.ref ?? ''] =
+							{ ...initialValueObj[obj.caster?.options.ref ?? ''] };
 						return newData;
 					})
 				}}

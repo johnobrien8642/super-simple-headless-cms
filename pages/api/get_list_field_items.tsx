@@ -22,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		availableItems = await models[schema as string].find(availableItemsFilter)
 	}
 	const chosenItems = await models[schema as string].find({ _id: { $in: nestedItemIdsArr } })
-	if (availableItems && chosenItems) {
+	if (chosenItems) {
 		const orderedChosenItems = new Array(chosenItems.length);
 		let item;
 		for (let i = 0; i < chosenItems.length; i++) {
@@ -31,6 +31,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 		return res.status(200).json({ availableItems, chosenItems: orderedChosenItems });
 	} else {
-		return res.status(401).json({ error: 'That wasnt a valid model' });
+		return res.status(404).json({ error: 'That wasnt a valid model' });
 	}
 };
