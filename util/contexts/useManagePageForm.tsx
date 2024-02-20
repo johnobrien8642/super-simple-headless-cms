@@ -23,6 +23,8 @@ export type FormSelectedType = {
 	editItemTraceObj: typeof editItemTraceObjType;
 	update: AllModelNames;
 	loading: boolean;
+	parentId: string;
+	parentIdentStr: string;
 };
 
 export type ManagePageFormContextType = {
@@ -42,7 +44,9 @@ export const formSelectedInitObj: FormSelectedType = {
 	editItemTraceObj: editItemTraceObjInitObj,
 	formIndex: 0,
 	update: '',
-	loading: false
+	loading: false,
+	parentId: '',
+	parentIdentStr: ''
 }
 
 export const ManagePageFormContext = createContext<ManagePageFormContextType>({

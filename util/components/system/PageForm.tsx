@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import {
 	Button,
 	Text,
-	Heading
+	Heading,
+	Flex
 } from '@chakra-ui/react';
 import FormFields from './FormFields';
 import { useManagePageForm, dataInitialValue } from '../../contexts/useManagePageForm';
@@ -10,9 +11,10 @@ import { cloneDeep, kebabCase } from 'lodash';
 
 const PageForm = ({}) => {
 	const [fieldArr, setFieldArr] = useState<[string, any][]>([]);
+	const [parentDoc, setParentDoc] = useState<any | null>(null);
 	let [error, setError] = useState('');
 	const { data, setData, formSelected, setFormSelected, setTopLevelModal } = useManagePageForm();
-	const { formTitle, editItemTraceObj } = formSelected;
+	const { formTitle, editItemTraceObj, parentId } = formSelected;
 
 	useEffect(() => {
 		handleModelSchema();
@@ -24,10 +26,27 @@ const PageForm = ({}) => {
 		}
 	}, [])
 
+	useEffect(() => {
+		getParent();
+		async function getParent() {
+			if (!data[formTitle]?._id) return;
+			const res = await fetch(`/api/get_parent?formTitle=${formTitle}&id=${data[formTitle]._id.toString()}`);
+			const resData = await res.json();
+			const { parent } = resData;
+			setParentDoc(parent);
+		}
+	}, [formSelected])
+	console.log(data[formTitle])
 	if (formTitle === 'Page') {
 		return (
 			<div className="form container">
-				<Heading>{editItemTraceObj['Page'] ? 'Update Page' : 'New Page'}</Heading>
+				<Heading>
+					{
+						(parentDoc || formSelected.parentId) ?
+							`Child Page for ${parentDoc?.title || formSelected?.parentIdentStr}` :
+								`Page ${data[formTitle]?.title || data[formTitle]?.folderHref}`
+					}
+				</Heading>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
@@ -38,7 +57,7 @@ const PageForm = ({}) => {
 						});
 						data['Page'].folderHref = `/${kebabCase(data['Page'].title)}`;
 						const res2 = await fetch(`/api/handle_page`, {
-							method: formSelected.update === 'Page' ? 'PUT' : 'POST',
+							method: data['Page']._id ? 'PUT' : 'POST',
 							headers: {
 								Accept: 'application/json',
 								'Content-Type': 'application/json'
@@ -49,28 +68,32 @@ const PageForm = ({}) => {
 								},
 								update: formSelected.update,
 								itemToEditId: editItemTraceObj[formTitle],
-								folderHref: data['Page']?.folderHref
+								folderHref: data['Page']?.folderHref,
+								parentId
 							})
 						});
 
 						if (res2.ok) {
 							const data = await res2.json()
-							if (formSelected.update === 'Page') {
-								setFormSelected(prev => {
-									const newData = cloneDeep(prev);
-									newData.formTitle = 'Page';
-									newData.update = '';
-									newData.loading = false;
-									return newData;
-								})
-							}
+							const { parent } = data;
 							setFormSelected(prev => {
 								const newData = cloneDeep(prev);
+								newData.formTitle = 'Page';
+								newData.update = '';
 								newData.loading = false;
+								newData.parentId = '';
 								return newData;
-							});
-							setTopLevelModal(false);
-							setData(dataInitialValue)
+							})
+							if (parent) {
+								setData(prev => {
+									const newData = cloneDeep(prev);
+									newData[formTitle] = cloneDeep(parent);
+									return newData;
+								})
+							} else {
+								setTopLevelModal(false);
+								setData(cloneDeep(dataInitialValue));
+							}
 						} else {
 							const data = await res2.json();
 							console.log('Error in PageForm', data.errorMessage);
@@ -93,12 +116,27 @@ const PageForm = ({}) => {
 								{`Something went wrong: ${error}`}
 							</Text>
 					}
-					<Button
-						type='submit'
-						isDisabled={formSelected.loading}
-					>
-						{editItemTraceObj['Page'] ? 'Update' : 'Save'}
-					</Button>
+					<Flex>
+						<Button
+							type='submit'
+							isDisabled={formSelected.loading}
+							mr={3}
+						>
+							{editItemTraceObj['Page'] ? 'Update' : 'Save'}
+						</Button>
+						{parentDoc &&
+							<Button
+								colorScheme='blue'
+								mr={3}
+								onClick={() => {
+									setData(parentDoc);
+								}}
+								isDisabled={formSelected.loading}
+							>
+								Cancel
+							</Button>
+						}
+					</Flex>
 				</form>
 			</div>
 		);

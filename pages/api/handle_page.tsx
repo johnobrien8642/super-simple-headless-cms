@@ -16,22 +16,33 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		data,
 		update,
 		itemToEditId,
-		folderHref
+		folderHref,
+		parentId
 	} = req.body
 
 	let page;
+	let parentPage;
 	let pageExistsAlready;
+	let pageManager;
 	if (req.method === 'POST') {
 		page = new Page({
 			...data
 		});
 		pageExistsAlready = await Page.find({ folderHref: page.folderHref });
 		if (!pageExistsAlready.length) {
+			if (parentId) {
+				parentPage = await Page.findById(parentId);
+				parentPage.childPagesIds.push(page._id);
+				await parentPage.save();
+			}
 			try {
-				let pageManager = await PageManager.findOne({ title: 'manage-pages' });
+				page.folderHref = (parentPage.folderHref === '/' ? '' : parentPage.FolderHref) + page.folderHref;
 				const savedPage = await page.save();
-				await PageManager.findOneAndUpdate({ _id: pageManager._id }, { pageIds: [...pageManager.pageIds, savedPage._id] });
-				return res.status(200).json({ success: true, _id: savedPage._id });
+				if (!parentId) {
+					pageManager = await PageManager.findOne({ title: 'manage-pages' });
+					await PageManager.findOneAndUpdate({ _id: pageManager._id }, { pageIds: [...pageManager.pageIds, savedPage._id] });
+				}
+				return res.status(200).json({ success: true, _id: savedPage._id, parent: parentPage });
 			} catch (err: any) {
 				return res.status(500).json({ success: false, errorMessage: err.message });
 			}
@@ -40,15 +51,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 	} else if (req.method === 'PUT') {
 		try {
-			page = await Page
-			.findOneAndUpdate(
+			page = await Page.findById(itemToEditId);
+			if (parentId) {
+				parentPage = await Page.findById(parentId);
+				page.folderHref = (parentPage.folderHref === '/' ? '' : parentPage.FolderHref) + page.folderHref;
+			}
+			await Page.findOneAndUpdate(
 				{ _id: itemToEditId },
 				{
-					...data
+					...page
 				}
-				);
-			await res.revalidate(folderHref);
-			return res.status(200).json({ success: true, _id: page._id });
+			);
+			await res.revalidate(page.folderHref);
+			return res.status(200).json({ success: true, _id: page._id, parent: parentPage });
 		} catch (err: any) {
 			return res.status(500).json({ success: false, errorMessage: err.message });
 		}

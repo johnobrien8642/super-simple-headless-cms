@@ -7,10 +7,11 @@ import {
 	ButtonGroup,
 	Input
 } from '@chakra-ui/react'
-import { useManagePageForm } from '../../contexts/useManagePageForm';
+import { dataInitialValue, useManagePageForm } from '../../contexts/useManagePageForm';
 import { assetsEnumValueArr, templatesEnumValueArr } from '../../../models/model-types';
 import { OptionsType } from '../../../models/model-types';
 import { AllDocUnionType } from '../types/util_types';
+import { cloneDeep } from 'lodash';
 
 const ListField = ({
 		obj,
@@ -27,7 +28,7 @@ const ListField = ({
 	const [itemFilterArr, setItemFilterArr] =
 		useState<typeof templatesEnumValueArr | typeof assetsEnumValueArr | null>([]);
 	const [textFilter, setTextFilter] = useState('');
-	const { formSelected, setFormSelected, data } = useManagePageForm();
+	const { formSelected, setFormSelected, data, setData } = useManagePageForm();
 	const { formTitle } = formSelected;
 
 	useEffect(() => {
@@ -60,7 +61,7 @@ const ListField = ({
 			setChosenItems(chosenItems);
 		}
 	}, [itemFilter]);
-
+	console.log(dataInitialValue)
 	return (
 		<Flex
 			flexDir='column'
@@ -96,76 +97,88 @@ const ListField = ({
 				width='fit-content'
 				onClick={() => {
 					setFormSelected(prev => {
-						return {
-							...prev,
-							formTitle: obj.caster?.options.ref ?? '',
-							prevFormTitle: prev.formTitle
+						const newData = cloneDeep(prev);
+						newData.formTitle = obj.caster?.options.ref ?? '';
+						newData.prevFormTitle = newData.formTitle;
+						newData.parentId = data[formTitle]._id;
+						if (formTitle === 'Page') {
+							newData.parentIdentStr = data[formTitle].folderHref;
 						}
+						return newData;
+					})
+					setData(prev => {
+						const newData = cloneDeep(prev);
+						newData[formTitle] = cloneDeep(dataInitialValue[formTitle]);
+						return newData;
 					})
 				}}
 			>
 				Create New {obj.caster?.options?.ref ?? obj.options?.ref}
 			</Button>
-			<ButtonGroup gap='1' mt='1rem' flexWrap='wrap'>
-				{
-					itemFilterArr?.map(str => {
-						return <Button
-							key={str}
-							variant={str === itemFilter ? 'ghost' : 'outline'}
-							onClick={() => {
-								setItemFilter(str)
+			{!obj.options?.hideAvailableChoices &&
+				<>
+					<ButtonGroup gap='1' mt='1rem' flexWrap='wrap'>
+						{
+							itemFilterArr?.map(str => {
+								return <Button
+									key={str}
+									variant={str === itemFilter ? 'ghost' : 'outline'}
+									onClick={() => {
+										setItemFilter(str)
+									}}
+								>
+									{str}
+								</Button>
+							})
+						}
+					</ButtonGroup>
+					<Box
+						pt='1rem'
+					>
+						<Input
+							value={textFilter}
+							width='35%'
+							placeholder={`Search ${obj.caster?.options?.ref ?? obj.options?.ref}`}
+							onInput={e => {
+								setTextFilter((e.target as HTMLInputElement).value)
 							}}
-						>
-							{str}
-						</Button>
-					})
-				}
-			</ButtonGroup>
-			<Box
-				pt='1rem'
-			>
-				<Input
-					value={textFilter}
-					width='35%'
-					placeholder={`Search ${obj.caster?.options?.ref ?? obj.options?.ref}`}
-					onInput={e => {
-						setTextFilter((e.target as HTMLInputElement).value)
-					}}
-				/>
-			</Box>
-			<Box
-				outline='black solid .1rem'
-				borderRadius='.2rem'
-				height='400px'
-				overflow='auto'
-				my='1rem'
-				padding='.5rem'
-			>
-				{
-					availableItems
-						?.filter(item => {
-							const regexp: RegExp = new RegExp(textFilter, 'i')
-							return (item as any).title?.match(regexp) ||
-								(item as any).description?.match(regexp) ||
-								(item as any).richDescription?.match(regexp)
-						})
-						?.map((item, index) => {
-							return <ListFieldItem
-								key={item._id}
-								item={item}
-								title={title}
-								index={index}
-								chosen='false'
-								setAvailableItems={setAvailableItems}
-								setChosenItems={setChosenItems}
-								singleChoice={singleChoice}
-							/>
-						})
-				}
-				{
-					!availableItems?.length && 'No items to choose'
-				}
-			</Box>
+						/>
+					</Box>
+					<Box
+						outline='black solid .1rem'
+						borderRadius='.2rem'
+						height='400px'
+						overflow='auto'
+						my='1rem'
+						padding='.5rem'
+					>
+						{
+							availableItems
+								?.filter(item => {
+									const regexp: RegExp = new RegExp(textFilter, 'i')
+									return (item as any).title?.match(regexp) ||
+										(item as any).description?.match(regexp) ||
+										(item as any).richDescription?.match(regexp)
+								})
+								?.map((item, index) => {
+									return <ListFieldItem
+										key={item._id}
+										item={item}
+										title={title}
+										index={index}
+										chosen='false'
+										setAvailableItems={setAvailableItems}
+										setChosenItems={setChosenItems}
+										singleChoice={singleChoice}
+									/>
+								})
+						}
+						{
+							!availableItems?.length && 'No items to choose'
+						}
+					</Box>
+				</>
+			}
 		</Flex>
 	)
 }

@@ -271,16 +271,22 @@ const ListFieldItem = ({
 						}
 						<IconButton
 							onClick={() => {
-								setData(prev => {
-									const newData = cloneDeep(prev);
-									newData[item.schemaName ?? ''] = item;
-									return newData;
-								})
 								setFormSelected(prev => {
 									const newData: FormSelectedType = { ...prev };
 									newData.formTitle = item.schemaName ?? '';
 									newData.update = item.schemaName ?? '';
 									newData.editItemTraceObj[item.schemaName ?? ''] = item._id;
+									if (formTitle === item.schemaName) {
+										newData.parentId = data[formTitle]._id;
+										if (item.typeName === 'Page') {
+											newData.parentIdentStr = item.folderHref;
+										}
+									}
+									return newData;
+								})
+								setData(prev => {
+									const newData = cloneDeep(prev);
+									newData[item.schemaName ?? ''] = item;
 									return newData;
 								})
 								if (item.schemaName === 'Page') {
