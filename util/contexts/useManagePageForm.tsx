@@ -10,6 +10,8 @@ export const {
 	AllModelNamesTypeStr,
 	editItemTraceObjType,
 	editItemTraceObjInitObj,
+	nestedItemTraceObjType,
+	nestedItemTraceObjInitObj
 } = await init(models)
 
 export type ManagePageFormDataType = typeof ManagePageFormDataTypeObj;
@@ -23,6 +25,7 @@ export type FormSelectedType = {
 	editItemTraceObj: typeof editItemTraceObjType;
 	update: AllModelNames;
 	loading: boolean;
+	nestedItemTraceObj: typeof nestedItemTraceObjType;
 };
 
 export type ManagePageFormContextType = {
@@ -42,7 +45,8 @@ export const formSelectedInitObj: FormSelectedType = {
 	editItemTraceObj: editItemTraceObjInitObj,
 	formIndex: 0,
 	update: '',
-	loading: false
+	loading: false,
+	nestedItemTraceObj: nestedItemTraceObjInitObj
 }
 
 export const ManagePageFormContext = createContext<ManagePageFormContextType>({

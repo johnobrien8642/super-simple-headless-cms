@@ -128,17 +128,21 @@ const TemplateForm = ({}) => {
 							colorScheme='blue'
 							mr={3}
 							onClick={() => {
-								setData(prev => {
-									const newData = cloneDeep(prev);
-									newData['Templates'] = initialValueObj['Templates'];
-									return newData;
-								})
 								setFormSelected(prev => {
 									const newData = cloneDeep(prev);
 									newData.formTitle = 'Page';
 									newData.prevFormTitle = 'Templates';
 									newData.update = newData.editItemTraceObj['Page'] ? 'Page' : '';
 									newData.editItemTraceObj['Templates'] = '';
+									if (newData.nestedItemTraceObj['Templates'].length) {
+										setData(prev => {
+											const newData = cloneDeep(prev);
+											newData['Templates'] = initialValueObj['Templates'];
+											return newData;
+										})
+									} else {
+
+									}
 									newData.loading = false;
 									return newData;
 								})

@@ -20,6 +20,11 @@ const optionsObj: { [key: string]: OptionsType } = {
 	description: {
 		textbox: true
 	},
+	childPagesIds: {
+		formTitle: 'Child Pages',
+		filterType: false,
+		hideAvailableChoices: true
+	},
 	templatesIds: {
 		formTitle: 'Templates',
 		filterType: true
@@ -70,6 +75,15 @@ const PageSchema = new Schema({
 		type: String,
 		textbox: true
 	},
+	childPagesIds: {
+		type: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Page'
+			}
+		],
+		...optionsObj.childPagesIds
+	},
 	templatesIds: {
 		type: [
 			{
@@ -77,7 +91,7 @@ const PageSchema = new Schema({
 				ref: 'Templates'
 			}
 		],
-		formTitle: 'Templates',
+		...optionsObj.templatesIds
 	},
 	meta: {
 		type: MetaDropdownSchema,

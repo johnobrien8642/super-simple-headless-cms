@@ -84,4 +84,7 @@ export type OptionsType = {
 	singleChoice?: boolean;
 	// For showing filter types for ListField if needed/available
 	filterType?: boolean;
+	// For not showing available choices in ListField, for nested pages, for example, where
+	// children should be new and unique
+	hideAvailableChoices?: boolean;
 }

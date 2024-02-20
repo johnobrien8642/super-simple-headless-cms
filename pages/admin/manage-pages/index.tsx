@@ -18,7 +18,7 @@ import PageForm from '../../../util/components/system/PageForm.tsx';
 import TemplateForm from '../../../util/components/system/TemplateForm.tsx';
 import AssetForm from '../../../util/components/system/AssetForm.tsx';
 import { useRouter } from 'next/router';
-import { ManagePageFormProvider, dataInitialValue, editItemTraceObjInitObj } from '../../../util/contexts/useManagePageForm.tsx';
+import { ManagePageFormProvider, dataInitialValue, editItemTraceObjInitObj, nestedItemTraceObjInitObj, formSelectedInitObj } from '../../../util/contexts/useManagePageForm.tsx';
 import ListFieldItem from '../../../util/components/system/ListFieldItem.tsx';
 import Head from 'next/head';
 import { AllDocUnionType } from '../../../util/components/types/util_types.ts';
@@ -31,7 +31,8 @@ const ManagePages: NextPage<{}> = () => {
 		formIndex: 0,
 		editItemTraceObj: editItemTraceObjInitObj,
 		update: '',
-		loading: false
+		loading: false,
+		nestedItemTraceObj: nestedItemTraceObjInitObj
 	});
 	const [data, setData] = useState(dataInitialValue);
 	const [items, setItems] = useState<AllDocUnionType[]>([]);
@@ -117,6 +118,7 @@ const ManagePages: NextPage<{}> = () => {
 								noForm={true}
 								setItems={setItems}
 								index={index}
+								skipNesting={true}
 							/>
 						})
 					}
@@ -142,7 +144,13 @@ const ManagePages: NextPage<{}> = () => {
 					<ModalOverlay />
 					<ModalContent maxW='1200px' position='relative'>
 						<ModalHeader></ModalHeader>
-						<ModalCloseButton />
+						<ModalCloseButton
+							onClick={() => {
+								setTopLevelModal(false);
+								setData(dataInitialValue);
+								setFormSelected(formSelectedInitObj);
+							}}
+						/>
 						<ModalBody>
 							<PageForm />
 							<TemplateForm />
@@ -155,15 +163,7 @@ const ManagePages: NextPage<{}> = () => {
 								onClick={() => {
 									setTopLevelModal(false);
 									setData(dataInitialValue);
-									setFormSelected(prev => {
-										return {
-											...prev,
-											formTitle: 'Page',
-											prevFormTitle: '',
-											editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
-											update: ''
-										}
-									});
+									setFormSelected(formSelectedInitObj);
 								}}
 							>
 								{formSelected.editItemTraceObj['Page'] ? 'Close Update Page Form' : 'Close New Page Form'}

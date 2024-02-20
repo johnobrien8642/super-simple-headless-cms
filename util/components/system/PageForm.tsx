@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react';
 import FormFields from './FormFields';
 import { useManagePageForm, dataInitialValue } from '../../contexts/useManagePageForm';
-import { cloneDeep, kebabCase } from 'lodash';
+import { cloneDeep, kebabCase, remove, last } from 'lodash';
 
 const PageForm = ({}) => {
 	const [fieldArr, setFieldArr] = useState<[string, any][]>([]);
@@ -27,7 +27,17 @@ const PageForm = ({}) => {
 	if (formTitle === 'Page') {
 		return (
 			<div className="form container">
-				<Heading>{editItemTraceObj['Page'] ? 'Update Page' : 'New Page'}</Heading>
+				<Heading>
+					{
+						((
+							formSelected.nestedItemTraceObj['Page'].length &&
+							formTitle === 'Page'
+						) ||
+							!editItemTraceObj['Page']) ?
+								`New Page${formSelected.nestedItemTraceObj['Page'].length ? ' for ' + (last(formSelected.nestedItemTraceObj['Page']) as any).folderHref : ''} ` :
+									'Update Page'
+					}
+				</Heading>
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
@@ -36,7 +46,15 @@ const PageForm = ({}) => {
 							newData.loading = true;
 							return newData;
 						});
-						data['Page'].folderHref = `/${kebabCase(data['Page'].title)}`;
+						if (formSelected.nestedItemTraceObj['Page'].length) {
+							data['Page'].folderHref =
+								formSelected.nestedItemTraceObj['Page']
+									.map((obj: any) => obj.folderHref)
+										.push(`/${kebabCase(data['Page'].title)}`)
+											.join('')
+						} else {
+							data['Page'].folderHref = `/${kebabCase(data['Page'].title)}`;
+						}
 						const res2 = await fetch(`/api/handle_page`, {
 							method: formSelected.update === 'Page' ? 'PUT' : 'POST',
 							headers: {
@@ -55,7 +73,23 @@ const PageForm = ({}) => {
 
 						if (res2.ok) {
 							const data = await res2.json()
-							if (formSelected.update === 'Page') {
+							const { savedAssetId } = data;
+							if (formSelected.nestedItemTraceObj['Page'].length) {
+								setFormSelected(prev => {
+									const newData1 = cloneDeep(prev);
+									newData1.formTitle = 'Page';
+									newData1.update = 'Page';
+									newData1.loading = false;
+									setData(prev => {
+										const newData2 = cloneDeep(prev);
+										newData2['Page'] = last(newData1.nestedItemTraceObj['Page']);
+										newData2['Page'].childPagesIds.push(savedAssetId);
+										return newData2;
+									})
+									newData1.nestedItemTraceObj['Page'].pop();
+									return newData1;
+								})
+							} else {
 								setFormSelected(prev => {
 									const newData = cloneDeep(prev);
 									newData.formTitle = 'Page';
@@ -63,14 +97,9 @@ const PageForm = ({}) => {
 									newData.loading = false;
 									return newData;
 								})
+								setTopLevelModal(false);
+								setData(dataInitialValue);
 							}
-							setFormSelected(prev => {
-								const newData = cloneDeep(prev);
-								newData.loading = false;
-								return newData;
-							});
-							setTopLevelModal(false);
-							setData(dataInitialValue)
 						} else {
 							const data = await res2.json();
 							console.log('Error in PageForm', data.errorMessage);

@@ -11,6 +11,7 @@ import { useManagePageForm } from '../../contexts/useManagePageForm';
 import { assetsEnumValueArr, templatesEnumValueArr } from '../../../models/model-types';
 import { OptionsType } from '../../../models/model-types';
 import { AllDocUnionType } from '../types/util_types';
+import { cloneDeep } from 'lodash';
 
 const ListField = ({
 		obj,
@@ -27,7 +28,7 @@ const ListField = ({
 	const [itemFilterArr, setItemFilterArr] =
 		useState<typeof templatesEnumValueArr | typeof assetsEnumValueArr | null>([]);
 	const [textFilter, setTextFilter] = useState('');
-	const { formSelected, setFormSelected, data } = useManagePageForm();
+	const { formSelected, setFormSelected, data, topLevelModal } = useManagePageForm();
 	const { formTitle } = formSelected;
 
 	useEffect(() => {
@@ -44,8 +45,11 @@ const ListField = ({
 	useEffect(() => {
 		handleGetList();
 		async function handleGetList() {
-			const paramsObj: { schema: string; nestedItemIds?: string; itemType?: string; } =
-				{ schema: obj.caster?.options?.ref ?? obj.options?.ref ?? '' };
+			const paramsObj: { schema: string; nestedItemIds?: string; itemType?: string; hideAvailableChoices?: string; } =
+				{
+					schema: obj.caster?.options?.ref ?? obj.options?.ref ?? '',
+					hideAvailableChoices: obj.options?.hideAvailableChoices?.toString()
+				};
 			if (data?.[formTitle]?.[title]) {
 				paramsObj['nestedItemIds'] = data?.[formTitle]?.[title];
 			}
@@ -60,10 +64,12 @@ const ListField = ({
 			setChosenItems(chosenItems);
 		}
 	}, [itemFilter]);
-
+	console.log(obj, availableItems)
 	return (
 		<Flex
 			flexDir='column'
+			borderBottom={obj.options?.hideAvailableChoices ? '5px solid rgb(0,0,0,.1)' : 'none'}
+			paddingBottom='1rem'
 		>
 			<Box
 				outline='black solid .1rem'
@@ -96,76 +102,86 @@ const ListField = ({
 				width='fit-content'
 				onClick={() => {
 					setFormSelected(prev => {
-						return {
-							...prev,
-							formTitle: obj.caster?.options.ref ?? '',
-							prevFormTitle: prev.formTitle
+						const newData = cloneDeep(prev);
+						if (obj.caster?.options.ref === formTitle  && topLevelModal) {
+							newData.nestedItemTraceObj[obj.caster?.options.ref] =
+								[
+									...newData.nestedItemTraceObj[obj.caster?.options.ref],
+									{ ...data[obj.caster?.options.ref] }
+								]
 						}
+						newData.formTitle = obj.caster?.options.ref ?? '';
+						newData.prevFormTitle = prev.formTitle;
+						return newData;
 					})
 				}}
 			>
 				Create New {obj.caster?.options?.ref ?? obj.options?.ref}
 			</Button>
-			<ButtonGroup gap='1' mt='1rem' flexWrap='wrap'>
-				{
-					itemFilterArr?.map(str => {
-						return <Button
-							key={str}
-							variant={str === itemFilter ? 'ghost' : 'outline'}
-							onClick={() => {
-								setItemFilter(str)
+			{availableItems &&
+				<>
+					<ButtonGroup gap='1' mt='1rem' flexWrap='wrap'>
+						{
+							itemFilterArr?.map(str => {
+								return <Button
+									key={str}
+									variant={str === itemFilter ? 'ghost' : 'outline'}
+									onClick={() => {
+										setItemFilter(str)
+									}}
+								>
+									{str}
+								</Button>
+							})
+						}
+					</ButtonGroup>
+					<Box
+						pt='1rem'
+					>
+						<Input
+							value={textFilter}
+							width='35%'
+							placeholder={`Search ${obj.caster?.options?.ref ?? obj.options?.ref}`}
+							onInput={e => {
+								setTextFilter((e.target as HTMLInputElement).value)
 							}}
-						>
-							{str}
-						</Button>
-					})
-				}
-			</ButtonGroup>
-			<Box
-				pt='1rem'
-			>
-				<Input
-					value={textFilter}
-					width='35%'
-					placeholder={`Search ${obj.caster?.options?.ref ?? obj.options?.ref}`}
-					onInput={e => {
-						setTextFilter((e.target as HTMLInputElement).value)
-					}}
-				/>
-			</Box>
-			<Box
-				outline='black solid .1rem'
-				borderRadius='.2rem'
-				height='400px'
-				overflow='auto'
-				my='1rem'
-				padding='.5rem'
-			>
-				{
-					availableItems
-						?.filter(item => {
-							const regexp: RegExp = new RegExp(textFilter, 'i')
-							return (item as any).title?.match(regexp) ||
-								(item as any).description?.match(regexp) ||
-								(item as any).richDescription?.match(regexp)
-						})
-						?.map((item, index) => {
-							return <ListFieldItem
-								key={item._id}
-								item={item}
-								title={title}
-								index={index}
-								chosen='false'
-								setAvailableItems={setAvailableItems}
-								setChosenItems={setChosenItems}
-								singleChoice={singleChoice}
-							/>
-						})
-				}
-				{
-					!availableItems?.length && 'No items to choose'
-				}
-			</Box>
+						/>
+					</Box>
+					<Box
+						outline='black solid .1rem'
+						borderRadius='.2rem'
+						height='400px'
+						overflow='auto'
+						my='1rem'
+						padding='.5rem'
+					>
+						{
+							availableItems
+								?.filter(item => {
+									const regexp: RegExp = new RegExp(textFilter, 'i')
+									return (item as any).title?.match(regexp) ||
+										(item as any).description?.match(regexp) ||
+										(item as any).richDescription?.match(regexp)
+								})
+								?.map((item, index) => {
+									return <ListFieldItem
+										key={item._id}
+										item={item}
+										title={title}
+										index={index}
+										chosen='false'
+										setAvailableItems={setAvailableItems}
+										setChosenItems={setChosenItems}
+										singleChoice={singleChoice}
+									/>
+								})
+						}
+						{
+							!availableItems?.length && 'No items to choose'
+						}
+					</Box>
+				</>
+			}
 		</Flex>
 	)
 }

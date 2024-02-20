@@ -36,7 +36,8 @@ const ListFieldItem = ({
 	setItems,
 	setChosenItems,
 	setAvailableItems,
-	singleChoice
+	singleChoice,
+	skipNesting
 }: {
 	item: AllDocUnionType;
 	index: number;
@@ -48,6 +49,7 @@ const ListFieldItem = ({
 	setAvailableItems?: React.Dispatch<SetStateAction<AllDocUnionType[]>>;
 	chosenItems?: AllDocUnionType[];
 	noForm?: boolean;
+	skipNesting?: boolean;
 }) => {
 	const { data, setData, formSelected, setFormSelected, setTopLevelModal } = useManagePageForm();
 	const { formTitle } = formSelected;
@@ -271,16 +273,23 @@ const ListFieldItem = ({
 						}
 						<IconButton
 							onClick={() => {
-								setData(prev => {
-									const newData = cloneDeep(prev);
-									newData[item.schemaName ?? ''] = item;
-									return newData;
-								})
 								setFormSelected(prev => {
 									const newData: FormSelectedType = { ...prev };
 									newData.formTitle = item.schemaName ?? '';
 									newData.update = item.schemaName ?? '';
 									newData.editItemTraceObj[item.schemaName ?? ''] = item._id;
+									if (!skipNesting) {
+										newData.nestedItemTraceObj[item.schemaName ?? ''] =
+											[
+												...newData.nestedItemTraceObj[item.schemaName ?? ''],
+												item
+											]
+									}
+									return newData;
+								})
+								setData(prev => {
+									const newData = cloneDeep(prev);
+									newData[item.schemaName ?? ''] = item;
 									return newData;
 								})
 								if (item.schemaName === 'Page') {
