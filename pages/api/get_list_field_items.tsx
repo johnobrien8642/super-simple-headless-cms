@@ -9,7 +9,7 @@ export const config = {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-	const { schema, nestedItemIds, itemType } = req.query;
+	const { schema, nestedItemIds, itemType, hideAvailableChoices } = req.query;
 	const nestedItemIdsArr = nestedItemIds ? (nestedItemIds as string).split(',') : [];
 	let availableItemsFilter: any = {
 		_id: { $nin: nestedItemIdsArr }
@@ -17,9 +17,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	if (itemType) {
 		availableItemsFilter.type = itemType;
 	}
-	const availableItems = await models[schema as string].find(availableItemsFilter)
+	let availableItems;
+	if (hideAvailableChoices !== 'true') {
+		availableItems = await models[schema as string].find(availableItemsFilter)
+	}
 	const chosenItems = await models[schema as string].find({ _id: { $in: nestedItemIdsArr } })
-	if (availableItems && chosenItems) {
+	if (chosenItems) {
 		const orderedChosenItems = new Array(chosenItems.length);
 		let item;
 		for (let i = 0; i < chosenItems.length; i++) {
@@ -28,6 +31,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 		return res.status(200).json({ availableItems, chosenItems: orderedChosenItems });
 	} else {
-		return res.status(401).json({ error: 'That wasnt a valid model' });
+		return res.status(404).json({ error: 'That wasnt a valid model' });
 	}
 };

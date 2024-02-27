@@ -45,8 +45,11 @@ const ListField = ({
 	useEffect(() => {
 		handleGetList();
 		async function handleGetList() {
-			const paramsObj: { schema: string; nestedItemIds?: string; itemType?: string; } =
-				{ schema: obj.caster?.options?.ref ?? obj.options?.ref ?? '' };
+			const paramsObj: { schema: string; nestedItemIds?: string; itemType?: string; hideAvailableChoices?: string; } =
+				{
+					schema: obj.caster?.options?.ref ?? obj.options?.ref ?? '',
+					hideAvailableChoices: obj.options?.hideAvailableChoices?.toString()
+				};
 			if (data?.[formTitle]?.[title]) {
 				paramsObj['nestedItemIds'] = data?.[formTitle]?.[title];
 			}
@@ -60,11 +63,13 @@ const ListField = ({
 			setAvailableItems(availableItems);
 			setChosenItems(chosenItems);
 		}
-	}, [itemFilter]);
-	console.log(dataInitialValue)
+	}, [itemFilter, formSelected]);
+  
 	return (
 		<Flex
 			flexDir='column'
+			borderBottom={obj.options?.hideAvailableChoices ? '5px solid rgb(0,0,0,.1)' : 'none'}
+			paddingBottom='1rem'
 		>
 			<Box
 				outline='black solid .1rem'
@@ -93,7 +98,7 @@ const ListField = ({
 					!chosenItems?.length && 'No items chosen'
 				}
 			</Box>
-			<Button
+      <Button
 				width='fit-content'
 				onClick={() => {
 					setFormSelected(prev => {

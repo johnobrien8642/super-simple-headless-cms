@@ -2,7 +2,9 @@ export async function init(models: string[]) {
 	const ManagePageFormDataTypeObj: { [key: string]: any } = {} as const;
 	const initialValueObj: { [key: string]: any } = {};
 	const editItemTraceObjType: { [key: string]: any } = {};
+	const nestedItemTraceObjType: { [key: string]: any } = {};
 	const editItemTraceObjInitObj: { [key: string]: any } = {};
+	const nestedItemTraceObjInitObj: { [key: string]: any } = {};
 	let AllModelNamesTypeStr: string = '' as const;
 	for (let i = 0; i < models.length; i++) {
 		ManagePageFormDataTypeObj[models[i]] = {};
@@ -14,6 +16,8 @@ export async function init(models: string[]) {
 		}
 		editItemTraceObjType[models[i]] = 'string'
 		editItemTraceObjInitObj[models[i]] = ''
+		nestedItemTraceObjType[models[i]] = '[]'
+		nestedItemTraceObjInitObj[models[i]] = []
 	}
 	let fieldArray;
 	let path;
@@ -75,6 +79,8 @@ export async function init(models: string[]) {
 		initialValueObj,
 		AllModelNamesTypeStr,
 		editItemTraceObjType,
-		editItemTraceObjInitObj
+		editItemTraceObjInitObj,
+		nestedItemTraceObjType,
+		nestedItemTraceObjInitObj
 	}
 }

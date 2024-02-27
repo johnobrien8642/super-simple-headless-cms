@@ -18,21 +18,16 @@ import PageForm from '../../../util/components/system/PageForm.tsx';
 import TemplateForm from '../../../util/components/system/TemplateForm.tsx';
 import AssetForm from '../../../util/components/system/AssetForm.tsx';
 import { useRouter } from 'next/router';
-import { ManagePageFormProvider, dataInitialValue, editItemTraceObjInitObj } from '../../../util/contexts/useManagePageForm.tsx';
 import ListFieldItem from '../../../util/components/system/ListFieldItem.tsx';
 import Head from 'next/head';
 import { AllDocUnionType } from '../../../util/components/types/util_types.ts';
 import { GetServerSideProps, NextPage } from 'next';
+import { ManagePageFormProvider, dataInitialValue, editItemTraceObjInitObj, nestedItemTraceObjInitObj, formSelectedInitObj } from '../../../util/contexts/useManagePageForm.tsx';
+import { cloneDeep } from 'lodash';
 
 const ManagePages: NextPage<{}> = () => {
 	const [topLevelModal, setTopLevelModal] = useState(false);
-	const [formSelected, setFormSelected] = useState({
-		formTitle: 'Page',
-		formIndex: 0,
-		editItemTraceObj: editItemTraceObjInitObj,
-		update: '',
-		loading: false
-	});
+	const [formSelected, setFormSelected] = useState(cloneDeep(formSelectedInitObj));
 	const [data, setData] = useState(dataInitialValue);
 	const [items, setItems] = useState<AllDocUnionType[]>([]);
 	const [renderCount, setRenderCount] = useState(0);
@@ -92,15 +87,7 @@ const ManagePages: NextPage<{}> = () => {
 					onClick={() => {
 						setTopLevelModal(true);
 						setData(dataInitialValue);
-						setFormSelected(prev => {
-							return {
-								...prev,
-								formTitle: 'Page',
-								prevFormTitle: '',
-								editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
-								update: ''
-							}
-						});
+						setFormSelected(cloneDeep(formSelectedInitObj));
 					}}
 				>
 					Create New Page
@@ -117,6 +104,7 @@ const ManagePages: NextPage<{}> = () => {
 								noForm={true}
 								setItems={setItems}
 								index={index}
+								skipNesting={true}
 							/>
 						})
 					}
@@ -126,23 +114,21 @@ const ManagePages: NextPage<{}> = () => {
 					onClose={() => {
 						if (!formSelected.loading) {
 							setTopLevelModal(false);
-							setData(dataInitialValue);
-							setFormSelected(prev => {
-								return {
-									...prev,
-									formTitle: 'Page',
-									prevFormTitle: '',
-									editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
-									update: ''
-								}
-							});
+							setData(cloneDeep(dataInitialValue));
+							setFormSelected(cloneDeep(formSelectedInitObj));
 						}
 					}}
 				>
 					<ModalOverlay />
 					<ModalContent maxW='1200px' position='relative'>
 						<ModalHeader></ModalHeader>
-						<ModalCloseButton />
+						<ModalCloseButton
+							onClick={() => {
+								setTopLevelModal(false);
+								setData(cloneDeep(dataInitialValue));
+								setFormSelected(cloneDeep(formSelectedInitObj));
+							}}
+						/>
 						<ModalBody>
 							<PageForm />
 							<TemplateForm />
@@ -154,16 +140,8 @@ const ManagePages: NextPage<{}> = () => {
 								mr={3}
 								onClick={() => {
 									setTopLevelModal(false);
-									setData(dataInitialValue);
-									setFormSelected(prev => {
-										return {
-											...prev,
-											formTitle: 'Page',
-											prevFormTitle: '',
-											editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
-											update: ''
-										}
-									});
+									setData(cloneDeep(dataInitialValue));
+									setFormSelected(cloneDeep(formSelectedInitObj));
 								}}
 							>
 								{formSelected.editItemTraceObj['Page'] ? 'Close Update Page Form' : 'Close New Page Form'}

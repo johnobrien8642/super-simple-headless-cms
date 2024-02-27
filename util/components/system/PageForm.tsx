@@ -6,8 +6,8 @@ import {
 	Flex
 } from '@chakra-ui/react';
 import FormFields from './FormFields';
-import { useManagePageForm, dataInitialValue } from '../../contexts/useManagePageForm';
-import { cloneDeep, kebabCase } from 'lodash';
+import { useManagePageForm, dataInitialValue, formSelectedInitObj, nestedItemTraceObjInitObj, initialValueObj } from '../../contexts/useManagePageForm';
+import { cloneDeep, kebabCase, remove, last, first } from 'lodash';
 
 const PageForm = ({}) => {
 	const [fieldArr, setFieldArr] = useState<[string, any][]>([]);
@@ -19,12 +19,13 @@ const PageForm = ({}) => {
 	useEffect(() => {
 		handleModelSchema();
 		async function handleModelSchema() {
+			if (!formTitle) return;
 			const res = await fetch(`/api/get_model_schema?formTitle=${formTitle}`);
 			const data = await res.json();
 			const { schemaPaths } = data;
 			setFieldArr(Object.entries(schemaPaths))
 		}
-	}, [])
+	}, [formTitle])
 
 	useEffect(() => {
 		getParent();
@@ -55,9 +56,20 @@ const PageForm = ({}) => {
 							newData.loading = true;
 							return newData;
 						});
-						data['Page'].folderHref = `/${kebabCase(data['Page'].title)}`;
+						if (nestedItemTraceObj['Page'].length) {
+							nestedItemTraceObj['Page']
+								.push({ folderHref: `/${kebabCase(data['Page'].title)}` });
+							data['Page'].folderHref =
+								nestedItemTraceObj['Page']
+									.filter((obj: any) => obj.folderHref !== '/')
+										.map((obj: any) => obj.folderHref)
+											.join('');
+						} else {
+							data['Page'].folderHref = `/${kebabCase(data['Page'].title)}`;
+						}
+						nestedItemTraceObj['Page'].pop();
 						const res2 = await fetch(`/api/handle_page`, {
-							method: data['Page']._id ? 'PUT' : 'POST',
+              method: data['Page']._id ? 'PUT' : 'POST',
 							headers: {
 								Accept: 'application/json',
 								'Content-Type': 'application/json'
@@ -66,7 +78,11 @@ const PageForm = ({}) => {
 								data: {
 									...data['Page']
 								},
-								update: formSelected.update,
+								update: update,
+								isNested: !!nestedItemTraceObj['Page'].length,
+								parentId: !data['Page']._id ?
+									(last(nestedItemTraceObj['Page']) as any)?._id :
+										nestedItemTraceObj['Page'].at(-2),
 								itemToEditId: editItemTraceObj[formTitle],
 								folderHref: data['Page']?.folderHref,
 								parentId

@@ -22,7 +22,7 @@ const optionsObj: { [key: string]: OptionsType } = {
 	},
 	childPagesIds: {
 		formTitle: 'Child Pages',
-		filterType: true,
+		filterType: false,
 		hideAvailableChoices: true
 	},
 	templatesIds: {
@@ -91,7 +91,7 @@ const PageSchema = new Schema({
 				ref: 'Templates'
 			}
 		],
-		formTitle: 'Templates',
+		...optionsObj.templatesIds
 	},
 	meta: {
 		type: MetaDropdownSchema,

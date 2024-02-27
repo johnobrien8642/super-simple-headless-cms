@@ -36,7 +36,8 @@ const ListFieldItem = ({
 	setItems,
 	setChosenItems,
 	setAvailableItems,
-	singleChoice
+	singleChoice,
+	skipNesting
 }: {
 	item: AllDocUnionType;
 	index: number;
@@ -48,6 +49,7 @@ const ListFieldItem = ({
 	setAvailableItems?: React.Dispatch<SetStateAction<AllDocUnionType[]>>;
 	chosenItems?: AllDocUnionType[];
 	noForm?: boolean;
+	skipNesting?: boolean;
 }) => {
 	const { data, setData, formSelected, setFormSelected, setTopLevelModal } = useManagePageForm();
 	const { formTitle } = formSelected;

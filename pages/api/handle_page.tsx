@@ -15,11 +15,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const {
 		data,
 		update,
+		isNested,
+		parentId,
 		itemToEditId,
 		folderHref,
 		parentId
 	} = req.body
-
 	let page;
 	let parentPage;
 	let pageExistsAlready;
