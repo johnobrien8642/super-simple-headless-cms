@@ -7,14 +7,8 @@ import {
 	Text,
 	Box,
 	useBreakpointValue,
-	Menu,
-	MenuButton,
-	MenuList,
-	MenuItem,
-	MenuItemOption,
-	MenuGroup,
-	MenuOptionGroup,
-	MenuDivider,
+	Grid,
+	GridItem,
 	useDisclosure,
 	VStack
 } from '@chakra-ui/react';
@@ -26,7 +20,7 @@ import { PageType } from "../../../models/Page";
 
 const Header = ({ pages }: { pages: PageType[] }) => {
 	const [loggedIn, setLoggedIn] = useState(false);
-	const [headerArrs, setHeaderArrs] = useState([]);
+	let [depthNum, setDepthNum] = useState(0);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const router = useRouter();
 	const desktop = useBreakpointValue(
@@ -43,42 +37,52 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 	}, [])
 
 	useEffect(() => {
-		function handleHeaderArrs() {
-
+		function getDepth(pages: any) {
+			return pages.reduce((acc: number, curr: any, currIndex: number) => {
+				if (curr.childPagesIds.length) {
+					return getDepth(curr.childPagesIds)
+				} else {
+					acc += 1;
+					return acc;
+				}
+			}, 0)
 		}
+		setDepthNum(getDepth(pages))
 	}, [])
 
-	const handleChildren = useCallback((childPages: any, depth: number) => {
-		return <VStack>
-			{childPages.map((obj: any) => {
+	const handleChildren = useCallback((childPages: any, depth: number, parentId: string) => {
+		return childPages.map((obj: any, index: number) => {
 				const nextDepth = depth + 1;
-				return <Box
-					className={`${nextDepth}`}
-				>
-					<Text
-						key={obj._id}
-						fontWeight={router.asPath === obj.folderHref ? '800' : '200'}
-						fontSize={router.asPath === obj.folderHref ? '1.8rem !important' : '1.5rem'}
-						sx={{
-							'a:hover': {
-								color: 'lightgray'
-							}
-						}}
-					>
-						<Link
-							href={obj.folderHref}
-							passHref
+					return <>
+						<GridItem
+							colStart={depth}
+							rowStart={index}
+							data-parent-id={parentId}
 						>
-							{obj.title}
-						</Link>
-					</Text>
-					{obj.childPagesIds &&
-						handleChildren(obj.childPagesIds, nextDepth)
-					}
-				</Box>
-			})}
-		</VStack>
-	}, [pages])
+							<Text
+								key={obj._id}
+								fontWeight={router.asPath === obj.folderHref ? '800' : '200'}
+								fontSize={router.asPath === obj.folderHref ? '1.8rem !important' : '1.5rem'}
+								sx={{
+									'a:hover': {
+										color: 'lightgray'
+									}
+								}}
+							>
+								<Link
+									href={obj.folderHref}
+									passHref
+								>
+									{obj.title}
+								</Link>
+							</Text>
+						</GridItem>
+						{obj.childPagesIds &&
+							handleChildren(obj.childPagesIds, nextDepth, obj._id)
+						}
+					</>
+			})
+	}, [pages, depthNum])
 
 	return (
 		<chakra.header id="header">
@@ -120,35 +124,45 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 					display={desktop ? 'flex' : 'none'}
 					as="nav"
 					spacing='1.5rem'
+					position='relative'
 				>
 					{pages.map((obj, i) => {
-						const depth = 0;
+						const depth = 1;
 						if (obj.folderHref !== '/' && obj.showInNavigation) {
-							return <Box>
-								<Text
-									key={obj._id}
-									fontWeight={router.asPath === obj.folderHref ? '800' : '200'}
-									fontSize={router.asPath === obj.folderHref ? '1.8rem !important' : '1.5rem'}
-									sx={{
-										'a:hover': {
-											color: 'lightgray'
-										}
-									}}
+							return <>
+								<Box
+									data-parent-id={obj._id}
 								>
-									<Link
-										key={i}
-										href={obj.folderHref}
-										passHref
+									<Text
+										key={obj._id}
+										fontWeight={router.asPath === obj.folderHref ? '800' : '200'}
+										fontSize={router.asPath === obj.folderHref ? '1.8rem !important' : '1.5rem'}
+										sx={{
+											'a:hover': {
+												color: 'lightgray'
+											}
+										}}
 									>
-										{obj.title}
-									</Link>
-								</Text>
-								{obj.childPagesIds &&
-									handleChildren(obj.childPagesIds, depth)
-								}
-							</Box>
-						}
-					})}
+										<Link
+											key={i}
+											href={obj.folderHref}
+											passHref
+										>
+											{obj.title}
+										</Link>
+									</Text>
+								</Box>
+								<Grid
+									gridTemplateColumns={`repeat(${depthNum}, 1fr)`}
+									position='absolute'
+								>
+									{obj.childPagesIds &&
+										handleChildren(obj.childPagesIds, depth, obj._id)
+									}
+								</Grid>
+							</>
+							}
+						})}
 					<Box>
 						{loggedIn && <Logout />}
 					</Box>
