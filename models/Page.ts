@@ -23,7 +23,7 @@ const optionsObj: { [key: string]: OptionsType } = {
 	childPagesIds: {
 		formTitle: 'Child Pages',
 		filterType: true,
-		hideAvailableChoices: true
+		nested: true
 	},
 	templatesIds: {
 		formTitle: 'Templates',
@@ -112,6 +112,18 @@ const PageSchema = new Schema({
 		...optionsObj.createdAt
 	}
 });
+
+function autoPopulatePages(next: any) {
+	//@ts-expect-error
+	this.populate('childPagesIds');
+	next()
+}
+
+PageSchema
+	.pre('findOne', autoPopulatePages)
+	.pre('find', autoPopulatePages)
+
+
 
 export type MetaDropdownType = InferSchemaType<typeof MetaDropdownSchema>;
 export type PageSubDocsType = {

@@ -30,6 +30,16 @@ const PageManagerSchema = new Schema({
 	}
 });
 
+function autoPopulatePages(next: any) {
+	//@ts-expect-error
+	this.populate('pageIds');
+	next()
+}
+
+PageManagerSchema
+	.pre('findOne', autoPopulatePages)
+	.pre('find', autoPopulatePages)
+
 export type PageManagerSubDocsType = {
 	pageIds: PageType[];
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
 	Flex,
 	Button,
@@ -6,7 +6,17 @@ import {
 	chakra,
 	Text,
 	Box,
-	useBreakpointValue
+	useBreakpointValue,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	MenuItemOption,
+	MenuGroup,
+	MenuOptionGroup,
+	MenuDivider,
+	useDisclosure,
+	VStack
 } from '@chakra-ui/react';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
@@ -15,7 +25,9 @@ import MobileHeader from "./MobileHeader";
 import { PageType } from "../../../models/Page";
 
 const Header = ({ pages }: { pages: PageType[] }) => {
-	const [loggedIn, setLoggedIn] = useState(false)
+	const [loggedIn, setLoggedIn] = useState(false);
+	const [headerArrs, setHeaderArrs] = useState([]);
+	const { isOpen, onOpen, onClose } = useDisclosure();
 	const router = useRouter();
 	const desktop = useBreakpointValue(
 		{
@@ -29,6 +41,44 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 			setLoggedIn(true)
 		}
 	}, [])
+
+	useEffect(() => {
+		function handleHeaderArrs() {
+
+		}
+	}, [])
+
+	const handleChildren = useCallback((childPages: any, depth: number) => {
+		return <VStack>
+			{childPages.map((obj: any) => {
+				const nextDepth = depth + 1;
+				return <Box
+					className={`${nextDepth}`}
+				>
+					<Text
+						key={obj._id}
+						fontWeight={router.asPath === obj.folderHref ? '800' : '200'}
+						fontSize={router.asPath === obj.folderHref ? '1.8rem !important' : '1.5rem'}
+						sx={{
+							'a:hover': {
+								color: 'lightgray'
+							}
+						}}
+					>
+						<Link
+							href={obj.folderHref}
+							passHref
+						>
+							{obj.title}
+						</Link>
+					</Text>
+					{obj.childPagesIds &&
+						handleChildren(obj.childPagesIds, nextDepth)
+					}
+				</Box>
+			})}
+		</VStack>
+	}, [pages])
 
 	return (
 		<chakra.header id="header">
@@ -72,25 +122,31 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 					spacing='1.5rem'
 				>
 					{pages.map((obj, i) => {
+						const depth = 0;
 						if (obj.folderHref !== '/' && obj.showInNavigation) {
-							return <Text
-								key={obj._id}
-								fontWeight={router.asPath === obj.folderHref ? '800' : '200'}
-								fontSize={router.asPath === obj.folderHref ? '1.8rem !important' : '1.5rem'}
-								sx={{
-									'a:hover': {
-										color: 'lightgray'
-									}
-								}}
-							>
-								<Link
-									key={i}
-									href={obj.folderHref}
-									passHref
+							return <Box>
+								<Text
+									key={obj._id}
+									fontWeight={router.asPath === obj.folderHref ? '800' : '200'}
+									fontSize={router.asPath === obj.folderHref ? '1.8rem !important' : '1.5rem'}
+									sx={{
+										'a:hover': {
+											color: 'lightgray'
+										}
+									}}
 								>
-									{obj.title}
-								</Link>
-							</Text>
+									<Link
+										key={i}
+										href={obj.folderHref}
+										passHref
+									>
+										{obj.title}
+									</Link>
+								</Text>
+								{obj.childPagesIds &&
+									handleChildren(obj.childPagesIds, depth)
+								}
+							</Box>
 						}
 					})}
 					<Box>

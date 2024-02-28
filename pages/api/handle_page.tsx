@@ -33,10 +33,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			if (parentId) {
 				parentPage = await Page.findById(parentId);
 				parentPage.childPagesIds.push(page._id);
+				page.folderHref = (parentPage.folderHref === '/' ? '' : parentPage.folderHref) + page.folderHref;
 				await parentPage.save();
 			}
 			try {
-				page.folderHref = (parentPage.folderHref === '/' ? '' : parentPage.FolderHref) + page.folderHref;
 				const savedPage = await page.save();
 				if (!parentId) {
 					pageManager = await PageManager.findOne({ title: 'manage-pages' });
@@ -54,15 +54,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			page = await Page.findById(itemToEditId);
 			if (parentId) {
 				parentPage = await Page.findById(parentId);
-				page.folderHref = (parentPage.folderHref === '/' ? '' : parentPage.FolderHref) + page.folderHref;
+				if (parentPage) {
+					page.folderHref = (parentPage.folderHref === '/' ? '' : parentPage.folderHref) + page.folderHref;
+				}
 			}
 			await Page.findOneAndUpdate(
 				{ _id: itemToEditId },
 				{
-					...page
+					...data,
+					folderHref: page.folderHref
 				}
 			);
-			await res.revalidate(page.folderHref);
+			try {
+				await res.revalidate(page.folderHref);
+			} catch (err) {
+			}
 			return res.status(200).json({ success: true, _id: page._id, parent: parentPage });
 		} catch (err: any) {
 			return res.status(500).json({ success: false, errorMessage: err.message });

@@ -40,13 +40,13 @@ const Home: NextPage<SlugPropsType> = ({ pageManager, page }) => {
 
 export const getStaticPaths = async () => {
 	await connectDb();
-	const pageManager =
-		await PageManager
-			.find({ title: 'manage-pages' })
-				.populate('pageIds')
+	const pages =
+		await Page
+			.find({})
+				.populate('childPagesIds');
 	let paths: any = [];
-	if (pageManager) {
-		paths = pageManager?.[0]?.pageIds.map((obj: PageType) => {
+	if (pages) {
+		paths = pages?.map((obj: any) => {
 			return {
 				params: {
 					slug: [ obj.folderHref.substring(1) ]
@@ -62,7 +62,9 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<SlugPropsType> = async (context) => {
 	await connectDb();
-	const pageManager = await PageManager.findOne({}).populate('pageIds');
+	const pageManager =
+		await PageManager
+			.findOne({});
 	const page =
 		await Page
 			.findOne({ folderHref: context.params?.slug?.[0] ? `/${context.params?.slug[0]}` : '/' })

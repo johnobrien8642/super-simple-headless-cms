@@ -24,7 +24,7 @@ const PageForm = ({}) => {
 			const { schemaPaths } = data;
 			setFieldArr(Object.entries(schemaPaths))
 		}
-	}, [])
+	}, []);
 
 	useEffect(() => {
 		getParent();
@@ -35,16 +35,16 @@ const PageForm = ({}) => {
 			const { parent } = resData;
 			setParentDoc(parent);
 		}
-	}, [formSelected])
-	console.log(data[formTitle])
+	}, [formSelected]);
+
 	if (formTitle === 'Page') {
 		return (
 			<div className="form container">
 				<Heading>
 					{
-						(parentDoc || formSelected.parentId) ?
-							`Child Page for ${parentDoc?.title || formSelected?.parentIdentStr}` :
-								`Page ${data[formTitle]?.title || data[formTitle]?.folderHref}`
+						parentDoc ?
+							`Child Page for ${parentDoc.title}` :
+								`Top Level Page: ${data['Page']?.title || ''}`
 					}
 				</Heading>
 				<form
@@ -122,14 +122,21 @@ const PageForm = ({}) => {
 							isDisabled={formSelected.loading}
 							mr={3}
 						>
-							{editItemTraceObj['Page'] ? 'Update' : 'Save'}
+							{data['Page']._id ? 'Update' : 'Save'}
 						</Button>
 						{parentDoc &&
 							<Button
 								colorScheme='blue'
 								mr={3}
 								onClick={() => {
-									setData(parentDoc);
+									setFormSelected(prev => {
+										return cloneDeep(prev);
+									});
+									setData(prev => {
+										const newData = cloneDeep(prev);
+										newData['Page'] = parentDoc;
+										return newData;
+									});
 								}}
 								isDisabled={formSelected.loading}
 							>

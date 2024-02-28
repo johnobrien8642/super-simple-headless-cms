@@ -85,5 +85,5 @@ export type OptionsType = {
 	// For showing filter types for ListField if needed/available
 	filterType?: boolean;
 	// For hiding available choices in ListField
-	hideAvailableChoices?: boolean;
+	nested?: boolean;
 }
