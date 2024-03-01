@@ -49,7 +49,14 @@ const ListField = ({
 			const paramsObj: { schema: string; nestedItemIds?: string; itemType?: string; } =
 				{ schema: obj.caster?.options?.ref ?? obj.options?.ref ?? '' };
 			if (data?.[formTitle]?.[title]) {
-				paramsObj['nestedItemIds'] = data?.[formTitle]?.[title].map((obj: any) => obj._id);
+				paramsObj['nestedItemIds'] =
+					data?.[formTitle]?.[title].map((obj: any) => {
+						if (typeof obj === 'object') {
+							return obj._id
+						} else {
+							return obj
+						}
+					});
 			}
 			if (itemFilter) {
 				paramsObj['itemType'] = itemFilter;

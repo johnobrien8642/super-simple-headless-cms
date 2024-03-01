@@ -117,7 +117,7 @@ const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
 								}
 								if (!(e.target as HTMLInputElement)?.files) return;
 								//@ts-expect-error error is unnecessary it's handled by line above
-								const dataUrl = await blobToData((e.target as HTMLInputElement).files[0]);
+								const dataUrl = await blobToData((e.target as HTMLInputElement).files[0])
 								setData((prev) => {
 									if (!(e.target as HTMLInputElement)?.files) return prev;
 									const newData = cloneDeep(prev);

@@ -24,7 +24,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		try {
 			const savedAsset = await asset.save();
 			if (folderHref) {
-				await res.revalidate(folderHref);
+				try {
+					await res.revalidate(folderHref);
+				} catch (err) {
+				}
 			}
 			return res.status(200).json({ success: true, savedAssetId: savedAsset._id });
 		} catch (err: any) {
@@ -38,7 +41,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				updateObj
 			)
 			if (folderHref) {
-				await res.revalidate(folderHref);
+				try {
+					await res.revalidate(folderHref);
+				} catch (err) {
+				}
 			}
 			return res.status(200).json({ success: true, savedAssetId: asset._id });
 		} catch (err: any) {

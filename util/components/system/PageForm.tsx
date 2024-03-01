@@ -29,11 +29,12 @@ const PageForm = ({}) => {
 	useEffect(() => {
 		getParent();
 		async function getParent() {
-			if (!data[formTitle]?._id) return;
-			const res = await fetch(`/api/get_parent?formTitle=${formTitle}&id=${data[formTitle]._id.toString()}`);
-			const resData = await res.json();
-			const { parent } = resData;
-			setParentDoc(parent);
+			if (formTitle === 'Page' && (data[formTitle]._id || parentId)) {
+				const res = await fetch(`/api/get_parent?formTitle=${formTitle}&id=${data[formTitle]._id?.toString() || parentId}`);
+				const resData = await res.json();
+				const { parent } = resData;
+				setParentDoc(parent);
+			}
 		}
 	}, [formSelected]);
 
@@ -42,9 +43,9 @@ const PageForm = ({}) => {
 			<div className="form container">
 				<Heading>
 					{
-						parentDoc ?
-							`Child Page for ${parentDoc.title}` :
-								`Top Level Page: ${data['Page']?.title || ''}`
+						parentDoc || parentId ?
+							`${!data['Page']._id ? 'New ' : ''}Child Page for ${parentDoc.title || parentDoc.folderHref}` :
+									`Top Level Page: ${data['Page']?.title || ''}`
 					}
 				</Heading>
 				<form

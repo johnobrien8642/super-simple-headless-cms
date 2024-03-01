@@ -69,7 +69,7 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 							fontWeight='400'
 							fontSize='min(7vw, 2rem)'
 						>
-							John Edward O'Brien
+							Brian O'Corcoran
 						</Text>
 					</Button>
 					<HeaderPanel pages={pages} />
@@ -105,7 +105,7 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 							fontWeight='400'
 							fontSize='min(7vw, 2rem)'
 						>
-							John Edward O'Brien
+							Brian O'Corcoran
 						</Text>
 					</Button>
 

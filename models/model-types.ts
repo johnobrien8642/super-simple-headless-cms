@@ -8,6 +8,7 @@ export enum TemplatesEnum {
 	VideoPlayer = 'VideoPlayer',
 	HeadlineOnlyCTA = 'HeadlineOnlyCTA',
 	TextBlock = 'TextBlock',
+	PDFView = 'PDFView'
 }
 
 export enum AssetsEnum {

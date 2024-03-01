@@ -114,6 +114,7 @@ const PageSchema = new Schema({
 });
 
 function autoPopulatePages(next: any) {
+	//@ts-expect-error
 	this.populate('childPagesIds');
 	next()
 }

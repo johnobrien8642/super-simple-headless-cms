@@ -7,7 +7,8 @@ export const templateOptions = [
 	'Headline Only CTA',
 	'Text Block',
 	'About',
-	'PDF List'
+	'PDF List',
+	'PDFView'
 ] as const;
 
 export const assetTypes = [

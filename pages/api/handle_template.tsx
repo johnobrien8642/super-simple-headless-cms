@@ -25,7 +25,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		const savedTemplate = await template.save();
 		try {
 			if (folderHref) {
-				await res.revalidate(folderHref);
+				try {
+					await res.revalidate(folderHref);
+				} catch (err) {
+				}
 			}
 			return res.status(200).json({ success: true, templateId: savedTemplate._id });
 		} catch (err: any) {
@@ -40,7 +43,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				}
 			);
 			if (folderHref) {
-				await res.revalidate(folderHref);
+				try {
+					await res.revalidate(folderHref);
+				} catch (err) {
+				}
 			}
 			return res.status(200).json({ success: true, templateId: template._id });
 		} catch (err: any) {

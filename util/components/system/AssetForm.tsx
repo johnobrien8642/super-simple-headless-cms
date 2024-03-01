@@ -45,7 +45,11 @@ const AssetForm = ({}) => {
 						let fieldTitle: string;
 						let fieldObjOptions: OptionsType;
 						let file;
-						if (data[formTitle].type === 'Image') {
+						if (
+							data[formTitle].type === 'Image' ||
+							data[formTitle].type === 'Video' ||
+							data[formTitle].type === 'PDF'
+						) {
 							for (let i = 0; i < fieldArr.length; i++) {
 								fieldTitle = fieldArr[i][0];
 								fieldObjOptions = fieldArr[i][1].options;

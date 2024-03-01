@@ -159,6 +159,7 @@ const ListFieldItem = ({
 				{
 					item.typeName === 'Assets'&&
 						item?.thumbnailKey &&
+							item?.type === 'Image' &&
 						<Box
 							mx='1rem'
 							width='100'
