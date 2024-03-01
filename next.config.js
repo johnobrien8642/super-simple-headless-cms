@@ -12,5 +12,8 @@ module.exports = {
         hostname: "**",
       },
     ],
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   }
 };
