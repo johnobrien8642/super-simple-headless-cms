@@ -33,9 +33,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	} else if (req.method === 'PUT') {
 		try {
 			let updateObj = { ...data };
-			if (data.type === 'PDF' && data.assetDataUrl) {
-				updateObj.base64String = data.assetDataUrl;
-			}
 			asset = await Assets.findOneAndUpdate(
 				{ _id: itemToEditId },
 				updateObj
