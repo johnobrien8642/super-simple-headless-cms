@@ -10,7 +10,8 @@ export enum TemplatesEnum {
 	HeadlineOnlyCTA = 'HeadlineOnlyCTA',
 	TextBlock = 'TextBlock',
 	PDFView = 'PDFView',
-	PDFList = 'PDFList'
+	PDFList = 'PDFList',
+	PatronProdList = 'PatronProdList'
 }
 
 export enum AssetsEnum {

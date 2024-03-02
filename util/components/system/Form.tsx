@@ -35,6 +35,7 @@ const Form = ({}) => {
 			const res = await fetch(`/api/get_model_schema?formTitle=${formTitle}`);
 			const data = await res.json();
 			const { schemaPaths } = data;
+			console.log(schemaPaths)
 			setFieldArr(Object.entries(schemaPaths))
 		}
 	}, [formCache]);
@@ -152,7 +153,7 @@ const Form = ({}) => {
 								setData(prev => {
 									const newData = cloneDeep(prev);
 									newData[previousFormTitle] = cloneDeep(newFormCacheData[activeItem.previous]);
-									if (parentFieldTitleRef && savedItem) {
+									if (parentFieldTitleRef && savedItem && !activeItem.update) {
 										newData[previousFormTitle][parentFieldTitleRef].push(savedItem._id);
 									}
 									newFormCacheData.active = activeItem.previous;

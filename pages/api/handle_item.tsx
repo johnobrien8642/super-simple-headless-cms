@@ -26,7 +26,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		// itemToEditId,
 		// parentId
 	} = req.body
-
 	let item;
 	let parentItem;
 	let itemExistsAlready;

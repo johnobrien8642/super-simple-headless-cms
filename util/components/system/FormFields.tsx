@@ -24,9 +24,9 @@ import { useManagePageForm } from '../../contexts/useManagePageForm';
 import { templateOptions, assetTypes, textAlignOptions } from '../../../template_options';
 import { cloneDeep, get, set, startCase } from 'lodash';
 import { OptionsType } from '../../../models/model-types';
+const Editor = dynamic(() => import('./Editor'), { ssr: false });
 
 const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
-	const Editor = dynamic(() => import('./Editor'), { ssr: false });
 	const [fields, setFields] = useState<[string, any][] | undefined>(fieldArr);
 	const { data, setData, formSelected, formCache, topLevelModal } = useManagePageForm();
 	const formTitle = useMemo(() => {
@@ -67,7 +67,7 @@ const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
 			/>
 		} else if (obj.instance === 'String' && obj.options.richText) {
 				return <Editor
-					data={data[formTitle][title]}
+					data={data[formTitle][title] ?? ''}
 					setData={setData}
 					formTitle={formTitle}
 					title={title}
@@ -196,7 +196,7 @@ const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
 			}
 		}
 	}
-	console.log()
+	console.log(fields)
 	if (topLevelModal) {
 		return (
 			<Box
