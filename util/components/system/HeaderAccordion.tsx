@@ -21,7 +21,7 @@ const HeaderAccordion = ({ pages }: { pages: PageType[] }) => {
 					p='1rem'
 					fontSize='1.3rem'
 				>
-					<Link href={page.folderHref}>
+					<Link href={page.folderHref ?? ''}>
 						{page.title}
 					</Link>
 				</Text>
@@ -33,7 +33,6 @@ const HeaderAccordion = ({ pages }: { pages: PageType[] }) => {
 			</Flex>
 			<AccordionPanel pb={4}>
 				{page.childPagesIds.map(child => {
-					//@ts-expect-error
 					return handleChildren(child)
 				})}
 			</AccordionPanel>
