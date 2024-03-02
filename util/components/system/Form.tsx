@@ -149,7 +149,7 @@ const Form = ({}) => {
 							setFormCache({});
 						} else {
 							previousFormTitle = formCache[activeItem.previous].formTitle;
-							setFormCache(prev => {
+							setFormCache((prev: any) => {
 								const newFormCacheData = cloneDeep(prev);
 								setData(prev => {
 									const newData = cloneDeep(prev);
@@ -206,7 +206,7 @@ const Form = ({}) => {
 							colorScheme='blue'
 							mr={3}
 							onClick={() => {
-								setFormCache(prev => {
+								setFormCache((prev: any) => {
 									const newCacheData = cloneDeep(prev);
 									const activeItem = newCacheData[newCacheData.active];
 									setData(prev => {

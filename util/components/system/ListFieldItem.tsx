@@ -272,7 +272,7 @@ const ListFieldItem = ({
 						}
 						<IconButton
 							onClick={() => {
-								setFormCache(prev => {
+								setFormCache((prev: any) => {
 									const newData = cloneDeep(prev);
 									newData[item._id] = {
 										...item,

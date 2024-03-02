@@ -90,7 +90,7 @@ const ManagePages: NextPage<{}> = () => {
 					m='1rem 2rem'
 					onClick={() => {
 						setTopLevelModal(true);
-						setFormCache(prev => {
+						setFormCache((prev: any) => {
 							const newData = cloneDeep(prev);
 							const newId = new mongoose.Types.ObjectId().toString();
 							newData[newId] = {
@@ -100,7 +100,7 @@ const ManagePages: NextPage<{}> = () => {
 								update: false
 							}
 							newData.active = newId;
-							setData(prev => {
+							setData((prev: any) => {
 								const newData2 = cloneDeep(prev);
 								newData2['Page'] = newData[newId];
 								return newData2;
