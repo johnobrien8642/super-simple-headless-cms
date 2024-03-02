@@ -35,6 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 	} else if (req.method === 'PUT') {
 		try {
+			delete data._id;
 			let updateObj = { ...data };
 			asset = await Assets.findOneAndUpdate(
 				{ _id: itemToEditId },

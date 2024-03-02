@@ -50,16 +50,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			return res.status(400).json({ success: false, errorMessage: `Page with folderHref: ${page.folderHref} already exists` });
 		}
 	} else if (req.method === 'PUT') {
+		const _id = data._id;
+		delete data._id;
 		try {
-			page = await Page.findById(itemToEditId);
+			page = await Page.findById(_id);
 			if (parentId) {
 				parentPage = await Page.findById(parentId);
 				if (parentPage) {
-					page.folderHref = (parentPage.folderHref === '/' ? '' : parentPage.folderHref) + page.folderHref;
+					page.folderHref = (parentPage.folderHref === '/' ? '' : parentPage.folderHref) + data.folderHref;
 				}
 			}
 			await Page.findOneAndUpdate(
-				{ _id: itemToEditId },
+				{ _id },
 				{
 					...data,
 					folderHref: page.folderHref

@@ -2,6 +2,7 @@ import mongoose, { InferSchemaType, HydratedDocument, Types } from 'mongoose';
 import { templateOptions } from '../template_options'
 import { OptionsType, templatesEnumValueArr } from './model-types';
 import { AssetsType } from './Assets';
+import { PageType } from './Page';
 const Schema = mongoose.Schema;
 
 const optionsObj: { [key: string]: OptionsType } = {
@@ -33,6 +34,10 @@ const optionsObj: { [key: string]: OptionsType } = {
 	pagesIds: {
 		formTitle: 'Page',
 		filterType : false
+	},
+	linksIds: {
+		formTitle: 'Links',
+		filterType: true
 	},
 	assetsIds: {
 		formTitle: 'Assets',
@@ -92,14 +97,14 @@ const TemplatesSchema = new Schema({
 		type: String,
 		...optionsObj.extLink
 	},
-	pagesIds: {
+	linksIds: {
 		type: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Page'
+				ref: 'Assets'
 			}
 		],
-		...optionsObj.pagesIds
+		...optionsObj.linksIds
 	},
 	assetsIds: {
 		type: [
@@ -118,6 +123,15 @@ const TemplatesSchema = new Schema({
 			}
 		],
 		...optionsObj.videoId
+	},
+	pagesIds: {
+		type: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Page'
+			}
+		],
+		...optionsObj.pagesIds
 	},
 	isDuplicate: {
 		type: Boolean,
@@ -138,11 +152,14 @@ const TemplatesSchema = new Schema({
 		...optionsObj.createdAt
 	}
 });
+// ATTN: Remember to add new subdoc fields here with proper type omit below
 export type TemplatesSubdocsType = {
 	assetsIds: AssetsType[];
 	videoId: AssetsType[];
+	linksIds: AssetsType[];
+	pagesIds: PageType[];
 }
-export type TemplatesTypeNoSubDoc = Omit<InferSchemaType<typeof TemplatesSchema>, 'assetsIds' | 'videoId'>;
+export type TemplatesTypeNoSubDoc = Omit<InferSchemaType<typeof TemplatesSchema>, 'assetsIds' | 'linksIds' | 'videoId' | 'pagesIds'>;
 // export type TemplatesType = HydratedDocument<TemplatesTypeNoSubDoc & TemplatesSubdocsType>;
 export type TemplatesType = TemplatesTypeNoSubDoc & TemplatesSubdocsType & { _id: string; typeName: 'Templates' };
 export type HydratedTemplatesType = HydratedDocument<TemplatesType>;

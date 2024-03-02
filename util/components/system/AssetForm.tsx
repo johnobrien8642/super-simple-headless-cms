@@ -16,7 +16,7 @@ const AssetForm = ({}) => {
 	let [error, setError] = useState('');
 	let [saveType, setSaveType] = useState('');
 	const { formSelected, setFormSelected, data, setData } = useManagePageForm();
-	const { formTitle, editItemTraceObj } = formSelected;
+	const { formTitle, editItemTraceObj, parentFieldTitle } = formSelected;
 
 	useEffect(() => {
 		handleModelSchema();
@@ -103,7 +103,7 @@ const AssetForm = ({}) => {
 							delete dataRef.assetDataUrl;
 						}
 						const res2 = await fetch(`/api/handle_asset`, {
-							method: formSelected.update === 'Assets' ? 'PUT' : 'POST',
+							method: data['Assets']._id ? 'PUT' : 'POST',
 							headers: {
 								Accept: 'application/json',
 								'Content-Type': 'application/json'
@@ -122,7 +122,7 @@ const AssetForm = ({}) => {
 								const newData = cloneDeep(prev);
 								newData['Assets'] = initialValueObj['Assets'];
 								if (!formSelected.editItemTraceObj['Assets']) {
-									newData['Templates'].assetsIds.push(savedAssetId)
+									newData['Templates'][parentFieldTitle].push(savedAssetId)
 								}
 								if (saveType === 'Save') {
 									setFormSelected(prev => {

@@ -14,7 +14,7 @@ const TemplateForm = ({}) => {
 	const [saveType, setSaveType] = useState('');
 	let [error, setError] = useState('');
 	const { formSelected, setFormSelected, data, setData } = useManagePageForm();
-	const { formTitle, editItemTraceObj } = formSelected;
+	const { formTitle, editItemTraceObj, parentFieldTitle } = formSelected;
 
 	useEffect(() => {
 		handleModelSchema();
@@ -39,7 +39,7 @@ const TemplateForm = ({}) => {
 							return newData;
 						});
 						const res2 = await fetch(`/api/handle_template`, {
-							method: formSelected.update === 'Templates' ? 'PUT' : 'POST',
+							method: data['Templates']._id ? 'PUT' : 'POST',
 							headers: {
 								Accept: 'application/json',
 								'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ const TemplateForm = ({}) => {
 								const newData = cloneDeep(prev);
 								newData['Templates'] = initialValueObj['Templates'];
 								if (!formSelected.editItemTraceObj['Templates']) {
-									newData['Page'].templatesIds.push(templateId);
+									newData['Page'][parentFieldTitle].push(templateId);
 								}
 								if (saveType === 'Save') {
 									setFormSelected(prev => {

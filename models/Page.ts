@@ -13,6 +13,10 @@ const optionsObj: { [key: string]: OptionsType } = {
 	meta: {
 		collapseTitle: 'Meta Info'
 	},
+	folderHref: {
+		required: true,
+		hide: true
+	},
 	showInNavigation: {
 		default: true,
 		formTitle: 'Show in Navigation'
@@ -63,17 +67,15 @@ const PageSchema = new Schema({
 	},
 	folderHref: {
 		type: String,
-		required: true,
-		hide: true
+		...optionsObj.folderHref
 	},
 	showInNavigation: {
 		type: Boolean,
-		default: true,
-		formTitle: 'Show in Navigation'
+		...optionsObj.showInNavigation
 	},
 	description: {
 		type: String,
-		textbox: true
+		...optionsObj.description
 	},
 	childPagesIds: {
 		type: [
@@ -91,7 +93,7 @@ const PageSchema = new Schema({
 				ref: 'Templates'
 			}
 		],
-		formTitle: 'Templates',
+		...optionsObj.templatesIds
 	},
 	meta: {
 		type: MetaDropdownSchema,
@@ -127,10 +129,11 @@ PageSchema
 
 export type MetaDropdownType = InferSchemaType<typeof MetaDropdownSchema>;
 export type PageSubDocsType = {
+	childPagesIds: PageType[];
 	templatesIds: TemplatesType[];
 	meta: MetaDropdownType;
 }
-export type PageNoSubdocsType = Omit<InferSchemaType<typeof PageSchema>, 'templatesIds' | 'meta'>;
+export type PageNoSubdocsType = Omit<InferSchemaType<typeof PageSchema>, 'templatesIds' | 'childPagesIds' | 'meta'>;
 // export type PageType = HydratedDocument<PageNoSubdocsType & PageSubDocsType>;
 export type PageType = PageNoSubdocsType & PageSubDocsType & { _id: string; typeName: 'Page' };
 export type HydratedPageType = HydratedDocument<PageType>;

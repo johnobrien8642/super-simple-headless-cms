@@ -1,3 +1,4 @@
+import { BooleanKey } from 'aws-sdk/clients/iot';
 import mongoose, { Schema, Types } from 'mongoose';
 typeof mongoose.SchemaTypes
 
@@ -8,14 +9,16 @@ export enum TemplatesEnum {
 	VideoPlayer = 'VideoPlayer',
 	HeadlineOnlyCTA = 'HeadlineOnlyCTA',
 	TextBlock = 'TextBlock',
-	PDFView = 'PDFView'
+	PDFView = 'PDFView',
+	PDFList = 'PDFList'
 }
 
 export enum AssetsEnum {
 	Image = 'Image',
 	Video = 'Video',
 	Text = 'Text',
-	PDF = 'PDF'
+	PDF = 'PDF',
+	Link = 'Link'
 }
 
 export enum TextAlignOptionsEnum {
@@ -34,6 +37,9 @@ export const templatesEnumValueArr = Object.values(TemplatesEnum);
 export const assetsEnumValueArr = Object.values(AssetsEnum);
 export const textAlignOptionsEnumValueArr = Object.values(TextAlignOptionsEnum);
 export const schemaNameOptionsEnumArr = ['Page', 'Templates', 'Assets'];
+// Enforces Page -> Templates -> Assets CRUD operations for non-nested objects, i.e. if Templates
+// has Pages subdocs, you can't CRUD Pages from a Template, you have to CRUD the Page from the actual Page
+export const allowCrudObj: { [key: string]: { [key: string]: 1 } } = { 'Page': { 'Page': 1, 'Templates': 1, 'Assets': 1 }, 'Templates': { 'Assets': 1 }, 'Assets': {} }
 export type SchemaNameOptionsType = 'Page' | 'Templates' | 'Assets';
 
 export type OptionsType = {
@@ -87,4 +93,6 @@ export type OptionsType = {
 	filterType?: boolean;
 	// For hiding available choices in ListField
 	nested?: boolean;
+	// For hiding ListField create new but still allowing choice
+	hideCreateNew?: boolean;
 }

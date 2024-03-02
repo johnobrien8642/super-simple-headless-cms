@@ -14,7 +14,7 @@ import { PageType } from '../../../models/Page';
 const HeaderAccordion = ({ pages }: { pages: PageType[] }) => {
 
 	function handleChildren(page: PageType) {
-		return <AccordionItem>
+		return <AccordionItem key={page._id}>
 			<Flex>
 				<Text
 					whiteSpace='nowrap'

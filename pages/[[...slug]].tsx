@@ -42,8 +42,7 @@ export const getStaticPaths = async () => {
 	await connectDb();
 	const pages =
 		await Page
-			.find({})
-				.populate('childPagesIds');
+			.find({});
 	let paths: any = [];
 	if (pages) {
 		paths = pages?.map((obj: any) => {
@@ -56,7 +55,7 @@ export const getStaticPaths = async () => {
 	}
 	return {
 		paths,
-		fallback: false
+		fallback: true
 	}
 }
 
@@ -65,9 +64,17 @@ export const getStaticProps: GetStaticProps<SlugPropsType> = async (context) => 
 	const pageManager =
 		await PageManager
 			.findOne({});
+	let folderHref;
+	if (!context.params?.slug) {
+		folderHref = '/';
+	} else if (typeof context.params?.slug === 'string') {
+		folderHref = context.params?.slug;
+	} else if (Array.isArray(context.params?.slug)) {
+		folderHref = `/${context.params?.slug.join('/')}`;
+	}
 	const page =
 		await Page
-			.findOne({ folderHref: context.params?.slug?.[0] ? `/${context.params?.slug[0]}` : '/' })
+			.findOne({ folderHref })
 				.populate([
 					{
 						path: 'templatesIds',
@@ -76,6 +83,14 @@ export const getStaticProps: GetStaticProps<SlugPropsType> = async (context) => 
 							{
 								path: 'assetsIds',
 								model: 'Assets'
+							},
+							{
+								path: 'linksIds',
+								model: 'Assets'
+							},
+							{
+								path: 'pagesIds',
+								model: 'Page'
 							},
 							{
 								path: 'videoId',
@@ -100,5 +115,6 @@ export const getStaticProps: GetStaticProps<SlugPropsType> = async (context) => 
 		};
 	}
 }
+
 
 export default Home;

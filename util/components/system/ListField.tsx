@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { dataInitialValue, useManagePageForm } from '../../contexts/useManagePageForm';
 import { assetsEnumValueArr, templatesEnumValueArr } from '../../../models/model-types';
-import { OptionsType } from '../../../models/model-types';
+import { OptionsType, allowCrudObj } from '../../../models/model-types';
 import { AllDocUnionType } from '../types/util_types';
 import { cloneDeep } from 'lodash';
 
@@ -78,7 +78,7 @@ const ListField = ({
 				<Box
 					outline='black solid .1rem'
 					borderRadius='.2rem'
-					height={singleChoice ? '100px' : '400px'}
+					height={singleChoice ? '100px' : '220px'}
 					overflow='auto'
 					my='1rem'
 					padding='.5rem'
@@ -102,30 +102,36 @@ const ListField = ({
 						!chosenItems?.length && 'No items chosen'
 					}
 				</Box>
-				<Button
-					width='fit-content'
-					onClick={() => {
-						setFormSelected(prev => {
-							const newData = cloneDeep(prev);
-							newData.formTitle = obj.caster?.options.ref ?? '';
-							newData.prevFormTitle = newData.formTitle;
-							newData.parentId = data[formTitle]._id;
-							if (formTitle === 'Page') {
-								newData.parentIdentStr = data[formTitle].folderHref;
-							}
-							return newData;
-						})
-						if (formTitle === obj.caster?.options?.ref) {
-							setData(prev => {
+				{
+					(!obj.options?.hideCreateNew ||
+							allowCrudObj[formTitle][obj.caster?.options?.ref ?? ''] ||
+								obj.options?.nested) &&
+					<Button
+						width='fit-content'
+						onClick={() => {
+							setFormSelected(prev => {
 								const newData = cloneDeep(prev);
-								newData[formTitle] = cloneDeep(dataInitialValue[formTitle]);
+								newData.formTitle = obj.caster?.options.ref ?? '';
+								newData.prevFormTitle = newData.formTitle;
+								newData.parentFieldTitle = title;
+								if (obj.options?.nested) {
+									newData.parentId = data[formTitle]._id;
+									newData.parentIdentStr = data[formTitle].folderHref;
+								}
 								return newData;
 							})
-						}
-					}}
-				>
+							if (formTitle === obj.caster?.options?.ref) {
+								setData(prev => {
+									const newData = cloneDeep(prev);
+									newData[formTitle] = cloneDeep(dataInitialValue[formTitle]);
+									return newData;
+								})
+							}
+						}}
+					>
 					Create New {obj.caster?.options?.ref ?? obj.options?.ref}
-				</Button>
+					</Button>
+				}
 				{!obj.options?.nested &&
 					<>
 						<ButtonGroup gap='1' mt='1rem' flexWrap='wrap'>
@@ -158,7 +164,7 @@ const ListField = ({
 						<Box
 							outline='black solid .1rem'
 							borderRadius='.2rem'
-							height='400px'
+							height='220px'
 							overflow='auto'
 							my='1rem'
 							padding='.5rem'

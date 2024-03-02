@@ -35,6 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			return res.status(500).json({ success: false, errorMessage: err.message });
 		}
 	} else if (req.method === 'PUT') {
+		delete data._id;
 		try {
 			template = await Templates.findOneAndUpdate(
 				{ _id: itemToEditId },

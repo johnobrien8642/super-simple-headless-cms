@@ -24,7 +24,7 @@ import { useDrag, useDrop } from 'react-dnd';
 // @ts-expect-error there's no types for lodash-move it's old af
 import move from 'lodash-move';
 import { AllDocUnionType, AllDocType, AllDocArrayType, AllDocIntersectionType, AllDocUnionTypeDyn } from '../types/util_types';
-import { OptionsType } from '../../../models/model-types';
+import { OptionsType, allowCrudObj } from '../../../models/model-types';
 import { SchemaNameOptionsType, schemaNameOptionsEnumArr } from '../../../models/model-types';
 
 const ListFieldItem = ({
@@ -270,89 +270,93 @@ const ListFieldItem = ({
 									aria-label='Add Button'
 								/>
 						}
-						<IconButton
-							onClick={() => {
-								setFormSelected(prev => {
-									const newData: FormSelectedType = { ...prev };
-									newData.formTitle = item.schemaName ?? '';
-									newData.update = item.schemaName ?? '';
-									newData.editItemTraceObj[item.schemaName ?? ''] = item._id;
-									if (formTitle === item.schemaName) {
-										newData.parentId = data[formTitle]._id;
-										if (item.typeName === 'Page') {
-											newData.parentIdentStr = item.folderHref;
-										}
-									}
-									return newData;
-								})
-								setData(prev => {
-									const newData = cloneDeep(prev);
-									newData[item.schemaName ?? ''] = item;
-									return newData;
-								})
-								if (item.schemaName === 'Page') {
-									setTopLevelModal(true)
-								}
-							}}
-							icon={<EditIcon />}
-							mr='.3rem'
-							aria-label='Edit Button'
-						/>
-						{item.schemaName !== 'Page' && <IconButton
-							onClick={async () => {
-								let itemRef = { ...item };
-								// @ts-expect-error but I do want to delete a non-optional param tho
-								delete itemRef._id;
-								const res3 = await fetch('/api/handle_duplicate_item',
-								{
-									method: 'POST',
-									headers: {
-										Accept: 'application/json',
-										'Content-Type': 'application/json'
-									},
-									body: JSON.stringify({
-										item: itemRef,
-										schema: item.schemaName
-									})
-								})
-								const data2 = await res3.json();
-								const { savedNewItem } = data2;
-								if (chosen === 'true') {
-									if (setChosenItems) {
-										setChosenItems(prev => {
-											const newData = cloneDeep(prev);
-											newData.splice(index + 1, 0, savedNewItem);
+						{(noForm || allowCrudObj[formTitle][item.schemaName ?? '']) &&
+							<>
+								<IconButton
+									onClick={() => {
+										setFormSelected(prev => {
+											const newData: FormSelectedType = { ...prev };
+											newData.formTitle = item.schemaName ?? '';
+											newData.update = item.schemaName ?? '';
+											newData.editItemTraceObj[item.schemaName ?? ''] = item._id;
+											if (formTitle === item.schemaName) {
+												newData.parentId = data[formTitle]._id;
+												if (item.typeName === 'Page') {
+													newData.parentIdentStr = item.folderHref;
+												}
+											}
 											return newData;
 										})
-									}
-									setData(prev => {
-										const newData = cloneDeep(prev);
-										if (title) {
-											newData[formTitle][title].splice(index + 1, 0, savedNewItem);
-										}
-										return newData;
-									})
-								} else {
-									if (setAvailableItems) {
-										setAvailableItems(prev => {
+										setData(prev => {
 											const newData = cloneDeep(prev);
-											newData.splice(index + 1, 0, savedNewItem);
+											newData[item.schemaName ?? ''] = item;
 											return newData;
 										})
-									}
-								}
-							}}
-							icon={<RepeatIcon />}
-							mr='.3rem'
-							aria-label='Duplicate Button'
-						/>}
-						{<IconButton
-							onClick={() => {
-								setOpenModal(true)
-							}}
-							icon={<DeleteIcon />}
-							aria-label='Delete Button'
-						/>}
+										if (item.schemaName === 'Page') {
+											setTopLevelModal(true)
+										}
+									}}
+									icon={<EditIcon />}
+									mr='.3rem'
+									aria-label='Edit Button'
+								/>
+								{item.schemaName !== 'Page' && <IconButton
+									onClick={async () => {
+										let itemRef = { ...item };
+										// @ts-expect-error but I do want to delete a non-optional param tho
+										delete itemRef._id;
+										const res3 = await fetch('/api/handle_duplicate_item',
+										{
+											method: 'POST',
+											headers: {
+												Accept: 'application/json',
+												'Content-Type': 'application/json'
+											},
+											body: JSON.stringify({
+												item: itemRef,
+												schema: item.schemaName
+											})
+										})
+										const data2 = await res3.json();
+										const { savedNewItem } = data2;
+										if (chosen === 'true') {
+											if (setChosenItems) {
+												setChosenItems(prev => {
+													const newData = cloneDeep(prev);
+													newData.splice(index + 1, 0, savedNewItem);
+													return newData;
+												})
+											}
+											setData(prev => {
+												const newData = cloneDeep(prev);
+												if (title) {
+													newData[formTitle][title].splice(index + 1, 0, savedNewItem);
+												}
+												return newData;
+											})
+										} else {
+											if (setAvailableItems) {
+												setAvailableItems(prev => {
+													const newData = cloneDeep(prev);
+													newData.splice(index + 1, 0, savedNewItem);
+													return newData;
+												})
+											}
+										}
+									}}
+									icon={<RepeatIcon />}
+									mr='.3rem'
+									aria-label='Duplicate Button'
+								/>}
+								<IconButton
+									onClick={() => {
+										setOpenModal(true)
+									}}
+									icon={<DeleteIcon />}
+									aria-label='Delete Button'
+								/>
+							</>
+						}
 					</Flex>
 					<Modal
 						isOpen={openModal}

@@ -8,7 +8,7 @@ export const templateOptions = [
 	'Text Block',
 	'About',
 	'PDF List',
-	'PDFView'
+	'PDFView',
 ] as const;
 
 export const assetTypes = [

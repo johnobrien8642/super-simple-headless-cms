@@ -25,6 +25,7 @@ export type FormSelectedType = {
 	loading: boolean;
 	parentId: string;
 	parentIdentStr: string;
+	parentFieldTitle: string;
 };
 
 export type ManagePageFormContextType = {
@@ -46,7 +47,8 @@ export const formSelectedInitObj: FormSelectedType = {
 	update: '',
 	loading: false,
 	parentId: '',
-	parentIdentStr: ''
+	parentIdentStr: '',
+	parentFieldTitle: ''
 }
 
 export const ManagePageFormContext = createContext<ManagePageFormContextType>({

@@ -50,11 +50,6 @@ const HeaderPanel = ({ pages }: { pages: PageType[] }) => {
 				<DrawerOverlay />
 				<DrawerContent
 					bg='var(--chakra-colors-chakra-body-bg)'
-					sx={{
-						'div[role=dialog]': {
-							width: '500px'
-						}
-					}}
 				>
 					<DrawerCloseButton />
 					<DrawerHeader p='1rem'>Brian O'Corcoran</DrawerHeader>

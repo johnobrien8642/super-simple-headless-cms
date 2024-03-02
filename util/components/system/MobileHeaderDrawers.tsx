@@ -30,7 +30,7 @@ const MobileHeaderDrawers = ({
 			>
 			<DrawerOverlay />
 				<DrawerContent
-					backgroundColor='black'
+					backgroundColor='var(--chakra-colors-chakra-body-bg)'
 					alignItems="center"
 				>
 					<DrawerCloseButton alignSelf="end" />
@@ -46,11 +46,11 @@ const MobileHeaderDrawers = ({
 								router.push('/');
 								onClose();
 							}}
-							fontSize='6vw'
-							fontWeight='400'
+							fontSize='5vw'
+							fontWeight='600'
 						>
 							<Text>
-								John Edward O'Brien
+								The Essays of Gerard Lorenz
 							</Text>
 						</Button>
 					</DrawerHeader>

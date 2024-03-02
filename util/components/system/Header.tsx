@@ -66,10 +66,10 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 						<Text
 							as='h2'
 							sx={{ ':hover': { cursor: 'pointer' } }}
-							fontWeight='400'
-							fontSize='min(7vw, 2rem)'
+							fontWeight='600'
+							fontSize='min(5vw, 2rem)'
 						>
-							Brian O'Corcoran
+							The Essays of Gerard Lorenz
 						</Text>
 					</Button>
 					<HeaderPanel pages={pages} />
@@ -102,16 +102,18 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 						<Text
 							as='h2'
 							sx={{ ':hover': { cursor: 'pointer' } }}
-							fontWeight='400'
-							fontSize='min(7vw, 2rem)'
+							fontWeight='600'
+							fontSize='min(5vw, 2rem)'
 						>
-							Brian O'Corcoran
+							The Essays of Gerard Lorenz
 						</Text>
 					</Button>
 
-					<MobileHeader
-						pages={pages}
-					/>
+					{pages.length &&
+						<MobileHeader
+							pages={pages}
+						/>
+					}
 
 					<HStack
 						display={desktop ? 'flex' : 'none'}
@@ -120,11 +122,10 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 						position='relative'
 					>
 						{pages.map((obj, i) => {
-							const depth = 1;
 							if (obj.folderHref !== '/' && obj.showInNavigation) {
-								return <>
-									<Box
-										data-parent-id={obj._id}
+								return <Box
+										key={obj._id}
+										mt='.2rem'
 									>
 										<Text
 											key={obj._id}
@@ -138,14 +139,13 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 										>
 											<Link
 												key={i}
-												href={obj.folderHref}
+												href={obj.folderHref ?? ''}
 												passHref
 											>
 												{obj.title}
 											</Link>
 										</Text>
 									</Box>
-								</>
 								}
 							})}
 						<Box>

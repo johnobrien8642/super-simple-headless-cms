@@ -3,6 +3,7 @@ import { assetTypes, textAlignOptions } from '../template_options';
 import { OptionsType, assetsEnumValueArr, textAlignOptionsEnumValueArr } from './model-types';
 const Schema = mongoose.Schema;
 const { Buffer } = Schema.Types;
+import { PageType } from './Page';
 
 const optionsObj: { [key: string]: OptionsType } = {
 	assetKey: {
@@ -14,7 +15,8 @@ const optionsObj: { [key: string]: OptionsType } = {
 		previewTypeKey: 'assetPreviewType',
 		index: true,
 		templates: {
-			'PhotoList': 1
+			'PhotoList': 1,
+			'PDFView': 1
 		}
 	},
 	assetDimensions: {
@@ -37,7 +39,8 @@ const optionsObj: { [key: string]: OptionsType } = {
 		templates: {
 			'PhotoList': 1,
 			'HeadlineOnlyCTA': 1,
-			'TextBlock': 1
+			'TextBlock': 1,
+			'PDFView': 1
 		}
 	},
 	type: {
@@ -66,18 +69,21 @@ const optionsObj: { [key: string]: OptionsType } = {
 		formTitle: 'Rich Text',
 		templates: {
 			'PhotoList': 1,
-			'TextBlock': 1
+			'TextBlock': 1,
+			'PDFView': 1
 		}
 	},
 	extLink: {
 		formTitle: 'External Link',
 		templates: {
-			'PhotoList': 1
+			'PhotoList': 1,
+			'PDFView': 1
 		}
 	},
 	pagesIds: {
 		formTitle: 'Page',
-		filterType: false
+		filterType: false,
+		hideCreateNew: true
 	},
 	schemaName: {
 		default: 'Assets',
@@ -161,11 +167,14 @@ const AssetsSchema = new Schema({
 		...optionsObj.createdAt
 	}
 });
+// ATTN: Remember to add new subdoc fields here with proper type omit below
+export type AssetsSubdocsType = {
+	pagesIds: PageType[];
+}
 
 // export type AssetsType = HydratedDocument<InferSchemaType<typeof AssetsSchema>>;
-export type AssetsType =
-	InferSchemaType<typeof AssetsSchema> &
-		{ _id: string; typeName: 'Assets'; };
+export type AssetsTypeNoSubDoc = Omit<InferSchemaType<typeof AssetsSchema>, 'pagesIds'>;
+export type AssetsType = AssetsTypeNoSubDoc & AssetsSubdocsType & { _id: string; typeName: 'Assets' };
 export type HydratedAssetsType = HydratedDocument<AssetsType>;
 
 const Assets =

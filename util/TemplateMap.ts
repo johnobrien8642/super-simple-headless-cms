@@ -5,13 +5,15 @@ import VideoPlayer from "./components/templates/VideoPlayer";
 import HeadlineOnlyCTA from "./components/templates/HeadlineOnlyCTA";
 import TextBlock from "./components/templates/TextBlock";
 import PDFView from "./components/templates/PDFView";
+import PDFList from "./components/templates/PDFList";
 
 const TemplateMap: { [key in TemplatesEnum]: any } = {
 	'PhotoList': PhotoList,
 	'VideoPlayer': VideoPlayer,
 	'TextBlock': TextBlock,
 	'HeadlineOnlyCTA': HeadlineOnlyCTA,
-	'PDFView': PDFView
+	'PDFView': PDFView,
+	'PDFList': PDFList
 }
 
 export default TemplateMap;

@@ -236,7 +236,14 @@ const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
 							</Accordion>
 						</Skeleton>
 					} else if (!obj.options.hide && !titleLevel1.match('_id') && !titleLevel1.match('__v')) {
-						return <FormControl my='1rem' key={titleLevel1} isRequired={obj.isRequired}>
+						return <FormControl
+							my='1rem'
+							border='5px solid rgb(0, 0, 0, .05)'
+							borderRadius='5%'
+							p='1.5rem'
+							key={titleLevel1}
+							isRequired={obj.isRequired}
+						>
 							<FormLabel
 								htmlFor={titleLevel1}
 								backgroundColor={inUse ? 'var(--chakra-colors-blue-100)' : ''}
