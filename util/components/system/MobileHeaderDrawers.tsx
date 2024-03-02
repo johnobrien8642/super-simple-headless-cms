@@ -50,7 +50,7 @@ const MobileHeaderDrawers = ({
 							fontWeight='600'
 						>
 							<Text>
-								The Essays of Gerard Lorenz
+								{process.env.NEXT_PUBLIC_SITE_HEADER}
 							</Text>
 						</Button>
 					</DrawerHeader>

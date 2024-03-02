@@ -52,7 +52,7 @@ const HeaderPanel = ({ pages }: { pages: PageType[] }) => {
 					bg='var(--chakra-colors-chakra-body-bg)'
 				>
 					<DrawerCloseButton />
-					<DrawerHeader p='1rem'>Brian O'Corcoran</DrawerHeader>
+					<DrawerHeader p='1rem'>{process.env.NEXT_PUBLIC_SITE_HEADER}</DrawerHeader>
 					<HeaderAccordion pages={pages} />
 				</DrawerContent>
 			</Drawer>

@@ -69,7 +69,7 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 							fontWeight='600'
 							fontSize='min(5vw, 2rem)'
 						>
-							The Essays of Gerard Lorenz
+							{process.env.NEXT_PUBLIC_SITE_HEADER}
 						</Text>
 					</Button>
 					<HeaderPanel pages={pages} />
@@ -105,7 +105,7 @@ const Header = ({ pages }: { pages: PageType[] }) => {
 							fontWeight='600'
 							fontSize='min(5vw, 2rem)'
 						>
-							The Essays of Gerard Lorenz
+							{process.env.NEXT_PUBLIC_SITE_HEADER}
 						</Text>
 					</Button>
 
