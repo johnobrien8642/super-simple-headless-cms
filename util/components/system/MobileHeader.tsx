@@ -53,7 +53,7 @@ const MobileHeader = ({ pages }: { pages: PageType[] }) => {
 						>
 							<Link
 								key={i}
-								href={obj.folderHref}
+								href={obj.folderHref ?? ''}
 								passHref
 								onClick={onClose}
 							>
