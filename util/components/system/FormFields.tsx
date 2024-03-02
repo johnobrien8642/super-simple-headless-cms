@@ -196,7 +196,7 @@ const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
 			}
 		}
 	}
-	console.log(fields)
+
 	if (topLevelModal) {
 		return (
 			<Box
