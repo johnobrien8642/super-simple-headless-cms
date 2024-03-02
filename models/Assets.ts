@@ -73,6 +73,7 @@ const optionsObj: { [key: string]: OptionsType } = {
 			'PDFView': 1
 		}
 	},
+	fontSize: {},
 	extLink: {
 		formTitle: 'External Link',
 		templates: {
@@ -82,8 +83,7 @@ const optionsObj: { [key: string]: OptionsType } = {
 	},
 	pagesIds: {
 		formTitle: 'Page',
-		filterType: false,
-		hideCreateNew: true
+		filterType: false
 	},
 	schemaName: {
 		default: 'Assets',
@@ -139,6 +139,10 @@ const AssetsSchema = new Schema({
 	richDescription: {
 		type: String,
 		...optionsObj.richDescription
+	},
+	fontSize: {
+		type: String,
+		...optionsObj.fontSize
 	},
 	extLink: {
 		type: String,

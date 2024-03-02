@@ -62,7 +62,6 @@ const MyImage = ({
 			width={image.assetDimensions[0]}
 			height={image.assetDimensions[1]}
 			src={process.env.NEXT_PUBLIC_CLOUDFRONT_URL as string + image.assetKey}
-			placeholder='blur'
 		/>
 	</Box>
 }

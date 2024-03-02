@@ -20,19 +20,21 @@ import {
 } from '@chakra-ui/react'
 import { capitalize } from 'lodash';
 import ListField from './ListField';
-const Editor = dynamic(() => import('./Editor'), { ssr: false });
 import { useManagePageForm } from '../../contexts/useManagePageForm';
 import { templateOptions, assetTypes, textAlignOptions } from '../../../template_options';
 import { cloneDeep, get, set, startCase } from 'lodash';
 import { OptionsType } from '../../../models/model-types';
 
 const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
+	const Editor = dynamic(() => import('./Editor'), { ssr: false });
 	const [fields, setFields] = useState<[string, any][] | undefined>(fieldArr);
 	const { data, setData, formSelected, formCache, topLevelModal } = useManagePageForm();
-	const formTitle = formCache[formCache.active]?.formTitle ?? '';
+	const formTitle = useMemo(() => {
+		return formCache[formCache.active]?.formTitle ?? '';
+	}, [fieldArr]);
 	useEffect(() => {
 		setFields(fieldArr)
-	}, [fieldArr])
+	}, [fieldArr]);
 	function resolveInput(title: string, obj: { options: OptionsType; instance: string; }) {
 		const resolvedValue = get(data[formTitle], title, '');
 		const resolveValue = (e: Event | ChangeEvent | FormEvent<HTMLInputElement>) => {

@@ -26,8 +26,7 @@ const optionsObj: { [key: string]: OptionsType } = {
 	},
 	childPagesIds: {
 		formTitle: 'Child Pages',
-		filterType: true,
-		nested: true
+		filterType: true
 	},
 	templatesIds: {
 		formTitle: 'Templates',

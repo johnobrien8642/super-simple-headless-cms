@@ -76,7 +76,7 @@ const ListField = ({
 			setAvailableItems(availableItems);
 			setChosenItems(chosenItems);
 		}
-	}, [itemFilter, formSelected, formCache]);
+	}, [itemFilter, formCache]);
 
 	return (
 		<Flex

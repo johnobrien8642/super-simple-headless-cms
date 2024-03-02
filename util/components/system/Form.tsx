@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
 	Button,
 	Text,
@@ -25,25 +25,24 @@ const Form = ({}) => {
 		formCache,
 		setFormCache
 	} = useManagePageForm();
-	const formTitle = formCache[formCache.active]?.formTitle ?? '';
-
+	const formTitle = useMemo(() => {
+		return formCache[formCache?.active]?.formTitle ?? '';
+	}, [formCache])
 	useEffect(() => {
 		handleModelSchema();
 		async function handleModelSchema() {
-			if (!topLevelModal) return;
+			if (!formCache.active) return;
 			const res = await fetch(`/api/get_model_schema?formTitle=${formTitle}`);
 			const data = await res.json();
 			const { schemaPaths } = data;
 			setFieldArr(Object.entries(schemaPaths))
 		}
 	}, [formCache]);
-
 	function resolveHeading() {
 		let activeItem = formCache[formCache?.active];
 		let previousItem = formCache[activeItem?.previous];
 		return `${activeItem?.update? 'Edit ' : 'Create '}${activeItem?.formTitle}${previousItem ? ` for ${previousItem?.formTitle}` : ''}`
 	}
-
 	return (
 		<div className="form container">
 			<Heading>
@@ -121,7 +120,6 @@ const Form = ({}) => {
 						if (dataRef.type !== 'PDF' && dataRef.assetDataUrl) {
 							delete dataRef.assetDataUrl;
 						}
-						console.log(dataRef)
 						data[formTitle] = dataRef;
 					}
 					const res2 = await fetch(`/api/handle_item`, {
@@ -153,9 +151,7 @@ const Form = ({}) => {
 								const newFormCacheData = cloneDeep(prev);
 								setData(prev => {
 									const newData = cloneDeep(prev);
-									newData[previousFormTitle] = {
-										...newFormCacheData[activeItem.previous]
-									};
+									newData[previousFormTitle] = cloneDeep(newFormCacheData[activeItem.previous]);
 									if (parentFieldTitleRef && savedItem) {
 										newData[previousFormTitle][parentFieldTitleRef].push(savedItem._id);
 									}
@@ -163,6 +159,7 @@ const Form = ({}) => {
 									delete newFormCacheData[activeItem._id];
 									return newData;
 								})
+
 								return newFormCacheData;
 							})
 						}
@@ -205,18 +202,20 @@ const Form = ({}) => {
 						<Button
 							colorScheme='blue'
 							mr={3}
-							onClick={() => {
+							onClick={(e) => {
 								setFormCache((prev: any) => {
-									const newCacheData = cloneDeep(prev);
-									const activeItem = newCacheData[newCacheData.active];
+									const newFormCacheData = cloneDeep(prev);
+									const activeItem = newFormCacheData[newFormCacheData.active];
+									const previousItem = newFormCacheData[activeItem.previous];
+									newFormCacheData.active = activeItem.previous;
 									setData(prev => {
 										const newData = cloneDeep(prev);
-										newData[activeItem.formTitle] = cloneDeep(newCacheData[activeItem.previous]);
+										newData[previousItem.formTitle] = previousItem;
 										return newData;
 									})
-									newCacheData.active = activeItem.previous;
-									return newCacheData;
-								});
+									delete newFormCacheData[activeItem._id];
+									return newFormCacheData;
+								})
 							}}
 							isDisabled={formSelected.loading}
 						>
