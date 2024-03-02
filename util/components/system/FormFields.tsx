@@ -248,6 +248,7 @@ const FormFields = ({ fieldArr }: { fieldArr?: [string, any][] }) => {
 								<FormLabel
 									htmlFor={titleLevel1}
 									backgroundColor={inUse ? 'var(--chakra-colors-blue-100)' : ''}
+									fontSize='1.4rem'
 								>
 									{capitalize(obj.options.formTitle ?? titleLevel1)}
 								</FormLabel>

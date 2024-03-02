@@ -105,7 +105,7 @@ const Form = ({}) => {
 								});
 								const data1 = await res.json()
 								const { url, key } = data1;
-								dataRef[fieldTitle] = process.env.NEXT_PUBLIC_DOCKER === 'true' ? `${process.env.NEXT_PUBLIC_S3_BUCKET_NAME}/` + key : key;
+								 dataRef[fieldTitle] = process.env.NEXT_PUBLIC_DOCKER === 'true' ? `${process.env.NEXT_PUBLIC_S3_BUCKET_NAME}/` + key : key;
 								try {
 									await axios.put(url, file, {
 										headers: {
