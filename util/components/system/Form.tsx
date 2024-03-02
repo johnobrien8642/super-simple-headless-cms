@@ -35,7 +35,6 @@ const Form = ({}) => {
 			const res = await fetch(`/api/get_model_schema?formTitle=${formTitle}`);
 			const data = await res.json();
 			const { schemaPaths } = data;
-			console.log(schemaPaths)
 			setFieldArr(Object.entries(schemaPaths))
 		}
 	}, [formCache]);
