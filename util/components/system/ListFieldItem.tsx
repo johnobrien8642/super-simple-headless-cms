@@ -49,8 +49,8 @@ const ListFieldItem = ({
 	chosenItems?: AllDocUnionType[];
 	noForm?: boolean;
 }) => {
-	const { data, setData, formSelected, setFormSelected, setTopLevelModal } = useManagePageForm();
-	const { formTitle } = formSelected;
+	const { data, setData, formSelected, setFormSelected, setTopLevelModal, formCache, setFormCache } = useManagePageForm();
+	const formTitle = formCache[formCache.active]?.formTitle ?? '';
 	const [openModal, setOpenModal] = useState(false);
 	const [error, setError] = useState('');
 	item.typeName = item.schemaName as SchemaNameOptionsType;
@@ -270,93 +270,94 @@ const ListFieldItem = ({
 									aria-label='Add Button'
 								/>
 						}
-						{(noForm || allowCrudObj[formTitle][item.schemaName ?? '']) &&
-							<>
-								<IconButton
-									onClick={() => {
-										setFormSelected(prev => {
-											const newData: FormSelectedType = { ...prev };
-											newData.formTitle = item.schemaName ?? '';
-											newData.update = item.schemaName ?? '';
-											newData.editItemTraceObj[item.schemaName ?? ''] = item._id;
-											if (formTitle === item.schemaName) {
-												newData.parentId = data[formTitle]._id;
-												if (item.typeName === 'Page') {
-													newData.parentIdentStr = item.folderHref;
-												}
-											}
-											return newData;
-										})
-										setData(prev => {
+						<IconButton
+							onClick={() => {
+								setFormCache(prev => {
+									const newData = cloneDeep(prev);
+									newData[item._id] = {
+										...item,
+										previous: data[formTitle]?._id,
+										formTitle: item.schemaName,
+										update: true,
+										parentFieldTitle: title,
+									}
+									newData.active = item._id;
+									if (data[formTitle]?._id) {
+										newData[data[formTitle]._id.toString()] = {
+											...data[formTitle],
+											next: item._id,
+										}
+									}
+									setData(prev => {
+										const newData2 = cloneDeep(prev);
+										newData2[item.schemaName ?? ''] = newData[item._id];
+										return newData2;
+									})
+									return newData;
+								})
+								if (item.schemaName === 'Page') {
+									setTopLevelModal(true)
+								}
+							}}
+							icon={<EditIcon />}
+							mr='.3rem'
+							aria-label='Edit Button'
+						/>
+						{item.schemaName !== 'Page' && <IconButton
+							onClick={async () => {
+								let itemRef = { ...item };
+								// @ts-expect-error but I do want to delete a non-optional param tho
+								delete itemRef._id;
+								const res3 = await fetch('/api/handle_duplicate_item',
+								{
+									method: 'POST',
+									headers: {
+										Accept: 'application/json',
+										'Content-Type': 'application/json'
+									},
+									body: JSON.stringify({
+										item: itemRef,
+										schema: item.schemaName
+									})
+								})
+								const data2 = await res3.json();
+								const { savedNewItem } = data2;
+								if (chosen === 'true') {
+									if (setChosenItems) {
+										setChosenItems(prev => {
 											const newData = cloneDeep(prev);
-											newData[item.schemaName ?? ''] = item;
+											newData.splice(index + 1, 0, savedNewItem);
 											return newData;
 										})
-										if (item.schemaName === 'Page') {
-											setTopLevelModal(true)
+									}
+									setData(prev => {
+										const newData = cloneDeep(prev);
+										if (title) {
+											newData[formTitle][title].splice(index + 1, 0, savedNewItem);
 										}
-									}}
-									icon={<EditIcon />}
-									mr='.3rem'
-									aria-label='Edit Button'
-								/>
-								{item.schemaName !== 'Page' && <IconButton
-									onClick={async () => {
-										let itemRef = { ...item };
-										// @ts-expect-error but I do want to delete a non-optional param tho
-										delete itemRef._id;
-										const res3 = await fetch('/api/handle_duplicate_item',
-										{
-											method: 'POST',
-											headers: {
-												Accept: 'application/json',
-												'Content-Type': 'application/json'
-											},
-											body: JSON.stringify({
-												item: itemRef,
-												schema: item.schemaName
-											})
+										return newData;
+									})
+								} else {
+									if (setAvailableItems) {
+										setAvailableItems(prev => {
+											const newData = cloneDeep(prev);
+											newData.splice(index + 1, 0, savedNewItem);
+											return newData;
 										})
-										const data2 = await res3.json();
-										const { savedNewItem } = data2;
-										if (chosen === 'true') {
-											if (setChosenItems) {
-												setChosenItems(prev => {
-													const newData = cloneDeep(prev);
-													newData.splice(index + 1, 0, savedNewItem);
-													return newData;
-												})
-											}
-											setData(prev => {
-												const newData = cloneDeep(prev);
-												if (title) {
-													newData[formTitle][title].splice(index + 1, 0, savedNewItem);
-												}
-												return newData;
-											})
-										} else {
-											if (setAvailableItems) {
-												setAvailableItems(prev => {
-													const newData = cloneDeep(prev);
-													newData.splice(index + 1, 0, savedNewItem);
-													return newData;
-												})
-											}
-										}
-									}}
-									icon={<RepeatIcon />}
-									mr='.3rem'
-									aria-label='Duplicate Button'
-								/>}
-								<IconButton
-									onClick={() => {
-										setOpenModal(true)
-									}}
-									icon={<DeleteIcon />}
-									aria-label='Delete Button'
-								/>
-							</>
-						}
+									}
+								}
+							}}
+							icon={<RepeatIcon />}
+							mr='.3rem'
+							aria-label='Duplicate Button'
+						/>}
+						<IconButton
+							onClick={() => {
+								setOpenModal(true)
+							}}
+							icon={<DeleteIcon />}
+							aria-label='Delete Button'
+						/>
 					</Flex>
 					<Modal
 						isOpen={openModal}

@@ -14,7 +14,7 @@ import {
 	Flex,
 } from '@chakra-ui/react'
 import AdminHeader from '../../../util/components/system/AdminHeader.tsx';
-import PageForm from '../../../util/components/system/PageForm.tsx';
+import PageForm from '../../../util/components/system/Form.tsx';
 import TemplateForm from '../../../util/components/system/TemplateForm.tsx';
 import AssetForm from '../../../util/components/system/AssetForm.tsx';
 import { useRouter } from 'next/router';
@@ -23,17 +23,16 @@ import ListFieldItem from '../../../util/components/system/ListFieldItem.tsx';
 import Head from 'next/head';
 import { AllDocUnionType } from '../../../util/components/types/util_types.ts';
 import { GetServerSideProps, NextPage } from 'next';
+import mongoose from 'mongoose';
+import { cloneDeep } from 'lodash';
 
 const ManagePages: NextPage<{}> = () => {
 	const [topLevelModal, setTopLevelModal] = useState(false);
 	const [formSelected, setFormSelected] = useState({
-		formTitle: 'Page',
-		formIndex: 0,
-		editItemTraceObj: editItemTraceObjInitObj,
-		update: '',
 		loading: false
 	});
 	const [data, setData] = useState(dataInitialValue);
+	const [formCache, setFormCache] = useState<any>({});
 	const [items, setItems] = useState<AllDocUnionType[]>([]);
 	const [renderCount, setRenderCount] = useState(0);
 	const router = useRouter();
@@ -81,6 +80,8 @@ const ManagePages: NextPage<{}> = () => {
 			<ManagePageFormProvider
 				data={data}
 				setData={setData}
+				formCache={formCache}
+				setFormCache={setFormCache}
 				formSelected={formSelected}
 				setFormSelected={setFormSelected}
 				setTopLevelModal={setTopLevelModal}
@@ -91,16 +92,23 @@ const ManagePages: NextPage<{}> = () => {
 					m='1rem 2rem'
 					onClick={() => {
 						setTopLevelModal(true);
-						setData(dataInitialValue);
-						setFormSelected(prev => {
-							return {
-								...prev,
+						setFormCache(prev => {
+							const newData = cloneDeep(prev);
+							const newId = new mongoose.Types.ObjectId().toString();
+							newData[newId] = {
+								...dataInitialValue['Page'],
+								_id: newId,
 								formTitle: 'Page',
-								prevFormTitle: '',
-								editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
-								update: ''
+								update: false
 							}
-						});
+							newData.active = newId;
+							setData(prev => {
+								const newData2 = cloneDeep(prev);
+								newData2['Page'] = newData[newId];
+								return newData2;
+							})
+							return newData;
+						})
 					}}
 				>
 					Create New Page
@@ -127,15 +135,7 @@ const ManagePages: NextPage<{}> = () => {
 						if (!formSelected.loading) {
 							setTopLevelModal(false);
 							setData(dataInitialValue);
-							setFormSelected(prev => {
-								return {
-									...prev,
-									formTitle: 'Page',
-									prevFormTitle: '',
-									editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
-									update: ''
-								}
-							});
+							setFormCache({});
 						}
 					}}
 				>
@@ -145,8 +145,8 @@ const ManagePages: NextPage<{}> = () => {
 						<ModalCloseButton />
 						<ModalBody>
 							<PageForm />
-							<TemplateForm />
-							<AssetForm />
+							{/* <TemplateForm />
+							<AssetForm /> */}
 						</ModalBody>
 						<ModalFooter>
 							<Button
@@ -155,18 +155,12 @@ const ManagePages: NextPage<{}> = () => {
 								onClick={() => {
 									setTopLevelModal(false);
 									setData(dataInitialValue);
-									setFormSelected(prev => {
-										return {
-											...prev,
-											formTitle: 'Page',
-											prevFormTitle: '',
-											editItemTraceObj: { 'Page': '', 'Templates': '', 'Assets': ''},
-											update: ''
-										}
-									});
+									setFormCache({});
 								}}
 							>
-								{formSelected.editItemTraceObj['Page'] ? 'Close Update Page Form' : 'Close New Page Form'}
+								{
+									`Cancel ${data[formCache?.[formCache?.active]?.formTitle]?._id ? 'Update' : 'New'} ${formCache?.[formCache?.active]?.formTitle} Form`
+								}
 							</Button>
 						</ModalFooter>
 					</ModalContent>

@@ -31,6 +31,8 @@ export type FormSelectedType = {
 export type ManagePageFormContextType = {
 	data: ManagePageFormDataType,
 	setData: React.Dispatch<React.SetStateAction<ManagePageFormDataType>>;
+	formCache: any,
+	setFormCache: any,
 	formSelected: FormSelectedType;
 	setFormSelected: React.Dispatch<React.SetStateAction<FormSelectedType>>;
 	topLevelModal: boolean;
@@ -54,15 +56,17 @@ export const formSelectedInitObj: FormSelectedType = {
 export const ManagePageFormContext = createContext<ManagePageFormContextType>({
 	data: dataInitialValue,
 	setData: () => {},
+	formCache: {},
+	setFormCache: () => {},
 	formSelected: formSelectedInitObj,
 	setFormSelected: () => {},
 	topLevelModal: false,
 	setTopLevelModal: () => {}
 });
 
-export function ManagePageFormProvider({ data, setData, formSelected, setFormSelected, topLevelModal, setTopLevelModal, children }: any) {
+export function ManagePageFormProvider({ data, setData, formCache, setFormCache, formSelected, setFormSelected, topLevelModal, setTopLevelModal, children }: any) {
 	return (
-		<ManagePageFormContext.Provider value={{ data, setData, formSelected, setFormSelected, topLevelModal, setTopLevelModal }}>
+		<ManagePageFormContext.Provider value={{ data, setData, formCache, setFormCache, formSelected, setFormSelected, topLevelModal, setTopLevelModal }}>
 			{children}
 		</ManagePageFormContext.Provider>
 	);
