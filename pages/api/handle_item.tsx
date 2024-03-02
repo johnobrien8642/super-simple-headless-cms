@@ -36,7 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method === 'POST') {
 		if (formTitleRef === 'Page') {
 			itemExistsAlready = await models[formTitleRef].findOne({ folderHref: data.folderHref });
-			if (!itemExistsAlready) {
+			if (itemExistsAlready) {
 				return res.status(400).json({ success: false, errorMessage: `Page with folderHref: ${data.folderHref} already exists` });
 			}
 		}
@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			parentItem = await models[formTitleRef].findById(data.previous);
 			if (parentItem) {
 				parentItem[data.parentFieldTitle].push(data._id);
-				if (data.folderHref === 'Page') {
+				if (data.formTitle === 'Page') {
 					data.folderHref = (parentItem.folderHref === '/' ? '' : parentItem.folderHref) + data.folderHref;
 				}
 				await parentItem.save();
@@ -71,8 +71,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			item = await models[formTitleRef].findById(_id);
 			parentItem = await models[formTitleRef].findById(data.previous);
 			if (parentItem && parentItem.schemaName === formTitleRef && formTitleRef === 'Page') {
-				data.folderHref = '';
-				data.folderHref = (parentItem.folderHref === '/' ? '' : parentItem.folderHref) + item.folderHref;
+				data.folderHref = (parentItem.folderHref === '/' ? '' : parentItem.folderHref) + data.folderHref;
 			}
 			deleteAdminFields(data)
 			await models[formTitleRef].findOneAndUpdate(
