@@ -13,6 +13,7 @@ const TemplateMap: { [key in TemplatesEnum]: any } = {
 	'VideoPlayer': VideoPlayer,
 	'TextBlock': TextBlock,
 	'HeadlineOnlyCTA': HeadlineOnlyCTA,
+	'PDFList': PDFList,
 	'PDFView': PDFView,
 	'PatronProdList': PatronProdList
 }
