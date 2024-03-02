@@ -14,9 +14,7 @@ import {
 	Flex,
 } from '@chakra-ui/react'
 import AdminHeader from '../../../util/components/system/AdminHeader.tsx';
-import PageForm from '../../../util/components/system/Form.tsx';
-import TemplateForm from '../../../util/components/system/TemplateForm.tsx';
-import AssetForm from '../../../util/components/system/AssetForm.tsx';
+import Form from '../../../util/components/system/Form.tsx';
 import { useRouter } from 'next/router';
 import { ManagePageFormProvider, dataInitialValue, editItemTraceObjInitObj } from '../../../util/contexts/useManagePageForm.tsx';
 import ListFieldItem from '../../../util/components/system/ListFieldItem.tsx';
@@ -144,9 +142,7 @@ const ManagePages: NextPage<{}> = () => {
 						<ModalHeader></ModalHeader>
 						<ModalCloseButton />
 						<ModalBody>
-							<PageForm />
-							{/* <TemplateForm />
-							<AssetForm /> */}
+							<Form />
 						</ModalBody>
 						<ModalFooter>
 							<Button
