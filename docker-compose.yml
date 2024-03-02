@@ -28,10 +28,10 @@ services:
       driver: none
     volumes:
       - type: volume
-        source: PS_MONGO_DATA
+        source: SSHCMS_MONGO_DATA
         target: /data/db
       - type: volume
-        source: PS_MONGO_CONFIG
+        source: SSHCMS_MONGO_CONFIG
         target: /data/configdb
     restart: always
     ports:
@@ -55,10 +55,10 @@ services:
         ipv4_address: 10.0.2.20
 
 volumes:
-  PS_MONGO_DATA:
-    name: PS_MONGO_DATA
-  PS_MONGO_CONFIG:
-    name: PS_MONGO_CONFIG
+  SSHCMS_MONGO_DATA:
+    name: SSHCMS_MONGO_DATA
+  SSHCMS_MONGO_CONFIG:
+    name: SSHCMS_MONGO_CONFIG
 
 networks:
   ls:
