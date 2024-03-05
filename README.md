@@ -40,8 +40,6 @@ To add a new page, simply select "Create New Page" in /admin/manage-pages and re
 Super Simple Headless CMS is built on a Page -> Template -> Asset model. You create Pages that have Templates that are filled with Assets. You can either
 update existing pages or create new ones. Drag and drop to rearrange order.
 
-- Note: Nested pages are not yet supported.
-
 When you add a page, it'll be automatically added to the Navbar if you don't toggle "Show In Navigation" to false.
 
 ## Adding a New Template
