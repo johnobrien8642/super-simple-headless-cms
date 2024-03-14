@@ -80,7 +80,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				}
 			);
 			try {
-				await res.revalidate(item.folderHref);
+				await res.revalidate(folderHref);
 			} catch (err) {
 			}
 			return res.status(200).json({ success: true, _id: item._id, parent: parentItem, parentFieldTitleRef, savedItem: { _id } });

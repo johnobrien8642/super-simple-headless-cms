@@ -132,7 +132,7 @@ const Form = ({}) => {
 							data: {
 								...data[formTitle]
 							},
-							folderHref: data[formTitle]?.folderHref
+							folderHref: data['Page']?.folderHref
 						})
 					});
 
