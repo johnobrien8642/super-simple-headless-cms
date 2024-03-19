@@ -7,8 +7,8 @@ A Next.js app utilizing ChakraUI, powered by MongoDB and Mongoose ODM, with asse
 
 ## Quick Start
 
-If you haven't already, install the latest versions of docker and docker compose.
-For WSL users, make sure you have docker-compose-plugin installed. Make sure to create a docker group and add yourself as a user if you haven't already, docs here: https://docs.docker.com/engine/install/linux-postinstall/ Make sure to login. If you're getting "pass store is not initialized", try this solution: https://stackoverflow.com/a/73558624/13836220 
+If you haven't already, install the latest versions of docker and docker compose. Make sure the docker engine is running.
+For WSL users, make sure you have docker-compose-plugin installed. Make sure to create a docker group and add yourself as a user if you haven't already, docs here: https://docs.docker.com/engine/install/linux-postinstall/ Make sure to login. If you're getting "pass store is not initialized", try steps 1 and 2 from this solution: https://stackoverflow.com/a/73558624/13836220 
 
 Then:
 
@@ -37,12 +37,14 @@ To add a new page, simply select "Create New Page" in /admin/manage-pages and re
 
 ## Quick Summary
 
-Super Simple Headless CMS is built on a Page -> Template -> Asset model. You create Pages that have Templates that are filled with Assets. You can either
-update existing pages or create new ones. Drag and drop to rearrange order.
+Super Simple Headless CMS is intended to be used as a Page -> Template -> Asset model. You create Pages that have Templates that are filled with Assets. You can either update existing pages or create new ones. Drag and drop to rearrange order. SSCMS **does** support nested items. For example, Page has Child Pages, which are just nested pages. You can do this with any Mongoose model, although it's best use-case is for nested Pages.
 
-- Note: Nested pages are not yet supported.
+Utilizing Next.js, all Pages will be rendered at build time and made available for SEO crawlers. You can add additional meta title and description info per page.
 
-When you add a page, it'll be automatically added to the Navbar if you don't toggle "Show In Navigation" to false.
+SSCMS is setup to utilize Mongoose Subdocs out of the box. If you wish to create a new Subdoc, use the existing Models to setup the new Mongoose Model, and add the import/export to the lib/index.tsx file. SSCMS automatically handles forms for all supported fields. Add the new Mongoose Model as a Subdoc to any other Model, it'll be automatically handled in the form.
+
+
+When you add a page, it'll be automatically added to the Navbar if you don't toggle "Show In Navigation" to false. This is also true for nested pages, although this will only matter if you go to Header.tsx and choose to use the nestedDropdownNav. Otherwise your Nav will only be top-level pages.
 
 ## Adding a New Template
 
@@ -112,7 +114,7 @@ To use Super Simple Headless CMS, you'll need a working knowledge of AWS S3, IAM
 - Cloudfront for S3 Guide: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/GettingStarted.SimpleDistribution.html
 - MongoDB Atlas DB Create Docs: https://www.mongodb.com/basics/create-database
 
-It's recommended to deploy this app to Vercel. On Vercel, you'll want to add the following environment variables:
+It's recommended deploying this app to Vercel. On Vercel, you'll want to add the following environment variables:
 
 ```
 NEXT_PUBLIC_URL=[Your public domain URL] // Your public domain URL, used to hit the /api from the server
