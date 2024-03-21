@@ -55,19 +55,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	try {
+		let updateSchemas;
 		const deleteRes = await models[item.schemaName].deleteOne({ _id: item._id });
-		const updateSchemas =
-			await models[formTitle]
-				.updateMany(
-					{},
-					{
-						"$pull": {
-							[title]: {
-								"$in": [item._id]
+		if (formTitle) {
+			updateSchemas =
+				await models[formTitle]
+					.updateMany(
+						{},
+						{
+							"$pull": {
+								[title]: {
+									"$in": [item._id]
+								}
 							}
 						}
-					}
-				)
+					)
+		}
 		res.status(200).json({ itemDelete: deleteRes, updateSchemas });
 	} catch (err: any) {
 		res.status(500).json({ errorMessage: `Handling asset delete failed: ${err.message}` });
